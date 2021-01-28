@@ -1,8 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<title>戴森球计划需求计算</title>
 <head> 
+    <title>戴森球计划需求计算</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -10,8 +10,14 @@
 
 
     <script type="text/javascript">
+        //配方 ，如果数据改变时有可能需要重置配方 
         var data = [
             {
+                //s ： 产物(可能多产物)
+                //q ： 需求
+                //n ： 数量(如果不提供就是1)
+                //m ： 生产设备
+                //t ： 生产时间(秒)
                 s: [{ name: "宇宙矩阵" }], q:
                     [
                         { name: "蓝矩阵", n: 1 },
@@ -23,10 +29,10 @@
                     ], t: 15, m: "研究站", group: "产品"
             },
             {
-                s: [{ name: "蓝矩阵" }], q: [{ name: "磁线圈", n: 1 }, { name: "电路板", n: 1 }], t: 3, m: "研究站",group: "产品"
+                s: [{ name: "蓝矩阵" }], q: [{ name: "磁线圈", n: 1 }, { name: "电路板", n: 1 }], t: 3, m: "研究站", group: "产品"
             },
             {
-                 s: [{ name: "红矩阵"}], q: [
+                s: [{ name: "红矩阵" }], q: [
                     { name: "高级石墨", n: 2 },
                     { name: "氢", n: 2 }
                 ], t: 6, m: "研究站", group: "产品"
@@ -42,16 +48,16 @@
                     { name: "处理器", n: 2 },
                     { name: "粒子宽带", n: 1 }
                 ], t: 10, m: "研究站", group: "产品"
-            }, 
+            },
             {
-                s: [{ name: "绿矩阵",n:2 }], q: [
+                s: [{ name: "绿矩阵", n: 2 }], q: [
                     { name: "量子芯片", n: 2 },
                     { name: "引力透镜", n: 1 }
                 ], t: 24, m: "研究站", group: "产品"
             },
 
-            
-            
+
+
             {
                 s: [{ name: "铁矿" }], q: [], m: "采矿机", t: 1
             },
@@ -59,7 +65,7 @@
                 s: [{ name: "铜矿" }], q: [], m: "采矿机", t: 1
             },
             {
-                s: [{ name: "煤矿" }], q: [], m: "采矿机", t: 1 
+                s: [{ name: "煤矿" }], q: [], m: "采矿机", t: 1
             },
             {
                 s: [{ name: "石矿" }], q: [], m: "采矿机", t: 1
@@ -72,7 +78,7 @@
             },
             {
                 s: [{ name: "水" }], q: [], m: "抽水机", t: 1
-            }, 
+            },
 
 
             {
@@ -80,9 +86,9 @@
             },
             {
                 s: [{ name: "硅石" }], q: [{ name: "石矿", n: 10 }], m: "制作台", t: 10
-            }, 
+            },
             {
-                s: [{ name: "铁块"}], group: "组件", m: "冶炼设备", q: [
+                s: [{ name: "铁块" }], group: "组件", m: "冶炼设备", q: [
                     { name: "铁矿", n: 1 }
                 ], t: 1
             },
@@ -90,12 +96,12 @@
                 s: [{
                     name: "钢材"
                 }
-                    ], group: "组件", m: "冶炼设备", q: [
+                ], group: "组件", m: "冶炼设备", q: [
                     { name: "铁块", n: 3 }
                 ], t: 3
-            }, 
+            },
             {
-                s: [{ name: "钛块" }], group: "组件", m: "冶炼设备", q: [{ name: "钛石", n: 2 }],t:2
+                s: [{ name: "钛块" }], group: "组件", m: "冶炼设备", q: [{ name: "钛石", n: 2 }], t: 2
             },
             {
                 s: [{
@@ -106,9 +112,9 @@
             },
 
             {
-                s: [{ name: "磁铁"}], group: "组件", m: "冶炼设备", q: [
+                s: [{ name: "磁铁" }], group: "组件", m: "冶炼设备", q: [
                     { name: "铁矿", n: 1 }
-                ], t: 1.5 
+                ], t: 1.5
             },
 
             {
@@ -137,8 +143,8 @@
                 ], t: 1
             },
             {
-                s: [{ name: "分拣器"}], group: "组件", m: "制作台", q: [
-                    { name: "铁块", n: 1 }, 
+                s: [{ name: "分拣器" }], group: "组件", m: "制作台", q: [
+                    { name: "铁块", n: 1 },
                     { name: "电路板", n: 1 }
                 ], t: 1
             },
@@ -147,7 +153,7 @@
                     { name: "煤矿", n: 1 }
                 ], t: 2
             },
-             
+
 
             {
                 s: [{ name: "氢" }], group: "组件", m: "轨道采集器", q: [
@@ -155,7 +161,7 @@
                 ], t: 1 / 0.27
             },
             {
-                s: [{ name: "氢" }, { name: "精炼油",n:2 }], group: "组件", m: "原油精炼机", q: [
+                s: [{ name: "氢" }, { name: "精炼油", n: 2 }], group: "组件", m: "原油精炼机", q: [
                     { name: "原油", n: 2 }
                 ], t: 4
             },
@@ -170,8 +176,8 @@
             },
             {
                 s: [{ name: "氢", n: 1 }, { name: "石墨烯", n: 2 }], group: "组件", m: "化工设备", q: [
-                    { name: "可燃冰", n: 2 } 
-                     
+                    { name: "可燃冰", n: 2 }
+
 
                 ], t: 2
             },
@@ -183,7 +189,7 @@
             {
                 s: [{ name: "可燃冰" }], group: "组件", m: "采矿机", q: [
 
-                ], t: 1  
+                ], t: 1
             },
             {
                 s: [{ name: "刺笋结晶" }], group: "组件", m: "采矿机", q: [
@@ -197,7 +203,7 @@
             },
 
             {
-                s: [{ name: "棱镜",n:2 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "棱镜", n: 2 }], group: "组件", m: "制作台", q: [
                     { name: "玻璃", n: 3 }
                 ], t: 2
             },
@@ -224,7 +230,7 @@
 
             {
                 s: [{ name: "金刚石", n: 1 }], group: "组件", m: "冶炼设备", q: [
-                    { name: "高级石墨", n: 1 } 
+                    { name: "高级石墨", n: 1 }
                 ], t: 2
             },
 
@@ -241,7 +247,7 @@
                     { name: "精炼油", n: 1 },
                     { name: "水", n: 1 }
                 ], t: 6
-            }, 
+            },
             {
                 s: [{ name: "有机晶体" }], group: "组件", m: "采矿机", q: [
 
@@ -249,13 +255,13 @@
             },
             {
                 s: [{ name: "钛晶石", n: 1 }], group: "组件", m: "制作台", q: [
-                    { name: "有机晶体", n:1 },
-                    { name: "钛块", n: 3 } 
+                    { name: "有机晶体", n: 1 },
+                    { name: "钛块", n: 3 }
                 ], t: 4
             },
             {
                 s: [{ name: "晶格硅", n: 1 }], group: "组件", m: "冶炼设备", q: [
-                    { name: "高级硅石", n: 1 } 
+                    { name: "高级硅石", n: 1 }
                 ], t: 2
             },
             {
@@ -267,8 +273,8 @@
             },
             {
                 s: [{ name: "电磁涡轮", n: 1 }], group: "组件", m: "制作台", q: [
-                    { name: "电动机", n: 2 }, 
-                    { name: "磁线圈", n:2 }
+                    { name: "电动机", n: 2 },
+                    { name: "磁线圈", n: 2 }
                 ], t: 2
             },
             {
@@ -286,17 +292,17 @@
             },
             {
                 s: [{ name: "碳纳米管", n: 2 }], group: "组件", m: "化工设备", q: [
-                    { name: "石墨烯", n: 3},
+                    { name: "石墨烯", n: 3 },
                     { name: "钛块", n: 1 }
                 ], t: 4
             },
 
             {
                 s: [{ name: "碳纳米管", n: 2 }], group: "组件", m: "化工设备", q: [
-                    { name: "刺笋结晶", n: 2} 
+                    { name: "刺笋结晶", n: 2 }
                 ], t: 4
             },
-            
+
             {
                 s: [{ name: "粒子宽带", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "碳纳米管", n: 2 },
@@ -325,7 +331,7 @@
             , {
                 s: [{ name: "量子芯片", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "处理器", n: 2 },
-                    { name: "位面过滤器", n: 2 } 
+                    { name: "位面过滤器", n: 2 }
                 ], t: 6
             }
             ,
@@ -351,25 +357,25 @@
             {
                 s: [{ name: "引力透镜", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "金刚石", n: 4 },
-                    { name: "奇异物质", n: 1 } 
+                    { name: "奇异物质", n: 1 }
                 ], t: 6
             },
 
             {
-                s: [{ name: "临界光子", n: 1 }], group: "组件", m: "射线接收塔", q: [ 
+                s: [{ name: "临界光子", n: 1 }], group: "组件", m: "射线接收塔", q: [
                 ], t: 6
             },
 
 
-            
+
             {
                 s: [{ name: "反物质", n: 2 }, { name: "氢", n: 2 }], group: "组件", m: "粒子对撞机", q: [
-                    { name: "临界光子", n: 2 } 
+                    { name: "临界光子", n: 2 }
                 ], t: 2
             },
-           {
-               s: [{ name: "空间翘曲器", n: 8 }], group: "组件", m: "制作台", q: [
-                    { name: "绿矩阵", n: 1 } 
+            {
+                s: [{ name: "空间翘曲器", n: 8 }], group: "组件", m: "制作台", q: [
+                    { name: "绿矩阵", n: 1 }
                 ], t: 10
             },
             {
@@ -381,7 +387,7 @@
                 s: [{ name: "超级磁场环", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "电磁涡轮", n: 2 },
                     { name: "磁铁", n: 3 },
-                    { name: "高级石墨", n: 1}
+                    { name: "高级石墨", n: 1 }
                 ], t: 3
             },
             {
@@ -399,12 +405,12 @@
                 ], t: 6
             },
 
-           
 
-            
+
+
 
         ];
-        function f_initData() { 
+        function f_initData() {
             $(data).each(function (i, item) {
                 item.id = i;//配方的id，用index设置，data改变时应该重置配方
 
@@ -418,22 +424,22 @@
                     ms = [
                         { name: "制作台", speed: 0.75 },
                         { name: "制作台2", speed: 1 },
-                        { name: "制作台3", speed: 1.5 } 
+                        { name: "制作台3", speed: 1.5 }
                     ];
-                } 
-                
+                }
+
                 if (item.m == "冶炼设备") {
                     ms = [
-                        { name: "电弧炉", speed: 1 } 
+                        { name: "电弧炉", speed: 1 }
                     ];
                 }
                 if (item.m == "采矿机") {
                     ms = [
                         { name: "矿脉*1", speed: 0.5 * 1 },
-                        { name: "矿脉*4", speed: 0.5 * 4 }, 
-                        { name: "矿脉*6", speed: 0.5 * 6 }, 
+                        { name: "矿脉*4", speed: 0.5 * 4 },
+                        { name: "矿脉*6", speed: 0.5 * 6 },
                         { name: "矿脉*8", speed: 0.5 * 8 },
-                    ]; 
+                    ];
                 }
                 if (item.m == "原油机") {
                     ms = [
@@ -446,17 +452,17 @@
                     ];
                 }
 
-                
+
                 if (item.m == "原油精炼机") {
                     ms = [
                         { name: "原油精炼机", speed: 1 }
                     ];
-                } 
+                }
                 if (item.m == "化工设备") {
                     ms = [
                         { name: "化工厂", speed: 1 }
                     ];
-                } 
+                }
                 if (item.m == "粒子对撞机") {
                     ms = [
                         { name: "粒子对撞机", speed: 1 }
@@ -466,21 +472,21 @@
                     ms = [
                         { name: "轨道采集器", speed: 9.6 }
                     ];
-                } 
+                }
 
                 if (item.m == "射线接收塔") {
                     ms = [
                         { name: "射线接收塔", speed: 1 }
                     ];
-                } 
-                
-                
+                }
+
+
                 item.m = ms;
-                
+
             });
             console.log(data);
         }
-        
+
         var settings = {};
         function saveSetting() {
             $.cookie('machine_settings', JSON.stringify(settings));
@@ -526,18 +532,18 @@
             if (!item) return null;
             var machine = getMachine(name);
             var speed = settings_time[machine];
-             
+
             if (speed) {
                 return {
-                    name: machine, t: item.t, speed: speed, time: item.t / speed ,isChange:true
+                    name: machine, t: item.t, speed: speed, time: item.t / speed, isChange: true
                 }
             }
             for (var i = 0; i < item.m.length; i++) {
                 var m = item.m[i];
                 if (m.name == machine) {
                     return {
-                        name: m.name, t: item.t, speed: m.speed, time: item.t / m.speed 
-                    } 
+                        name: m.name, t: item.t, speed: m.speed, time: item.t / m.speed
+                    }
                 }
             }
             return 0;
@@ -549,7 +555,7 @@
         var xqs = [
 
         ];
-         
+
 
         var xqss = [];
 
@@ -582,10 +588,10 @@
                         for (var j = 0; j < item.s.length; j++) {
                             if ($.inArray(item.s[j].name, names) == -1) {
                                 names.push(item.s[j].name);
-                                jgroup.append("<option value='" + item.s[j].name + "'>" + item.s[j].name + "</option>"); 
+                                jgroup.append("<option value='" + item.s[j].name + "'>" + item.s[j].name + "</option>");
                             }
-                           
-                        } 
+
+                        }
 
                     }
 
@@ -594,14 +600,14 @@
             })
         }
         //找到这个物品的配方
-        function getPfs(name) { 
+        function getPfs(name) {
             var pfs = [];
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
                 for (var j = 0; j < item.s.length; j++) {
                     if (item.s[j].name == name) {
-                        var pf = $.extend(true, {}, item); 
-                        pfs.push(pf); 
+                        var pf = $.extend(true, {}, item);
+                        pfs.push(pf);
 
                     }
                 }
@@ -613,31 +619,31 @@
             for (var j = 0; j < item.q.length; j++) {
                 title.push(item.q[j].name + "*" + (item.q[j].n || 1));
             }
-            if (item.q.length) { 
+            if (item.q.length) {
                 title.push("<span class='to'> -> </span>");
             }
             for (var j = 0; j < item.s.length; j++) {
-                title.push(item.s[j].name +"*"+ (item.s[j].n || 1));
+                title.push(item.s[j].name + "*" + (item.s[j].n || 1));
             }
             title.push("(" + (item.t || 1).toFixed(3) + "s)");
-         
 
-            return title.join(" ");  
+
+            return title.join(" ");
 
         }
 
         //找到这个物品的配方
-        function find(name) { 
+        function find(name) {
             function get(item) {
                 for (var j = 0; j < item.s.length; j++) {
                     if (item.s[j].name == name) {
-                        var o = $.extend(true, {}, item); 
-                        $.extend(o, item.s[j]); 
+                        var o = $.extend(true, {}, item);
+                        $.extend(o, item.s[j]);
                         return o;
                     }
                 }
             }
-             
+
             var pf = settings_pf[name];
             if (pf) {
                 return get(data[parseInt(pf)]);
@@ -646,9 +652,9 @@
             for (var i = 0; i < data.length; i++) {
                 var item = data[i];
                 for (var j = 0; j < item.s.length; j++) {
-                    if (item.s[j].name == name) { 
+                    if (item.s[j].name == name) {
 
-                        
+
                         return get(item);
                     }
                 }
@@ -663,7 +669,7 @@
                 item: currentItem,
                 number: parseInt($("#txtnumber").val())
             });
-            
+
             update_all();
         }
         var app = null;
@@ -671,7 +677,7 @@
             app = new Vue({
                 el: '#result',
                 data: {
-                    total:[],
+                    total: [],
                     xqs: [],
                     items: [],
                     items2: []
@@ -679,7 +685,7 @@
                 methods: {
 
                     speedChange: function (item) {
-                         
+
                         settings_time[item.machineName] = parseFloat(item.speed);
                         saveSettingTime();
                         update_all();
@@ -746,10 +752,10 @@
         }
         //加载需求
         function loadNumber(itemName, n) {
-             
+
             var item = find(itemName);
             var info = getValue(itemName);
-            
+
             addXH(itemName, n);
             for (var i = 0; i < item.s.length; i++) {
                 if (item.s[i].name != itemName) {
@@ -760,7 +766,7 @@
                 var q = item.q[i];
                 loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
             }
-        } 
+        }
         //处理多产出
         function getXhs(itemId) {
             var xhs = [];
@@ -800,14 +806,14 @@
                 var item = find(itemName);
                 if ($.inArray(item.id, ids) != -1) continue;
                 var xhs = getXhs(item.id);
-                 
+
                 if (xhs.length > 1) {
                     gs.push(xhs);
                     ids.push(item.id);
 
                 }
             }
-            console.log(gs); //gs:分组 
+            console.log(gs); //gs:分组
             for (var i = 0; i < gs.length; i++) {
                 doMergeMul(gs[i]);
             }
@@ -817,10 +823,10 @@
             var outResult = [];
             xh_list = [];
             out_list = [];
-             
+
             for (var m = 0; m < xqs.length; m++) {
-                var currentItem = xqs[m].item; 
-                loadNumber(currentItem.name, xqs[m].number); 
+                var currentItem = xqs[m].item;
+                loadNumber(currentItem.name, xqs[m].number);
             }
             function isXqs(name) {
                 for (var m = 0; m < xqs.length; m++) {
@@ -836,21 +842,21 @@
                 var itemName = xh.name;
                 var item = find(itemName);
                 var info = getValue(itemName);
-                if (xh.value > 0) { 
+                if (xh.value > 0) {
                     xh.value2 = xh.value / (1 / info.time) / 60 / (item.n || 1);
                 }
             }
-            if ($("#isMerge").get(0).checked) { 
+            if ($("#isMerge").get(0).checked) {
                 //处理合并 多个产出使用了同一个配方
                 mergeMul();
             }
-             
+
             var total = [];
             function addTotal(name, value) {
                 for (var i = 0; i < total.length; i++) {
                     var item = total[i];
                     if (item.name == name) {
-                        item.value += value;  
+                        item.value += value;
                         return;
                     }
                 }
@@ -858,10 +864,10 @@
             }
             for (var i = 0; i < xh_list.length; i++) {
                 if (!xh_list[i].value) continue;
-                 
+
                 var item = find(xh_list[i].name);
                 var info = getValue(xh_list[i].name);
-                if ($("#hideSource").get(0).checked) { 
+                if ($("#hideSource").get(0).checked) {
                     if (!item.q || !item.q.length) {
                         continue;
                     }
@@ -869,39 +875,39 @@
                 var outitem = {
                     name: xh_list[i].name,
                     number1: xh_list[i].value.toFixed(1),
-                    number2: xh_list[i].value2 ?  xh_list[i].value2.toFixed(1) :"",
+                    number2: xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "",
                     time: info.time.toFixed(3),
                     t: info.t.toFixed(3),
                     speed: info.speed.toFixed(3),
                     speedClass: info.isChange ? "time time2" : "time",
                     rowClass: isXqs(xh_list[i].name) ? "xqsrow" : "",
-                    machineName : info.name,
+                    machineName: info.name,
                     m: [],
-                    pf:[] 
+                    pf: []
                 };
 
                 addTotal(info.name, Math.ceil(outitem.number2));
                 var pfds = getPfs(xh_list[i].name);
-                 
+
                 for (var j = 0; j < pfds.length; j++) {
-                    var pf = { 
+                    var pf = {
                         class: item.id == pfds[j].id ? "pf selected" : "pf",
-                        href: item.id == pfds[j].id ? "javascript:void()": "javascript: selectPf(\"" + item.name + "\",\"" + pfds[j].id + "\")",
+                        href: item.id == pfds[j].id ? "javascript:void()" : "javascript: selectPf(\"" + item.name + "\",\"" + pfds[j].id + "\")",
                         title: getPfTitle(pfds[j])
                     };
                     outitem.pf.push(pf);
                 }
                 for (var j = 0; j < item.m.length; j++) {
-                    var m = { 
-                        class: info.name == item.m[j].name ? "m selected":"m", 
-                        href: info.name == item.m[j].name ? "javascript:void()": "javascript: selectM(\"" + item.name + "\",\"" + item.m[j].name + "\")",
-                        name: item.m[j].name, 
+                    var m = {
+                        class: info.name == item.m[j].name ? "m selected" : "m",
+                        href: info.name == item.m[j].name ? "javascript:void()" : "javascript: selectM(\"" + item.name + "\",\"" + item.m[j].name + "\")",
+                        name: item.m[j].name,
                     };
-                    outitem.m.push(m); 
+                    outitem.m.push(m);
                 }
-                items.push(outitem);  
+                items.push(outitem);
 
-            } 
+            }
 
             for (var i = 0; i < out_list.length; i++) {
                 if (!out_list[i].value) continue;
@@ -914,19 +920,19 @@
                     time: info.time.toFixed(3),
                     t: info.t.toFixed(3),
                     speed: info.speed.toFixed(3),
-                    speedClass: info.isChange ? "time time2" : "time", 
-                    rowClass:"outrow",
+                    speedClass: info.isChange ? "time time2" : "time",
+                    rowClass: "outrow",
                     m: [],
-                    pf: [] 
+                    pf: []
                 };
                 items2.push(outitem);
-            } 
-             
+            }
+
             app.xqs = xqs;
             app.items = items;
             app.items2 = items2;
             app.total = total;
-             
+
         }
         function selectM(name, m) {
             settings[name] = m;
@@ -940,11 +946,11 @@
         }
     </script>
     <style type="text/css">
-        .ms,.pfs {
+        .ms, .pfs {
             display: flex;
         }
 
-        .m ,.pf{
+        .m, .pf {
             display: block;
             margin: 3px;
             padding: 3px 8px;
@@ -962,11 +968,13 @@
             border: 1px #cfcfcf solid;
             width: 60px;
             padding: 4px;
-            outline:none;
+            outline: none;
         }
+
         .time2 {
             border-color: #ef1f1f;
         }
+
         #seldata, #seldata2 {
             height: 30px;
             line-height: 30px;
@@ -1006,12 +1014,15 @@
             padding: 10px 30px;
             border: 1px dashed #d3d3d3;
         }
+
         .xqsrow td {
             background: #fff2f2;
         }
+
         .outrow td {
             background: #b8b8b8;
         }
+
         .to {
             color: black;
         }
@@ -1104,7 +1115,7 @@
 
                     <tr class="" >
                         <td colspan="1" align="right">备注 </td>
-                        <td colspan="6">传送带360/m 高速传送带720/m 极速传送带1800/m</td>
+                        <td colspan="6">参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />有问题联系QQ1028-21-03</td>
                     </tr>
                 </tbody>
             </table>
