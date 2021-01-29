@@ -51,7 +51,7 @@
             },
             {
                 s: [{ name: "绿矩阵", n: 2 }], q: [
-                    { name: "量子芯片", n: 2 },
+                    { name: "量子芯片", n: 1},
                     { name: "引力透镜", n: 1 }
                 ], t: 24, m: "研究站", group: "产品"
             },
@@ -950,6 +950,10 @@
             saveSettingPf();
             update_all();
         }
+        function f_hide(obj) {
+            var jrow = $(obj).parents("tr:first");
+            jrow.hide();
+        }
     </script>
     <style type="text/css">
         .ms, .pfs {
@@ -1032,6 +1036,17 @@
         .to {
             color: black;
         }
+        .op{
+            display:none;
+            font-size:12px;
+           
+        }
+            .op a {
+                color: #333;
+            }
+        td:hover .op{
+            display:inline-block;
+        }
     </style>
 </head>
 <body style="padding:0px;">
@@ -1077,7 +1092,10 @@
                         <td>最终速度(秒)</td>
                     </tr>
                     <tr v-for="item in items" v-bind:class="item.rowClass">
-                        <td><span class="name">{{item.name}}</span></td>
+                        <td>
+                            <span class="name">{{item.name}}</span>
+                            <span class="op"><a href="javascript:void()" onclick="f_hide(this)">隐藏</a></span>
+                        </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td><span class="number2">{{item.number2}}</span></td>
                         <td>
