@@ -437,13 +437,74 @@
                     { name: "硫酸", n: 8 }
                 ], t: 4
             },
-            
+            {
+                s: [{ name: "电浆激发器", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "磁线圈", n: 4 },
+                    { name: "棱镜", n: 2 }
+                ], t: 2
+            },
+            {
+                s: [{ name: "框架材料", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "碳纳米管", n: 4 },
+                    { name: "钛合金", n: 1 },
+                    { name: "高级硅石", n: 1 }
+                ], t: 6
+            },
+            {
+                s: [{ name: "电力感应塔", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 2 },
+                    { name: "磁线圈", n: 1 } 
+                ], t: 1
+            },
 
+            {
+                s: [{ name: "无线输电塔", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "电力感应塔", n: 1 },
+                    { name: "电浆激发器", n: 1 }
+                ], t: 3
+            },
 
-
-
+            {
+                s: [{ name: "卫星配电站", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "无线输电塔", n: 1 },
+                    { name: "超级磁场环", n: 10 },
+                    { name: "框架材料", n: 2 }
+                ], t: 5
+            },
+            {
+                s: [{ name: "光子合并器", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "棱镜", n:2 },
+                    { name: "电路板", n: 1 }
+                ], t: 3
+            },
+            {
+                s: [{ name: "太阳帆", n: 2}], group: "消耗品", m: "制作台", q: [
+                    { name: "石墨烯", n: 1 },
+                    { name: "光子合并器", n: 1 } 
+                ], t: 4
+            },
         ];
+        var energyData = {};
+        energyData["研究站"] = 0.48;
+        energyData["制作台"] = 0.27;
+        energyData["制作台2"] = 0.48;
+        energyData["制作台3"] = 0.78;
+        energyData["电弧炉"] = 0.36;
+        energyData["矿脉*1"] = 0.1;
+        energyData["矿脉*4"] = 0.3;
+        energyData["矿脉*6"] = 0.42;
+        energyData["矿脉*8"] = 0.6;
+        energyData["原油机"] = 0.84;
+        energyData["抽水机"] = 0.3;
+        energyData["原油精炼机"] = 0.96;
+        energyData["化工厂"] = 0.72;
+        energyData["粒子对撞机"] = 12;
+        energyData["轨道采集器"] = 0;
+        energyData["射线接收塔"] = 5;
+        
         function f_initData() {
+
+
             $(data).each(function (i, item) {
                 item.id = i;//配方的id，用index设置，data改变时应该重置配方
 
@@ -471,9 +532,15 @@
                         { name: "矿脉*1", speed: 0.5 * 1 },
                         { name: "矿脉*4", speed: 0.5 * 4 },
                         { name: "矿脉*6", speed: 0.5 * 6 },
-                        { name: "矿脉*8", speed: 0.5 * 8 },
+                        { name: "矿脉*8", speed: 0.5 * 8 }
+
+
                     ];
                 }
+
+
+
+
                 if (item.m == "原油机") {
                     ms = [
                         { name: "原油机", speed: 1.8 }
@@ -710,6 +777,7 @@
             app = new Vue({
                 el: '#result',
                 data: {
+                    totalEnergy:0,
                     total: [],
                     xqs: [],
                     items: [],
@@ -888,8 +956,11 @@
             function addTotal(name, value) {
                 for (var i = 0; i < total.length; i++) {
                     var item = total[i];
+                    var energy = energyData[name] || 0;
+                    if (!item.energy) item.energy = 0;
                     if (item.name == name) {
                         item.value += value;
+                        item.energy += energy * (value || 0);
                         return;
                     }
                 }
@@ -937,6 +1008,7 @@
                         name: item.m[j].name,
                     };
                     outitem.m.push(m);
+
                 }
                 items.push(outitem);
 
@@ -965,7 +1037,11 @@
             app.items = items;
             app.items2 = items2;
             app.total = total;
-
+            var energy = 0;
+            for (var i = 0; i < total.length; i++) {
+                energy += total[i].energy || 0;
+            }
+            app.totalEnergy = energy.toFixed(2);
         }
         function selectM(name, m) {
             settings[name] = m;
@@ -1148,6 +1224,9 @@
                         <td colspan="2" align="right">合计： </td>
                         <td colspan="5">
                             <span v-for="item in total"> {{item.name}}*{{item.value}} </span>
+                            <br />
+                            <span>
+                                耗能估算：{{totalEnergy}}M</span>
                         </td>
                     </tr>
                     <tr class="" v-if="items2 && items2.length">
@@ -1155,7 +1234,9 @@
                         <td colspan="5"></td>
                     </tr>
                     <tr v-for="item in items2" v-bind:class="item.rowClass">
-                        <td><span class="name">{{item.name}}</span></td>
+                        <td><span class="name">{{item.name
+                                }}
+                            </span></td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td><span class="number2">{{item.number2}}</span></td>
                         <td></td>
