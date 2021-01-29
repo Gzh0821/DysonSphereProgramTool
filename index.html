@@ -1,16 +1,21 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head> 
+<head>
     <title>戴森球计划需求计算</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
 
+    <link href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" rel="stylesheet" />
+    <script src="https://www.layuicdn.com/layui-v2.5.6/layui.all.js"></script>
+
 
     <script type="text/javascript">
-        //配方 ，如果数据改变时有可能需要重置配方 
+     
+        
+        //配方 ，如果数据改变时有可能需要重置配方
         var data = [
             {
                 //s ： 产物(可能多产物)
@@ -51,7 +56,7 @@
             },
             {
                 s: [{ name: "绿矩阵", n: 2 }], q: [
-                    { name: "量子芯片", n: 1},
+                    { name: "量子芯片", n: 1 },
                     { name: "引力透镜", n: 1 }
                 ], t: 24, m: "研究站", group: "产品"
             },
@@ -85,7 +90,7 @@
                 s: [{ name: "传送带", n: 3 }], group: "建筑", m: "制作台", q: [
                     { name: "铁块", n: 2 },
                     { name: "齿轮", n: 1 }
-                ], t:1
+                ], t: 1
             },
             {
                 s: [{ name: "高速传送带", n: 3 }], group: "建筑", m: "制作台", q: [
@@ -209,12 +214,12 @@
             {
                 s: [{ name: "重氢" }], group: "组件", m: "轨道采集器", q: [
 
-                ], t: 1 
+                ], t: 1
             },
             {
                 s: [{ name: "氢" }], group: "组件", m: "轨道采集器", q: [
 
-                ], t: 1 
+                ], t: 1
             },
             {
                 s: [{ name: "氢" }, { name: "精炼油", n: 2 }], group: "组件", m: "原油精炼机", q: [
@@ -240,7 +245,7 @@
             {
                 s: [{ name: "可燃冰" }], group: "组件", m: "轨道采集器", q: [
 
-                ], t: 1 
+                ], t: 1
             },
             {
                 s: [{ name: "可燃冰" }], group: "组件", m: "采矿机", q: [
@@ -422,7 +427,7 @@
                     { name: "临界光子", n: 2 }
                 ], t: 2
             },
-          
+
             {
                 s: [{ name: "超级磁场环", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "电磁涡轮", n: 2 },
@@ -453,7 +458,7 @@
             {
                 s: [{ name: "电力感应塔", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "铁块", n: 2 },
-                    { name: "磁线圈", n: 1 } 
+                    { name: "磁线圈", n: 1 }
                 ], t: 1
             },
 
@@ -473,14 +478,14 @@
             },
             {
                 s: [{ name: "光子合并器", n: 1 }], group: "组件", m: "制作台", q: [
-                    { name: "棱镜", n:2 },
+                    { name: "棱镜", n: 2 },
                     { name: "电路板", n: 1 }
                 ], t: 3
             },
             {
-                s: [{ name: "太阳帆", n: 2}], group: "消耗品", m: "制作台", q: [
+                s: [{ name: "太阳帆", n: 2 }], group: "消耗品", m: "制作台", q: [
                     { name: "石墨烯", n: 1 },
-                    { name: "光子合并器", n: 1 } 
+                    { name: "光子合并器", n: 1 }
                 ], t: 4
             },
         ];
@@ -501,7 +506,7 @@
         energyData["粒子对撞机"] = 12;
         energyData["轨道采集器"] = 0;
         energyData["射线接收塔"] = 5;
-        
+
         function f_initData() {
 
 
@@ -617,7 +622,16 @@
                 eval("settings_pf = " + json);
             }
         }
-
+        var projects = [];
+        function saveSettingProjects() {
+            $.cookie('settings_projects', JSON.stringify(projects));
+        }
+        function loadSettingProjects() { 
+            var json = $.cookie('settings_projects');
+            if (json) {
+                eval("projects = " + json);
+            }
+        }
         //获取配方默认的机器
         function getMachine(name) {
             var item = find(name);
@@ -777,8 +791,8 @@
             app = new Vue({
                 el: '#result',
                 data: {
-                    totalEnergy:0,
-                    total: [],
+                    totalEnergy: 0,
+                    total: [], 
                     xqs: [],
                     items: [],
                     items2: []
@@ -799,6 +813,9 @@
             loadSetting();
             loadSettingTime();
             loadSettingPf();
+            loadSettingProjects();
+
+            projectsUpdate();
             $("#btnAdd3").click(f_add3);
             $("#btnReset1").click(function () {
                 xqs = [];
@@ -819,6 +836,23 @@
                 settings_pf = {};
                 saveSettingPf();
                 update_all();
+            });
+            $("#btnReset5").click(function () {
+                projects = [];
+                saveSettingProjects();
+                projectsUpdate();
+            });
+            $("#btnLoadProject").click(function () {
+                 
+                var value = $("#selprojects").val();
+                if (!value) return;
+                for (var i = 0; i < projects.length; i++) {
+                    if (projects[i].name == value) {
+                        xqs = projects[i].value;
+                        update_all();
+                        return;
+                    }
+                }
             });
             $("#isMerge").change(function () {
                 update_all();
@@ -1053,9 +1087,44 @@
             saveSettingPf();
             update_all();
         }
-        function f_hide(obj) {
+        function f_tag(obj) {
             var jrow = $(obj).parents("tr:first");
-            jrow.hide();
+            if (jrow.hasClass("row-tag")) {
+
+                jrow.removeClass("row-tag");
+            } else {
+
+                jrow.addClass("row-tag");
+            }
+        }
+        function projectsUpdate() {
+
+            $("#selprojects").html("");
+            $(projects).each(function () {
+                $("#selprojects").append("<option value='" + this.name + "'>" + this.name + "</option>");
+            });
+            if (projects.length) {
+                $("#projectdiv").show();
+            } else {
+
+                $("#projectdiv").hide();
+            }
+        }
+        function f_save() {
+
+            layer.prompt({
+                title: '输入方案名',
+            }, function (value, index, elem) {
+                layer.close(index);
+                if (!value) return;
+
+                projects.push({
+                    name: value,
+                    value: xqs
+                });
+                saveSettingProjects();
+                projectsUpdate();
+            });
         }
     </script>
     <style type="text/css">
@@ -1088,7 +1157,7 @@
             border-color: #ef1f1f;
         }
 
-        #seldata, #seldata2 {
+        #seldata, #seldata2, #selprojects {
             height: 30px;
             line-height: 30px;
         }
@@ -1139,16 +1208,22 @@
         .to {
             color: black;
         }
-        .op{
-            display:none;
-            font-size:12px;
-           
+
+        .op {
+            display: none;
+            font-size: 12px;
         }
+
             .op a {
                 color: #333;
             }
-        td:hover .op{
-            display:inline-block;
+
+        td:hover .op {
+            display: inline-block;
+        }
+
+        .row-tag td {
+            background: #e2e2e2;
         }
     </style>
 </head>
@@ -1170,13 +1245,24 @@
     <button id="btnReset4">
         重置配方
     </button>
-    <input type="checkbox" id="isMerge" checked />合并同配方多产物
+    <input type="checkbox" id="isMerge" checked   />合并同配方多产物
     <input type="checkbox" id="hideSource" />隐藏原料
+    <span id="projectdiv" style="display:none;">
+        <select id="selprojects"></select>
+        <button id="btnLoadProject">
+            加载方案
+        </button>
+        <button id="btnReset5">
+            重置方案
+        </button>
+    </span>
     <div id="result">
-
         <div class="list">
             <div v-for="x in xqs">
                 {{ x.item.name  }} * {{x.number}}
+            </div>
+            <div v-if="xqs && xqs.length">
+                <button onclick="f_save()">保存方案</button>
             </div>
         </div>
 
@@ -1197,7 +1283,7 @@
                     <tr v-for="item in items" v-bind:class="item.rowClass">
                         <td>
                             <span class="name">{{item.name}}</span>
-                            <span class="op"><a href="javascript:void()" onclick="f_hide(this)">隐藏</a></span>
+                            <span class="op"><a href="javascript:void()" onclick="f_tag(this)">标注</a></span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td><span class="number2">{{item.number2}}</span></td>
@@ -1226,7 +1312,8 @@
                             <span v-for="item in total"> {{item.name}}*{{item.value}} </span>
                             <br />
                             <span>
-                                耗能估算：{{totalEnergy}}M</span>
+                                耗能估算：{{totalEnergy}}M
+                            </span>
                         </td>
                     </tr>
                     <tr class="" v-if="items2 && items2.length">
@@ -1234,9 +1321,13 @@
                         <td colspan="5"></td>
                     </tr>
                     <tr v-for="item in items2" v-bind:class="item.rowClass">
-                        <td><span class="name">{{item.name
+                        <td>
+                            <span class="name">
+                                {{
+item.name
                                 }}
-                            </span></td>
+                            </span>
+                        </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td><span class="number2">{{item.number2}}</span></td>
                         <td></td>
@@ -1245,10 +1336,13 @@
                         <td></td>
                     </tr>
 
-                    <tr class="" >
+                    <tr class="">
                         <td colspan="1" align="right">备注 </td>
-                        <td colspan="6">参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />如果点【增加】没反应可以试一下重置配方/设备<br />
-                        有问题联系QQ1028-21-03</td>
+                        <td colspan="6">
+                            参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />如果点【增加】没反应可以试一下重置配方/设备<br />
+                            可以对某个物品进行标注(改颜色)比如已经完成生产线的物品<br />
+                            有问题联系QQ1028-21-03
+                        </td>
                     </tr>
                 </tbody>
             </table>
