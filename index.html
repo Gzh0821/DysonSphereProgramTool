@@ -72,7 +72,7 @@
                 ], t: 10
             },
             {
-                s: [{ name: "核燃料棒", n: 1 }], group: "消耗品", m: "制作台", q: [
+                s: [{ name: "氘核燃料棒", n: 1 }], group: "消耗品", m: "制作台", q: [
                     { name: "钛合金", n: 1 },
                     { name: "重氢", n: 10 },
                     { name: "超级磁场环", n: 2 }
@@ -436,11 +436,11 @@
                 ], t: 3
             },
             {
-                s: [{ name: "钛合金", n: 4 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "钛合金", n: 4 }], group: "组件", m: "冶炼设备", q: [
                     { name: "钛块", n: 4 },
                     { name: "钢材", n: 4 },
                     { name: "硫酸", n: 8 }
-                ], t: 4
+                ], t: 12
             },
             {
                 s: [{ name: "电浆激发器", n: 1 }], group: "组件", m: "制作台", q: [
@@ -488,6 +488,20 @@
                     { name: "光子合并器", n: 1 }
                 ], t: 4
             },
+            {
+                s: [{ name: "戴森球组件", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "框架材料", n: 3 },
+                    { name: "太阳帆", n: 3 },
+                    { name: "处理器", n: 3 }
+                ], t: 8
+            },
+            {
+                s: [{ name: "小型运载火箭", n: 1 }], group: "消耗品", m: "制作台", q: [
+                    { name: "戴森球组件", n: 2 },
+                    { name: "氘核燃料棒", n: 2 },
+                    { name: "量子芯片", n: 2 }
+                ], t: 6
+            }
         ];
         var energyData = {};
         energyData["研究站"] = 0.48;
@@ -660,7 +674,10 @@
                     }
                 }
             }
-            return 0;
+            m = item.m[0];
+            return {
+                name: m.name, t: item.t, speed: m.speed, time: item.t / m.speed
+            } 
         }
 
         var currentItem = null;
