@@ -1030,6 +1030,12 @@
                     game_data = data;
                     f_init();
                     layer.closeAll();
+                }, error: function () {
+                    layer.alert("加载资源文件出错,图标将可能不可用");
+                    f_init();
+                    setTimeout(function () {
+                        layer.closeAll();
+                    });
                 }
             })
         });
