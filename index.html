@@ -1054,21 +1054,23 @@
 
         var xqss = [];
         var game_data = {};
+        var isDataLoaded = false;
         $(function () { 
             $.ajax({
-                url: "./data.json?"+version,
+                url: "./data.json?" + version,
                 dataType: "json",
                 timeout: 1000000,
-                success: function (data) { 
+                success: function (data) {
                     game_data = data;
-                    f_init(); 
-                }, error: function () {
-                   
-                    f_init();
-                    setTimeout(function () { 
-                    });
+                    isDataLoaded = true;
+                    f_initIcons();
+                },
+                error: function () { 
+                    alert("游戏资源加载失败，图标将无法显示正常，请刷新再试");
                 }
-            })
+            });
+
+            f_init(); 
         });
 
         function getGroup() {
@@ -1197,8 +1199,7 @@
         }
         var app = null;
         function f_init() {
-
-            f_initIcons();
+             
             app = new Vue({
                 el: '#result',
                 data: {
@@ -1568,6 +1569,9 @@
             projectsUpdate();
         }
         function f_add() {
+            if (!isDataLoaded) {
+                alert("游戏资源尚未加载完毕")
+            }
             $("#UIselector").show(); 
         }
         var icons = {}
@@ -1591,6 +1595,7 @@
                     icons[icon.name] = icon.value;
                 }
             }
+            app.icons = icons;
             $(document).click(function(e){
                 if (!$(e.target).closest('#UIselector').length) {
                     $('#UIselector').hide();
