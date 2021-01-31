@@ -829,8 +829,37 @@
                     { name: "光栅石", n: 1 },
                     { name: "电路板", n: 1 }
                 ], t: 3
+            },
+
+
+            {
+                s: [{ name: "湮灭约束球", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "粒子容器", n: 1 },
+                    { name: "处理器", n: 1 }
+                ], t: 20
+            },
+
+
+            {
+                s: [{ name: "反物质燃烧棒", n: 1 }], group: "消耗品", m: "制作台", q: [
+                    { name: "反物质", n: 10 },
+                    { name: "氢", n: 10 },
+                    { name: "湮灭约束球", n: 1 },
+                    { name: "钛合金", n: 1 }
+                ], t: 12
+            },
+
+
+            {
+                s: [{ name: "人造恒星", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钛合金", n: 20 },
+                    { name: "框架材料", n: 10 },
+                    { name: "湮灭约束球", n: 10 },
+                    { name: "量子芯片", n: 10}
+                ], t: 30
             }
             
+
             
             
         ]; 
@@ -1027,7 +1056,7 @@
         var game_data = {};
         $(function () { 
             $.ajax({
-                url: "./data.json",
+                url: "./data.json?"+version,
                 dataType: "json",
                 timeout: 1000000,
                 success: function (data) { 
