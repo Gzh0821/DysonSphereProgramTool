@@ -2,7 +2,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>戴森球计划需求计算</title>
+    <title>戴森球计划量化工具</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -13,8 +13,8 @@
 
 
     <script type="text/javascript">
-     
-        
+
+
         //配方 ，如果数据改变时有可能需要重置配方
         var data = [
             {
@@ -33,6 +33,36 @@
                         { name: "反物质", n: 1 }
                     ], t: 15, m: "研究站", group: "产品"
             },
+
+            {
+                s: [{ name: "铁矿" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "铜矿" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "煤矿" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "石矿" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "钛石" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "原油" }], q: [], m: "原油萃取站", t: 1
+            },
+            {
+                s: [{ name: "水" }], q: [], m: "抽水机", t: 1
+            },
+            {
+                s: [{ name: "硅石" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "蓄电池满" }], q: [{ name: "蓄电池" }], m: "能量枢纽", t: 1
+            },
+
+            
             {
                 s: [{ name: "蓝矩阵" }], q: [{ name: "磁线圈", n: 1 }, { name: "电路板", n: 1 }], t: 3, m: "研究站", group: "产品"
             },
@@ -51,7 +81,7 @@
             {
                 s: [{ name: "紫矩阵" }], q: [
                     { name: "处理器", n: 2 },
-                    { name: "粒子宽带", n: 1 }
+                    { name: "粒子带宽", n: 1 }
                 ], t: 10, m: "研究站", group: "产品"
             },
             {
@@ -75,7 +105,7 @@
                 s: [{ name: "氘核燃料棒", n: 1 }], group: "消耗品", m: "制作台", q: [
                     { name: "钛合金", n: 1 },
                     { name: "重氢", n: 10 },
-                    { name: "超级磁场环", n: 2 }
+                    { name: "超级磁场环", n: 1 }
                 ], t: 6
             },
             {
@@ -86,59 +116,9 @@
             },
 
 
-            {
-                s: [{ name: "传送带", n: 3 }], group: "建筑", m: "制作台", q: [
-                    { name: "铁块", n: 2 },
-                    { name: "齿轮", n: 1 }
-                ], t: 1
-            },
-            {
-                s: [{ name: "高速传送带", n: 3 }], group: "建筑", m: "制作台", q: [
-                    { name: "传送带", n: 3 },
-                    { name: "电磁涡轮", n: 1 }
-                ], t: 1
-            },
-            {
-                s: [{ name: "极速传送带", n: 3 }], group: "建筑", m: "制作台", q: [
-                    { name: "高速传送带", n: 3 },
-                    { name: "超级磁场环", n: 1 },
-                    { name: "石墨烯", n: 1 }
-                ], t: 1
-            },
-            {
-                s: [{ name: "太阳能板", n: 1 }], group: "建筑", m: "制作台", q: [
-                    { name: "高级硅石", n: 6 },
-                    { name: "铜块", n: 6 },
-                    { name: "电路板", n: 4 }
-                ], t: 5
-            },
-
-            {
-                s: [{ name: "铁矿" }], q: [], m: "采矿机", t: 1
-            },
-            {
-                s: [{ name: "铜矿" }], q: [], m: "采矿机", t: 1
-            },
-            {
-                s: [{ name: "煤矿" }], q: [], m: "采矿机", t: 1
-            },
-            {
-                s: [{ name: "石矿" }], q: [], m: "采矿机", t: 1
-            },
-            {
-                s: [{ name: "钛石" }], q: [], m: "采矿机", t: 1
-            },
-            {
-                s: [{ name: "原油" }], q: [], m: "原油机", t: 1
-            },
-            {
-                s: [{ name: "水" }], q: [], m: "抽水机", t: 1
-            },
+          
 
 
-            {
-                s: [{ name: "硅石" }], q: [], m: "采矿机", t: 1
-            },
             {
                 s: [{ name: "硅石" }], q: [{ name: "石矿", n: 10 }], m: "制作台", t: 10
             },
@@ -190,19 +170,8 @@
                 s: [{ name: "齿轮" }], group: "组件", m: "制作台", q: [
                     { name: "铁块", n: 1 }
                 ], t: 1
-            },
-            {
-                s: [{ name: "基础传送带", n: 3 }], group: "组件", m: "制作台", q: [
-                    { name: "铁块", n: 2 },
-                    { name: "齿轮", n: 1 }
-                ], t: 1
-            },
-            {
-                s: [{ name: "分拣器" }], group: "组件", m: "制作台", q: [
-                    { name: "铁块", n: 1 },
-                    { name: "电路板", n: 1 }
-                ], t: 1
-            },
+            }, 
+          
             {
                 s: [{ name: "高级石墨" }], group: "组件", m: "冶炼设备", q: [
                     { name: "煤矿", n: 2 }
@@ -214,7 +183,7 @@
             {
                 s: [{ name: "重氢" }], group: "组件", m: "轨道采集器", q: [
 
-                ], t: 1
+                ], t: 1 / 0.02
             },
             {
                 s: [{ name: "氢" }], group: "组件", m: "轨道采集器", q: [
@@ -227,12 +196,11 @@
                 ], t: 4
             },
 
+            //此配方不兼容程序
             //{
             //    s: [{ name: "氢", n: 3 }, { name: "高级石墨", n: 1 }], group: "组件", m: "原油精炼机", q: [
             //        { name: "氢", n: 2 },
-            //        { name: "精炼油", n: 1 }
-
-
+            //        { name: "精炼油", n: 1 } 
             //    ], t: 4
             //},
             {
@@ -270,14 +238,14 @@
             },
 
             {
-                s: [{ name: "高级硅石", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "高纯硅块", n: 1 }], group: "组件", m: "冶炼设备", q: [
                     { name: "硅石", n: 2 }
                 ], t: 2
             },
 
             {
                 s: [{ name: "微晶元件", n: 1 }], group: "组件", m: "制作台", q: [
-                    { name: "高级硅石", n: 2 },
+                    { name: "高纯硅块", n: 2 },
                     { name: "铜块", n: 1 }
                 ], t: 2
             },
@@ -322,9 +290,16 @@
             },
             {
                 s: [{ name: "晶格硅", n: 1 }], group: "组件", m: "冶炼设备", q: [
-                    { name: "高级硅石", n: 1 }
+                    { name: "高纯硅块", n: 1 }
                 ], t: 2
             },
+
+            {
+                s: [{ name: "石材", n: 1 }], group: "组件", m: "冶炼设备", q: [
+                    { name: "石矿", n: 1 }
+                ], t: 1
+            },
+
             {
                 s: [{ name: "电动机", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "铁块", n: 2 },
@@ -365,7 +340,7 @@
             },
 
             {
-                s: [{ name: "粒子宽带", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "粒子带宽", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "碳纳米管", n: 2 },
                     { name: "晶格硅", n: 2 },
                     { name: "塑料", n: 1 }
@@ -452,30 +427,10 @@
                 s: [{ name: "框架材料", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "碳纳米管", n: 4 },
                     { name: "钛合金", n: 1 },
-                    { name: "高级硅石", n: 1 }
+                    { name: "高纯硅块", n: 1 }
                 ], t: 6
             },
-            {
-                s: [{ name: "电力感应塔", n: 1 }], group: "建筑", m: "制作台", q: [
-                    { name: "铁块", n: 2 },
-                    { name: "磁线圈", n: 1 }
-                ], t: 1
-            },
-
-            {
-                s: [{ name: "无线输电塔", n: 1 }], group: "建筑", m: "制作台", q: [
-                    { name: "电力感应塔", n: 1 },
-                    { name: "电浆激发器", n: 1 }
-                ], t: 3
-            },
-
-            {
-                s: [{ name: "卫星配电站", n: 1 }], group: "建筑", m: "制作台", q: [
-                    { name: "无线输电塔", n: 1 },
-                    { name: "超级磁场环", n: 10 },
-                    { name: "框架材料", n: 2 }
-                ], t: 5
-            },
+           
             {
                 s: [{ name: "光子合并器", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "棱镜", n: 2 },
@@ -501,25 +456,401 @@
                     { name: "氘核燃料棒", n: 2 },
                     { name: "量子芯片", n: 2 }
                 ], t: 6
+            },
+           
+
+            {
+                s: [{ name: "硫酸", n: 1 }], group: "组件", m: "抽水机", q: [ 
+                ], t: 1
+            },
+            {
+                s: [{ name: "光栅石" }], q: [], m: "采矿机", t: 1
+            }, {
+                s: [{ name: "卡西米尔晶片", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "光栅石", n:6},
+                    { name: "石墨烯", n: 2 },
+                    { name: "氢", n: 12 }
+                ], t: 4
+            },
+            {
+                s: [{ name: "单极磁石" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "粒子容器", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "单极磁石", n: 10 },
+                    { name: "铜块", n: 2 } 
+                ], t: 4
+            },
+
+            {
+                s: [{ name: "金伯利矿石" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "金刚石", n: 1 }], group: "组件", m: "冶炼设备", q: [
+                    { name: "金伯利矿石", n: 1 }
+                ], t: 2
+            },
+            {
+                s: [{ name: "分形硅石" }], q: [], m: "采矿机", t: 1
+            },
+            {
+                s: [{ name: "晶格硅", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "分形硅石", n: 1 }
+                ], t:4
+            },
+            {
+                s: [{ name: "地基", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "石材", n: 3 },
+                    { name: "钢材", n: 1 }
+                ], t: 1
+            },
+            {
+                s: [{ name: "液氢燃料棒", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "钛块", n: 1 },
+                    { name: "氢", n: 5 }
+                ], t: 3
+            },
+
+            
+            {
+                s: [{ name: "电力感应塔", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 2 },
+                    { name: "磁线圈", n: 1 }
+                ], t: 1
+            },
+
+            {
+                s: [{ name: "无线输电塔", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "电力感应塔", n: 1 },
+                    { name: "电浆激发器", n: 1 }
+                ], t: 3
+            },
+
+            {
+                s: [{ name: "卫星配电站", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "无线输电塔", n: 1 },
+                    { name: "超级磁场环", n: 10 },
+                    { name: "框架材料", n: 2 }
+                ], t: 5
+            },
+            {
+                s: [{ name: "风力涡轮机", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 6 },
+                    { name: "齿轮", n: 1 },
+                    { name: "磁线圈", n: 3 }
+                ], t: 4
+            },
+            {
+                s: [{ name: "火力发电机", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 10 },
+                    { name: "石材", n: 4 },
+                    { name: "齿轮", n: 4 },
+                    { name: "磁线圈", n: 4 }
+                ], t: 5
+            },
+            {
+                s: [{ name: "传送带", n: 3 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 2 },
+                    { name: "齿轮", n: 1 }
+                ], t: 1
+            },
+            {
+                s: [{ name: "高速传送带", n: 3 }], group: "建筑", m: "制作台", q: [
+                    { name: "传送带", n: 3 },
+                    { name: "电磁涡轮", n: 1 }
+                ], t: 1
+            },
+            {
+                s: [{ name: "极速传送带", n: 3 }], group: "建筑", m: "制作台", q: [
+                    { name: "高速传送带", n: 3 },
+                    { name: "超级磁场环", n: 1 },
+                    { name: "石墨烯", n: 1 }
+                ], t: 1
+            },
+            {
+                s: [{ name: "小型储物仓", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "铁块", n: 4 },
+                    { name: "石材", n: 4 }
+                ], t: 2
+            },
+            {
+                s: [{ name: "大型储物仓", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "钢材", n: 8 },
+                    { name: "石材", n: 8 }
+                ], t: 4
+            },
+            {
+                s: [{ name: "太阳能板", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "高纯硅块", n: 6 },
+                    { name: "铜块", n: 6 },
+                    { name: "电路板", n: 4 }
+                ], t: 5
+            },
+
+            {
+                s: [{ name: "蓄电池", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 6 },
+                    { name: "超级磁场环", n: 6 },
+                    { name: "晶格硅", n: 4 }
+                ], t: 5
+            },
+
+            {
+                s: [{ name: "射线接收站", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钢材", n: 20 },
+                    { name: "高纯硅块", n: 20 },
+                    { name: "光子合并器", n: 10 },
+                    { name: "处理器", n: 5 },
+                    { name: "超级磁场环", n: 20 }
+                ], t: 8
+            },
+
+            {
+                s: [{ name: "微型聚变发电站", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钢材", n: 12 },
+                    { name: "超级磁场环", n: 10 },
+                    { name: "碳纳米管", n: 8 }, 
+                    { name: "处理器", n: 4 }
+                ], t: 10
+            },
+            {
+                s: [{ name: "能量枢纽", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钢材", n: 40 },
+                    { name: "钛合金", n: 40 },
+                    { name: "处理器", n: 40 },
+                    { name: "粒子容器", n: 8 }
+                ], t: 15
+            },
+            {
+                s: [{ name: "储液灌", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 8 },
+                    { name: "石材", n: 4 },
+                    { name: "玻璃", n: 4 }
+                ], t: 2
+            },
+
+            
+            {
+                s: [{ name: "分拣器" }], group: "组件", m: "制作台", q: [
+                    { name: "铁块", n: 1 },
+                    { name: "电路板", n: 1 }
+                ], t: 1
+            },
+            {
+                s: [{ name: "高速分拣器", n: 2 }], group: "组件", m: "制作台", q: [
+                    { name: "分拣器", n: 2 },
+                    { name: "电动机", n: 1 }
+                ], t: 1
+            },
+
+            {
+                s: [{ name: "极速分拣器", n: 2 }], group: "组件", m: "制作台", q: [
+                    { name: "高速分拣器", n: 2 },
+                    { name: "电磁涡轮", n: 1 }
+                ], t: 1
+            },
+            {
+                s: [{ name: "采矿机", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "铁块", n: 4 },
+                    { name: "电路板", n: 2 },
+                    { name: "磁线圈", n: 2 },
+                    { name: "齿轮", n: 2 }
+                ], t: 3
+            },
+            {
+                s: [{ name: "抽水机", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "铁块", n: 8 },
+                    { name: "石材", n: 4 },
+                    { name: "电动机", n: 4 },
+                    { name: "电路板", n: 2 }
+                ], t: 4
+            },
+            {
+                s: [{ name: "原油萃取站", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "钢材", n: 12 },
+                    { name: "石材", n: 12 },
+                    { name: "电路板", n: 6 },
+                    { name: "电浆激发器", n: 4 }
+                ], t: 8
+            },
+            {
+                s: [{ name: "原油精炼厂", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "钢材", n: 10 },
+                    { name: "石材", n: 10 },
+                    { name: "电路板", n: 6 },
+                    { name: "电浆激发器", n: 6 }
+                ], t: 6
+            },
+            {
+                s: [{ name: "垂直发射井", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "钛合金", n: 80 },
+                    { name: "框架材料", n: 30 },
+                    { name: "引力透镜", n: 20 },
+                    { name: "量子芯片", n: 10 }
+                ], t: 30
+            },
+         
+            
+            {
+                s: [{ name: "四向分流器", n: 1 }], group: "组件", m: "制作台", q: [
+                    { name: "铁块", n: 3 },
+                    { name: "齿轮", n: 2 },
+                    { name: "电路板", n: 1 }
+                ], t: 2
+            },
+
+            
+            {
+                s: [{ name: "制作台Mk.Ⅰ", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 4 },
+                    { name: "齿轮", n: 8 },
+                    { name: "电路板", n: 4 }
+                ], t: 2
+            },
+            {
+                s: [{ name: "制作台Mk.Ⅱ", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "制作台Mk.Ⅰ", n: 1 },
+                    { name: "石墨烯", n: 8 },
+                    { name: "处理器", n: 4 }
+                ], t: 3
+            },
+            {
+                s: [{ name: "制作台Mk.Ⅲ", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "制作台Mk.Ⅱ", n: 1 },
+                    { name: "粒子带宽", n: 8 },
+                    { name: "量子芯片", n: 2 }
+                ], t: 4
+            },
+            {
+                s: [{ name: "制作台Mk.Ⅲ", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "制作台Mk.Ⅱ", n: 1 },
+                    { name: "粒子带宽", n: 8 },
+                    { name: "量子芯片", n: 2 }
+                ], t: 4
+            },
+            {
+                s: [{ name: "电弧熔炉", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 4 },
+                    { name: "石材", n: 2 },
+                    { name: "电路板", n: 4 },
+                    { name: "磁线圈", n: 2 }
+                ], t: 3
+            },
+            {
+                s: [{ name: "分馏塔", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钢材", n: 8 },
+                    { name: "石材", n: 4 },
+                    { name: "玻璃", n: 4 },
+                    { name: "处理器", n: 1 }
+                ], t: 3
+            },
+            {
+                s: [{ name: "化工厂", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钢材", n: 8 },
+                    { name: "石材", n: 8 },
+                    { name: "玻璃", n: 8 },
+                    { name: "电路板", n: 2 }
+                ], t: 5
+            },
+            {
+                s: [{ name: "矩阵研究站", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 8 },
+                    { name: "玻璃", n: 4 },
+                    { name: "电路板", n: 4 },
+                    { name: "磁线圈", n: 4 }
+                ], t: 3
+            },
+            {
+                s: [{ name: "电磁轨道弹射器", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钢材", n: 20 },
+                    { name: "齿轮", n: 20 },
+                    { name: "处理器", n: 5 },
+                    { name: "超级磁场环", n: 10 }
+                ], t: 6
+            },
+            {
+                s: [{ name: "行星内物流运输站", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钢材", n: 40 },
+                    { name: "钛块", n: 40 },
+                    { name: "处理器", n: 40 },
+                    { name: "粒子容器", n: 20 }
+                ], t: 20
+            },
+            {
+                s: [{ name: "微型粒子对撞机", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钛合金", n: 20 },
+                    { name: "框架材料", n: 20 },
+                    { name: "超级磁场环", n: 50 },
+                    { name: "石墨烯", n: 10 },
+                    { name: "处理器", n: 8 }
+                ], t: 15
+            },
+            {
+                s: [{ name: "星际物流运输站", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "行星内物流运输站", n: 1 },
+                    { name: "钛合金", n: 40 },
+                    { name: "粒子容器", n: 20 }
+                ], t: 30
+            },
+            {
+                s: [{ name: "加力推进器", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钛合金", n: 5},
+                    { name: "电磁涡轮", n: 5 }
+                ], t: 6
+            },
+            {
+                s: [{ name: "轨道采集器", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "星际物流运输站", n: 1 },
+                    { name: "超级磁场环", n: 50 },
+                    { name: "加力推进器", n: 20 },
+                    { name: "蓄电池满", n: 20 }
+                ], t: 30
+            },
+            {
+                s: [{ name: "推进器", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钢材", n: 2 },
+                    { name: "铜块", n: 3 }
+                ], t: 4
+            },
+            {
+                s: [{ name: "物流运输机", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 5 },
+                    { name: "处理器", n: 2 },
+                    { name: "推进器", n: 2 }
+                ], t: 4
+            },
+            {
+                s: [{ name: "星际物流运输机", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "钛合金", n: 10 },
+                    { name: "处理器", n: 10 },
+                    { name: "加力推进器", n: 2 }
+                ], t: 6
             }
-        ];
+
+            
+            
+            
+        ]; 
+
         var energyData = {};
         energyData["研究站"] = 0.48;
-        energyData["制作台"] = 0.27;
-        energyData["制作台2"] = 0.48;
-        energyData["制作台3"] = 0.78;
-        energyData["电弧炉"] = 0.36;
-        energyData["矿脉*1"] = 0.1;
-        energyData["矿脉*4"] = 0.3;
-        energyData["矿脉*6"] = 0.42;
-        energyData["矿脉*8"] = 0.6;
-        energyData["原油机"] = 0.84;
+        energyData["制作台Mk.Ⅰ"] = 0.27;
+        energyData["制作台Mk.Ⅱ"] = 0.48;
+        energyData["制作台Mk.Ⅲ"] = 0.78;
+        energyData["电弧熔炉"] = 0.36;
+        energyData["矿脉"] = 0.1;
+        energyData["采矿机"] = 0.42; 
+        energyData["原油萃取站"] = 0.84;
         energyData["抽水机"] = 0.3;
         energyData["原油精炼机"] = 0.96;
         energyData["化工厂"] = 0.72;
         energyData["粒子对撞机"] = 12;
         energyData["轨道采集器"] = 0;
         energyData["射线接收塔"] = 5;
+        energyData["能量枢纽"] = 0;
+
+        
+        var version = "06";
 
         function f_initData() {
 
@@ -535,39 +866,40 @@
                 }
                 if (item.m == "制作台") {
                     ms = [
-                        { name: "制作台", speed: 0.75 },
-                        { name: "制作台2", speed: 1 },
-                        { name: "制作台3", speed: 1.5 }
+                        { name: "制作台Mk.Ⅰ", speed: 0.75 },
+                        { name: "制作台Mk.Ⅱ", speed: 1 },
+                        { name: "制作台Mk.Ⅲ", speed: 1.5 }
                     ];
                 }
 
                 if (item.m == "冶炼设备") {
                     ms = [
-                        { name: "电弧炉", speed: 1 }
+                        { name: "电弧熔炉", speed: 1 }
                     ];
                 }
                 if (item.m == "采矿机") {
                     ms = [
-                        { name: "矿脉*1", speed: 0.5 * 1 },
-                        { name: "矿脉*4", speed: 0.5 * 4 },
-                        { name: "矿脉*6", speed: 0.5 * 6 },
-                        { name: "矿脉*8", speed: 0.5 * 8 }
-
-
+                        { name: "矿脉", speed: 0.5 * 1 },
+                        { name: "采矿机", speed: 0.5 * 6 }  
+                    ];
+                }
+                if (item.m == "能量枢纽") {
+                    ms = [
+                        { name: "能量枢纽", speed:  1 } 
                     ];
                 }
 
+                
 
 
-
-                if (item.m == "原油机") {
+                if (item.m == "原油萃取站") {
                     ms = [
-                        { name: "原油机", speed: 1.8 }
+                        { name: "原油萃取站", speed: 4 }
                     ];
                 }
                 if (item.m == "抽水机") {
                     ms = [
-                        { name: "抽水机", speed: 55 / 60 }
+                        { name: "抽水机", speed: 70 / 60 }
                     ];
                 }
 
@@ -608,40 +940,40 @@
 
         var settings = {};
         function saveSetting() {
-            $.cookie('machine_settings', JSON.stringify(settings));
+            $.cookie('machine_settings' + version, JSON.stringify(settings));
         }
         function loadSetting() {
-            var json = $.cookie('machine_settings');
+            var json = $.cookie('machine_settings' + version);
             if (json) {
                 eval("settings = " + json);
             }
         }
         var settings_time = {};
         function saveSettingTime() {
-            $.cookie('machine_settings_time', JSON.stringify(settings_time));
+            $.cookie('machine_settings_time' + version, JSON.stringify(settings_time));
         }
         function loadSettingTime() {
-            var json = $.cookie('machine_settings_time');
+            var json = $.cookie('machine_settings_time' + version);
             if (json) {
                 eval("settings_time = " + json);
             }
         }
         var settings_pf = {};
         function saveSettingPf() {
-            $.cookie('machine_settings_pf', JSON.stringify(settings_pf));
+            $.cookie('machine_settings_pf' + version, JSON.stringify(settings_pf));
         }
         function loadSettingPf() {
-            var json = $.cookie('machine_settings_pf');
+            var json = $.cookie('machine_settings_pf' + version);
             if (json) {
                 eval("settings_pf = " + json);
             }
         }
         var projects = [];
         function saveSettingProjects() {
-            $.cookie('settings_projects', JSON.stringify(projects));
+            $.cookie('settings_projects' + version, JSON.stringify(projects));
         }
-        function loadSettingProjects() { 
-            var json = $.cookie('settings_projects');
+        function loadSettingProjects() {
+            var json = $.cookie('settings_projects' + version);
             if (json) {
                 eval("projects = " + json);
             }
@@ -677,7 +1009,7 @@
             m = item.m[0];
             return {
                 name: m.name, t: item.t, speed: m.speed, time: item.t / m.speed
-            } 
+            }
         }
 
         var currentItem = null;
@@ -689,9 +1021,16 @@
 
 
         var xqss = [];
-
+        var game_data = {};
         $(function () {
-            f_init();
+            $.ajax({
+                url: "./data.json",
+                dataType: "json",
+                success: function (data) { 
+                    game_data = data;
+                    f_init();
+                }
+            })
         });
 
         function getGroup() {
@@ -728,7 +1067,11 @@
 
                 });
                 $("#seldata").append(jgroup);
-            })
+            });
+
+            for (var i = 110; i < 400; i=i+10) {
+                $("#selore").append("<option value='" + i/100 + "'>" + i + "%</option>");
+            }
         }
         //找到这个物品的配方
         function getPfs(name) {
@@ -747,16 +1090,27 @@
         }
         function getPfTitle(item) {
             var title = [];
-            for (var j = 0; j < item.q.length; j++) {
-                title.push(item.q[j].name + "*" + (item.q[j].n || 1));
+            for (var j = 0; j < item.q.length; j++) { 
+                if (icons[item.q[j].name]) {
+                    title.push("<img class='sicon' src='data:image/png;base64," + icons[item.q[j].name] + "' title='" + item.q[j].name+"' />");
+                } else {
+                    title.push(item.q[j].name);
+                }
+                title.push("<sub>" + (item.q[j].n || 1) + "</sub>");
             }
             if (item.q.length) {
-                title.push("<span class='to'> -> </span>");
+                title.push('<img class="to" src="./to.png" />');
             }
             for (var j = 0; j < item.s.length; j++) {
-                title.push(item.s[j].name + "*" + (item.s[j].n || 1));
+                if (icons[item.s[j].name]) {
+                    title.push("<img class='sicon' src='data:image/png;base64," + icons[item.s[j].name] + "' title='" + item.s[j].name +"'/>");
+                } else {
+                    title.push(item.s[j].name);
+                }
+                title.push("<sub>" + (item.s[j].n || 1) + "</sub>"); 
+
             }
-            title.push("(" + (item.t || 1).toFixed(3) + "s)");
+            title.push("(" + (item.t || 1).toFixed(0) + "s)");
 
 
             return title.join(" ");
@@ -805,12 +1159,15 @@
         }
         var app = null;
         function f_init() {
+
+            f_initIcons();
             app = new Vue({
                 el: '#result',
                 data: {
                     totalEnergy: 0,
-                    total: [], 
+                    total: [],
                     xqs: [],
+                    icons: icons,
                     items: [],
                     items2: []
                 },
@@ -826,6 +1183,7 @@
             });
             f_initData();
             f_fillData();
+        
             update_all();
             loadSetting();
             loadSettingTime();
@@ -849,6 +1207,23 @@
                 saveSettingTime();
                 update_all();
             });
+            $("#selore").change(function () {
+
+                $(data).each(function () {
+                    if (this.m) {
+                        for (var i = 0; i < this.m.length; i++) {
+                            if (this.m[i].name == "矿脉") {
+                                this.m[i].speed = 0.5 * 1 * parseFloat($("#selore").val());
+                            } if (this.m[i].name == "采矿机") {
+                                this.m[i].speed = 0.5 * 6 * parseFloat($("#selore").val());
+                            }
+                        }
+                    }
+
+                });
+                update_all();
+
+            })
             $("#btnReset4").click(function () {
                 settings_pf = {};
                 saveSettingPf();
@@ -860,7 +1235,7 @@
                 projectsUpdate();
             });
             $("#btnLoadProject").click(function () {
-                 
+
                 var value = $("#selprojects").val();
                 if (!value) return;
                 for (var i = 0; i < projects.length; i++) {
@@ -870,6 +1245,18 @@
                         return;
                     }
                 }
+            });
+            $("#selmodein").click(function () {
+                var value = $("#selmodein").val();
+                $(".ms a").each(function () {
+                    var name = $(this).attr("data-name");
+                    var modein = $(this).attr("data-modein");
+                    if (modein == value) {
+                        settings[name] = modein;
+                    }
+                });
+                saveSetting();
+                update_all();
             });
             $("#isMerge").change(function () {
                 update_all();
@@ -904,20 +1291,26 @@
         }
         //加载需求
         function loadNumber(itemName, n) {
+            try {
+                var item = find(itemName);
+                var info = getValue(itemName);
 
-            var item = find(itemName);
-            var info = getValue(itemName);
-
-            addXH(itemName, n);
-            for (var i = 0; i < item.s.length; i++) {
-                if (item.s[i].name != itemName) {
-                    addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1));
+                addXH(itemName, n);
+                for (var i = 0; i < item.s.length; i++) {
+                    if (item.s[i].name != itemName) {
+                        addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1));
+                    }
                 }
+                for (var i = 0; item.q && i < item.q.length; i++) {
+                    var q = item.q[i];
+                    loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
+                }
+            } catch (e) {
+                layer.alert("出现错误，请重置设备/配方");
+                console.log(itemName);
+                throw e;
             }
-            for (var i = 0; item.q && i < item.q.length; i++) {
-                var q = item.q[i];
-                loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
-            }
+           
         }
         //处理多产出
         function getXhs(itemId) {
@@ -1031,9 +1424,9 @@
                     name: xh_list[i].name,
                     number1: xh_list[i].value.toFixed(1),
                     number2: xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "",
-                    time: info.time.toFixed(3),
-                    t: info.t.toFixed(3),
-                    speed: info.speed.toFixed(3),
+                    time: info.time.toFixed(1),
+                    t: info.t.toFixed(1),
+                    speed: info.speed.toFixed(1),
                     speedClass: info.isChange ? "time time2" : "time",
                     rowClass: isXqs(xh_list[i].name) ? "xqsrow" : "",
                     machineName: info.name,
@@ -1055,8 +1448,10 @@
                 for (var j = 0; j < item.m.length; j++) {
                     var m = {
                         class: info.name == item.m[j].name ? "m selected" : "m",
+                        itemName: item.name,
                         href: info.name == item.m[j].name ? "javascript:void()" : "javascript: selectM(\"" + item.name + "\",\"" + item.m[j].name + "\")",
                         name: item.m[j].name,
+                        showName: item.m[j].name.replace("制作台","")
                     };
                     outitem.m.push(m);
 
@@ -1073,9 +1468,9 @@
                     name: out_list[i].name,
                     number1: out_list[i].value.toFixed(1),
                     number2: out_list[i].value2 ? out_list[i].value2.toFixed(1) : "",
-                    time: info.time.toFixed(3),
-                    t: info.t.toFixed(3),
-                    speed: info.speed.toFixed(3),
+                    time: info.time.toFixed(1),
+                    t: info.t.toFixed(1),
+                    speed: info.speed.toFixed(1),
                     speedClass: info.isChange ? "time time2" : "time",
                     rowClass: "outrow",
                     m: [],
@@ -1143,28 +1538,195 @@
                 projectsUpdate();
             });
         }
+        function f_add() {
+            var w = 900;
+            var h = 700; 
+           
+            layer.open({
+                type: 1, title: false,
+                skin: 'layui-layer-demo', 
+                closeBtn: 0,  
+                anim: 2,
+                shadeClose: true,   
+                 area: [w  + 'px', h  +'px'],
+                content: '<div id="selector" class="selector" style="width:' + w  + 'px;height:' + h  +'px"><div id="tabs"></div></div>'
+            }); 
+            var jimg1 = $("<div class='tab selected'><img src='./component-icon.png'/></div>").appendTo("#tabs");
+            var jimg2 = $("<div class='tab'><img src='./factory-icon.png'/></div>").appendTo("#tabs");
 
+            jimg1.click(function () {
+                jicons2.removeClass("icons-selected");
+                jicons.addClass("icons-selected");
+                jimg2.removeClass("selected");
+                jimg1.addClass("selected");
+            });
+            jimg2.click(function () {
+                jicons.removeClass("icons-selected");
+                jicons2.addClass("icons-selected");
+                jimg1.removeClass("selected");
+                jimg2.addClass("selected");
+            });
+
+            var jicons = $('<div class="icons icons-selected"></div>').appendTo("#selector");
+            addIcons(jicons, game_data.icons1);
+            var jicons2 = $('<div class="icons"></div>').appendTo("#selector");
+            addIcons(jicons2, game_data.icons2);
+
+            function addIcons(jicons,icons) {
+                jicons.width(w - 80).height(h - 220);
+
+                for (var i = 0; i < 7; i++) {
+                    var jrow = $("<div class='iconrow'></div>").appendTo(jicons);
+                    for (var j = 0; j < 12; j++) {
+                        var jicon = $("<div class='icon'><div class='s'></div></div>").appendTo(jrow);
+                        jicon.click(function () {
+                            var name = $(this).attr("data-name");
+                            if (!name) return;
+                            currentItem = find(name);
+                            xqs.push({
+                                item: currentItem,
+                                number: parseInt($("#txtnumber").val())
+                            });
+                            update_all();
+                            layer.closeAll();
+                        })
+                    }
+                }
+
+                for (var i = 0; i < icons.length; i++) {
+                    var icon = icons[i];
+                    var reg = /^(\d)-(\d{1,2})-(.*)+/;
+                    if (reg.test(icon.name)) {
+                        var x = icon.name.match(reg);
+                        jicons.find(">.iconrow:eq(" + (parseInt(x[1]) - 1) + ")")
+                            .find(">.icon:eq(" + (parseInt(x[2]) - 1) + ")")
+                            .html("").append("<img src='data:image/png;base64," + icon.value + "' />").attr("data-name", x[3]).attr("title", x[3]);
+                    }
+                }
+            }
+        }
+        var icons = {}
+        function f_initIcons() {
+            var reg = /^(\d)-(\d{1,2})-(.*)+/;
+            for (var i = 0; i < game_data.icons1.length; i++) {
+                var icon = game_data.icons1[i];
+                if (reg.test(icon.name)) {
+                    var x = icon.name.match(reg);
+                    icons[x[3]] = icon.value;
+                } else {
+                    icons[icon.name] = icon.value;
+                }
+            }
+            for (var i = 0; i < game_data.icons2.length; i++) {
+                var icon = game_data.icons2[i]; 
+                if (reg.test(icon.name)) {
+                    var x = icon.name.match(reg);
+                    icons[x[3]] = icon.value;
+                } else {
+                    icons[icon.name] = icon.value;
+                }
+            }
+        }
 
     </script>
     <style type="text/css">
-        .ms, .pfs {
-            display: flex;
+        .sicon{
+            width:24px;height:24px;
         }
+        .selector, .layui-layer-demo {
+            background: #4A5C72;
+        }
+        .selector{
+
+        }
+            .selector .icons {
+              
+                flex-direction: column;
+                padding: 20px;
+                display:none;
+            }
+            .selector .icons-selected {
+                display: -webkit-flex;
+                display: flex;
+            }
+        .selector .icons .iconrow {
+            display: -webkit-flex;
+            display: flex;
+            flex: auto;
+        }
+                .selector .icons .icon:hover {
+                    background: #3F6D84;
+                }
+                .selector .icons .icon {
+                    flex: auto;
+                    margin-right: 2px;
+                    margin-bottom: 2px;
+                    cursor: pointer;
+                    text-align: center;
+                }
+                    .selector .icons .icon .s ,.selector .icons .icon img {
+                        width: 55px;
+                        height: 55px;
+                        margin-top:10px;
+                    }
+                   
+        #tabs {
+            margin-top: 20px;
+            margin-left: 20px;
+            height: 80px;
+        }
+        .layui-layer-page .layui-layer-content{
+            overflow:hidden;
+        }
+        .icons {
+            background: #2D3241;
+            clear: both;
+            margin-top: 40px;
+            margin-left: 20px;
+        }
+            .icons .icon {
+                background: #364450;
+            }
+        #tabs img {
+            width: 64px;
+            height: 64px;
+        }
+        #tabs .tab {
+            padding: 10px;
+            cursor: pointer;
+            float:left;
+        }
+            #tabs .tab.selected {
+                background: #506777;
+            }
+
+            .ms, .pfs {
+                display: flex;
+            }
 
         .m, .pf {
             display: block;
             margin: 3px;
             padding: 3px 8px;
             font-size: 12px;
-            color: #333;
+            color:white;
             text-decoration: none;
+            background: #878787;
         }
-
+        .m{ 
+            text-decoration: underline;
+        }
         .selected {
-            background: #5d5d5d;
+            background: #42586c;
             color: white;
         }
-
+        a.pf {
+            color: white;
+        }
+        a.selected {
+            color: white;
+            text-decoration: none;
+        } 
         .time {
             border: 1px #cfcfcf solid;
             width: 60px;
@@ -1176,7 +1738,7 @@
             border-color: #ef1f1f;
         }
 
-        #seldata, #seldata2, #selprojects {
+       select {
             height: 30px;
             line-height: 30px;
         }
@@ -1191,15 +1753,20 @@
             padding: 10px;
         }
 
-        #txtnumber {
+        #txtnumber, #txtore {
             width: 40px;
             height: 24px;
             line-height: 30px;
-        }
 
-        .name {
-            width: 200px;
         }
+        #txtore {
+            margin-left:5px;
+        }
+        .name {
+                width: 200px;
+            }
+
+
 
         table {
             width: 100%;
@@ -1246,35 +1813,53 @@
         }
     </style>
 </head>
-<body style="padding:0px;">
+<body style="padding:5px;">
+    每分钟数量：<input type="text" id="txtnumber" value="60" />
+    <a href="javascript:f_add()" style="margin-left:10px;margin-right:10px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADYElEQVRYR8VXS3LaQBB9rYDJLoIT4KqIbcgJgk9gfIIkS6NUGZ/A9gmMqwJeBp8g+ATGJzDZIlcZXwDJu/DJdGpGCEYSSIKkyuyAmenXrz+vm7DFx/zuHBoGagxUwWwSUVVeZ+YBiDwCBkKg732zbrM+S2kHzcsn09ibXTKoTgQz7bwPCB6Be2KaP/VO972kO4kAStfOGQs0sxqOGlJADLTGx9bFJhBrAUivaW92F1CsX2bwL2LqCfAIBo3Uf4LLBqjMxHUCfYgD4QFP8wfr2IgBMNvDKoHudK8ZeCFGS0xzrTRK/ZDNm0xoEvAuACPZYPCBZ1cGOsAQAN/z+VOYcr4Rk3wzzXDU68VbXSIchkBMc/v6WyEAxfbwIUQ742JsW+dZEm/TmVLbOQfhbAWCB65d+Rh8XwKIHsR/MB4YSXpbATCvn8ok5g8r6vlm3Kh8SfJc5Qrh56LsjqKxjd4ttp1eEA6VD4tQKAClzrAL0Gf1GPDCk1w5LeYhrzKwpXKiMB+tEtN3cgHA4SXiDI8p0Hpsd7gjWXBtq0hm57FugBWVqqQnuWKa97sCUCVamLtLW6AjKrUfWyA+WdB/7zasWpas34UB+W6x4/QJ+KRsMF1R+IfsZbcrAP0eA/ek174gHHjHVl9nQGa7YdCymWhNpUaAYouBPhFC91Q4Bd9Gq0MPuVRRKnVWCbgOQLHtuDuLEXjkNir7IYeunZrBuFs2olQAHUfq/LKnZ8kPjaVn17bKiQCKneEgULCNIQDVo4aZIEOgkknFkteEANxLDIFU1ldPwlAZMm5d24p5u472XasgVoav3oh8LXiFVgy8uA3LjIuRplRJGb9tCOLDjiZGMaVi7o7tytckAL4cUx/+qFVPk+NSe/gDREridcXdOJAI4NRrWK1t6n7T2dSBJLio9wTVSpmbnl25+hcQcrQHYznWyanabVTUQiM/8aE0NDSoLaObZcGIggwWmoB2RT3jmae56sahVB4KYhsdqeWCIX7nrtJmBWX47fwkutAo42tyZfNiUpj11y4ZC+UTfzCAAX/tEjCNN6gyq/Ycmyck7TzJ1zItJjqVMnmiC8Y2+RAsNEmjfbbltDBrqeU0oyoqw3I5zbDQpAIISamcHxk1JlZZrKuh+s40EIS+13jfy8rUX7PLSzEQ0meQAAAAAElFTkSuQmCC" /></a>
     <select id="seldata"></select>
-    <input type="text" id="txtnumber" value="60" />
+
+
     <button id="btnAdd3">
         增加
     </button>
     <button id="btnReset1">
         重置
     </button>
-    <button id="btnReset2">
-        重置设备
-    </button>
-    <button id="btnReset3">
-        重置速度
-    </button>
-    <button id="btnReset4">
-        重置配方
-    </button>
-    <input type="checkbox" id="isMerge" checked   />合并同配方多产物
-    <input type="checkbox" id="hideSource" />隐藏原料
-    <span id="projectdiv" style="display:none;">
-        <select id="selprojects"></select>
-        <button id="btnLoadProject">
-            加载方案
+    <div style="margin-top:5px;">
+        <button id="btnReset2">
+            重置设备
         </button>
-        <button id="btnReset5">
-            重置方案
+        <button id="btnReset3">
+            重置速度
         </button>
-    </span>
+        <button id="btnReset4">
+            重置配方
+        </button>
+        <input type="checkbox" id="isMerge" checked />合并同配方多产物
+        <input type="checkbox" id="hideSource" />隐藏原料
+        <select id="selmodein">
+            <option value="制作台Mk.Ⅰ">制作台Mk.Ⅰ</option>
+            <option value="制作台Mk.Ⅱ">
+                制作台Mk.Ⅱ
+            </option>
+            <option value="制作台Mk.Ⅲ">制作台Mk.Ⅲ</option>
+
+        </select>
+        采矿效率：
+        <select id="selore">
+            <option value="1">100%</option>
+        </select>
+        <span id="projectdiv" style="display:none;">
+            <select id="selprojects"></select>
+            <button id="btnLoadProject">
+                加载方案
+            </button>
+            <button id="btnReset5">
+                重置方案
+            </button>
+        </span>
+    </div>
+
     <div id="result">
         <div class="list">
             <div v-for="x in xqs">
@@ -1289,41 +1874,45 @@
             <table border="0" cellspacing="0" cellpadding="0">
                 <tbody>
                     <tr class="header">
-                        <td>名称</td>
-                        <td>
+                        <td style="width:100px;">物品</td>
+                        <td style="width:100px;">
                             每分钟需求
                         </td>
-                        <td>设备数量</td>
-                        <td>配方</td>
+                        <td style="width:100px;">设备数量</td>
+                        <td>
+                            配方
+                            <br /><span style="font-size:12px">(可选)</span>
+                        </td>
                         <td>制作于</td>
-                        <td>设备制作速度<br /><span style="font-size:12px">(可自定义)</span></td>
-                        <td>最终速度(秒)</td>
+                        <!--<td>设备制作速度<br /><span style="font-size:12px">(可自定义)</span></td>-->
+                        <!--<td style="width:150px;">最终速度(秒)</td>-->
                     </tr>
                     <tr v-for="item in items" v-bind:class="item.rowClass">
                         <td>
-                            <span class="name">{{item.name}}</span>
+                            <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
+                            <span class="name" v-else=v-else>{{item.name}}</span>
                             <span class="op"><a href="javascript:void()" onclick="f_tag(this)">标注</a></span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td><span class="number2">{{item.number2}}</span></td>
                         <td>
                             <div class="pfs">
-                                <a v-for="pf in item.pf" v-bind:class="pf.class" v-bind:href='pf.href' v-html="pf.title"></a>
+                                <a v-for="pf in item.pf" v-bind:class="pf.class" v-bind:href='pf.href' v-html="pf.title"  ></a>
                             </div>
                         </td>
                         <td>
                             <div class="ms">
-                                <a v-for="m in item.m" v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
-                                    {{m.name}}
+                                <a v-bind:data-modein="m.name" v-bind:data-name="m.itemName" v-for="m in item.m" v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
+                                    {{m.showName}}
                                 </a>
                             </div>
                         </td>
-                        <td>
+                        <!--<td>
                             <input type="text" v-bind:class="item.speedClass" v-on:change="speedChange(item)" v-model="item.speed" />
                         </td>
                         <td>
                             {{item.time}}
-                        </td>
+                        </td>-->
                     </tr>
                     <tr class="total">
                         <td colspan="2" align="right">合计： </td>
@@ -1336,31 +1925,31 @@
                         </td>
                     </tr>
                     <tr class="" v-if="items2 && items2.length">
-                        <td colspan="2" align="center">多余产物 <br />(负数代表多余、正数代表缺少，如1000则需要额外补齐，-1000则需要额外消耗) </td>
-                        <td colspan="5"></td>
+                        <td colspan="5" align="left">多余产物 <br />(负数代表多余、正数代表缺少，如1000则需要额外补齐，-1000则需要额外消耗) </td>
                     </tr>
                     <tr v-for="item in items2" v-bind:class="item.rowClass">
                         <td>
                             <span class="name">
-                                {{
-item.name
-                                }}
+                                {{item.nam}}
                             </span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td><span class="number2">{{item.number2}}</span></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
+                        <!--<td></td>
+                        <td></td>-->
                     </tr>
 
 
                     <tr class="">
                         <td colspan="1" align="right">备注 </td>
-                        <td colspan="6">
-                            参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />如果点【增加】没反应可以试一下重置配方/设备<br />
+                        <td colspan="4">
+                            参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />
+                            如果【增加】后没反应可以试一下重置配方/设备<br />
                             可以对某个物品进行标注(改颜色)比如已经完成生产线的物品<br />
+                            采矿机默认按6个矿脉计算，原油萃取站按4/s计算<br />
+                            轨道采集重氢按0.02/s 其他按1/s<br />
                             有问题联系QQ1028-21-03
                         </td>
                     </tr>
