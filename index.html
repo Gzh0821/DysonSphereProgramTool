@@ -1025,6 +1025,7 @@
             $.ajax({
                 url: "./data.json",
                 dataType: "json",
+                timeout: 1000000,
                 success: function (data) { 
                     game_data = data;
                     f_init();
