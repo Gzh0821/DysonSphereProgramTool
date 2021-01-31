@@ -1,36 +1,14 @@
-# DysonSphereProgramTool
-
-#### Description
-{**When you're done, you can delete the content in this README and update the file with details for others getting started with your repository**}
-
-#### Software Architecture
-Software architecture description
-
-#### Installation
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Instructions
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### Contribution
-
-1.  Fork the repository
-2.  Create Feat_xxx branch
-3.  Commit your code
-4.  Create Pull Request
+戴森球量化工具 
+功能：
+1，支持多配方
+2，支持可视化物品选择
+3，支持多需求叠加
+4，支持把计算结果进行保存（多方案）
+5，开源，纯前端，只需要会点Javascript就能修改代码 
 
 
-#### Gitee Feature
-
-1.  You can use Readme\_XXX.md to support different languages, such as Readme\_en.md, Readme\_zh.md
-2.  Gitee blog [blog.gitee.com](https://blog.gitee.com)
-3.  Explore open source project [https://gitee.com/explore](https://gitee.com/explore)
-4.  The most valuable open source project [GVP](https://gitee.com/gvp)
-5.  The manual of Gitee [https://gitee.com/help](https://gitee.com/help)
-6.  The most popular members  [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m 
+如果【增加】后没反应可以试一下重置配方/设备
+可以对某个物品进行标注(改颜色)比如已经完成生产线的物品
+采矿机默认按6个矿脉计算，原油萃取站按4/s计算
+轨道采集重氢按0.02/s 其他按1/s
