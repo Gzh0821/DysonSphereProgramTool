@@ -1478,7 +1478,7 @@
                 for (var j = 0; j < pfds.length; j++) {
                     var pf = {
                         class: item.id == pfds[j].id ? "pf selected" : "pf",
-                        href: item.id == pfds[j].id ? "javascript:void()" : "javascript: selectPf(\"" + item.name + "\",\"" + pfds[j].id + "\")",
+                        href: item.id == pfds[j].id ? "javascript:void(0)" : "javascript: selectPf(\"" + item.name + "\",\"" + pfds[j].id + "\")",
                         title: getPfTitle(pfds[j])
                     };
                     outitem.pf.push(pf);
@@ -1487,7 +1487,7 @@
                     var m = {
                         class: info.name == item.m[j].name ? "m selected" : "m",
                         itemName: item.name,
-                        href: info.name == item.m[j].name ? "javascript:void()" : "javascript: selectM(\"" + item.name + "\",\"" + item.m[j].name + "\")",
+                        href: info.name == item.m[j].name ? "javascript:void(0)" : "javascript: selectM(\"" + item.name + "\",\"" + item.m[j].name + "\")",
                         name: item.m[j].name,
                         showName: item.m[j].name.replace("制作台","")
                     };
@@ -1820,7 +1820,7 @@
         }
 
         .outrow td {
-            background: #b8b8b8;
+           
         }
 
         .to {
@@ -1969,7 +1969,8 @@
                     <tr v-for="item in items2" v-bind:class="item.rowClass">
                         <td>
                             <span class="name">
-                                {{item.nam}}
+                                <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
+                                <span class="name" v-else=v-else>{{item.name}}</span> 
                             </span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
