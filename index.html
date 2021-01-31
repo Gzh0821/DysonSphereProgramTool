@@ -5,9 +5,7 @@
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
-
-    <link href="https://www.layuicdn.com/layui-v2.5.6/css/layui.css" rel="stylesheet" />
-    <script src="https://www.layuicdn.com/layui-v2.5.6/layui.all.js"></script>
+     
 
 
     <script type="text/javascript">
@@ -823,8 +821,15 @@
                     { name: "处理器", n: 10 },
                     { name: "加力推进器", n: 2 }
                 ], t: 6
+            },
+            
+           
+            {
+                s: [{ name: "光子合并器", n: 1 }], group: "组件", m: "射线接收塔", q: [
+                    { name: "光栅石", n: 1 },
+                    { name: "电路板", n: 1 }
+                ], t: 3
             }
-
             
             
             
@@ -1020,21 +1025,18 @@
 
         var xqss = [];
         var game_data = {};
-        $(function () {
-            layer.load(0, { shade: false });
+        $(function () { 
             $.ajax({
                 url: "./data.json",
                 dataType: "json",
                 timeout: 1000000,
                 success: function (data) { 
                     game_data = data;
-                    f_init();
-                    layer.closeAll();
+                    f_init(); 
                 }, error: function () {
-                    layer.alert("加载资源文件出错,图标将可能不可用,请刷新试试");
+                   
                     f_init();
-                    setTimeout(function () {
-                        layer.closeAll();
+                    setTimeout(function () { 
                     });
                 }
             })
@@ -1312,8 +1314,7 @@
                     var q = item.q[i];
                     loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
                 }
-            } catch (e) {
-                layer.alert("出现错误，请重置设备/配方");
+            } catch (e) { 
                 console.log(itemName);
                 throw e;
             }
@@ -1529,35 +1530,47 @@
                 $("#projectdiv").hide();
             }
         }
-        function f_save() {
-
-            layer.prompt({
-                title: '输入方案名',
-            }, function (value, index, elem) {
-                layer.close(index);
-                if (!value) return;
-
-                projects.push({
-                    name: value,
-                    value: xqs
-                });
-                saveSettingProjects();
-                projectsUpdate();
+        function f_save() { 
+            projects.push({
+                name: prompt("输入方案名"),
+                value: xqs
             });
+            saveSettingProjects();
+            projectsUpdate();
         }
         function f_add() {
+            $("#UIselector").show(); 
+        }
+        var icons = {}
+        function f_initIcons() {
+            var reg = /^(\d)-(\d{1,2})-(.*)+/;
+            for (var i = 0; i < game_data.icons1.length; i++) {
+                var icon = game_data.icons1[i];
+                if (reg.test(icon.name)) {
+                    var x = icon.name.match(reg);
+                    icons[x[3]] = icon.value;
+                } else {
+                    icons[icon.name] = icon.value;
+                }
+            }
+            for (var i = 0; i < game_data.icons2.length; i++) {
+                var icon = game_data.icons2[i]; 
+                if (reg.test(icon.name)) {
+                    var x = icon.name.match(reg);
+                    icons[x[3]] = icon.value;
+                } else {
+                    icons[icon.name] = icon.value;
+                }
+            }
+            $(document).click(function(e){
+                if (!$(e.target).closest('#UIselector').length) {
+                    $('#UIselector').hide();
+                }
+
+            });
+            $("#UIselector").html('<div id="selector" class="selector" style="width: ' + w + 'px; height: ' + h + 'px"><div id="tabs"></div></div>').hide();
             var w = 900;
-            var h = 700; 
-           
-            layer.open({
-                type: 1, title: false,
-                skin: 'layui-layer-demo', 
-                closeBtn: 0,  
-                anim: 2,
-                shadeClose: true,   
-                 area: [w  + 'px', h  +'px'],
-                content: '<div id="selector" class="selector" style="width:' + w  + 'px;height:' + h  +'px"><div id="tabs"></div></div>'
-            }); 
+            var h = 700;
             var jimg1 = $("<div class='tab selected'><img src='./component-icon.png'/></div>").appendTo("#tabs");
             var jimg2 = $("<div class='tab'><img src='./factory-icon.png'/></div>").appendTo("#tabs");
 
@@ -1579,7 +1592,7 @@
             var jicons2 = $('<div class="icons"></div>').appendTo("#selector");
             addIcons(jicons2, game_data.icons2);
 
-            function addIcons(jicons,icons) {
+            function addIcons(jicons, icons) {
                 jicons.width(w - 80).height(h - 220);
 
                 for (var i = 0; i < 7; i++) {
@@ -1595,7 +1608,7 @@
                                 number: parseInt($("#txtnumber").val())
                             });
                             update_all();
-                            layer.closeAll();
+                            $("#UIselector").hide();
                         })
                     }
                 }
@@ -1609,28 +1622,6 @@
                             .find(">.icon:eq(" + (parseInt(x[2]) - 1) + ")")
                             .html("").append("<img src='data:image/png;base64," + icon.value + "' />").attr("data-name", x[3]).attr("title", x[3]);
                     }
-                }
-            }
-        }
-        var icons = {}
-        function f_initIcons() {
-            var reg = /^(\d)-(\d{1,2})-(.*)+/;
-            for (var i = 0; i < game_data.icons1.length; i++) {
-                var icon = game_data.icons1[i];
-                if (reg.test(icon.name)) {
-                    var x = icon.name.match(reg);
-                    icons[x[3]] = icon.value;
-                } else {
-                    icons[icon.name] = icon.value;
-                }
-            }
-            for (var i = 0; i < game_data.icons2.length; i++) {
-                var icon = game_data.icons2[i]; 
-                if (reg.test(icon.name)) {
-                    var x = icon.name.match(reg);
-                    icons[x[3]] = icon.value;
-                } else {
-                    icons[icon.name] = icon.value;
                 }
             }
         }
@@ -1818,6 +1809,11 @@
         .row-tag td {
             background: #e2e2e2;
         }
+        #UIselector {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+        }
     </style>
 </head>
 <body style="padding:5px;">
@@ -1866,7 +1862,9 @@
             </button>
         </span>
     </div>
+    <div id="UIselector" style="display:none;">
 
+    </div>
     <div id="result">
         <div class="list">
             <div v-for="x in xqs">
