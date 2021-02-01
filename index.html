@@ -825,7 +825,7 @@
             
            
             {
-                s: [{ name: "光子合并器", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "光子合并器", n: 1 }], group: "组件", m: "射线接收塔", q: [
                     { name: "光栅石", n: 1 },
                     { name: "电路板", n: 1 }
                 ], t: 3
@@ -1561,6 +1561,11 @@
             
             update_all();
         }
+        function f_reset_ig() {
+            ig_names = [];
+
+            update_all();
+        }
         function projectsUpdate() {
 
             $("#selprojects").html("");
@@ -1928,6 +1933,7 @@
                      <img v-bind:src="'data:image/png;base64,' + icons[name]" style="width:40px;height:40px;" v-if="icons[name]" v-bind:title="name" />
                      <span class="name" v-else=v-else>{{name}}</span>
                  </span>
+            <button onclick="f_reset_ig()">重置</button>
         </div>
         <div class="list">
             <table border="0" cellspacing="0" cellpadding="0">
