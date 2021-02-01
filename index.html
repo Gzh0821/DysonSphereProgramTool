@@ -116,7 +116,7 @@
 
 
             {
-                s: [{ name: "硅石" }], q: [{ name: "石矿", n: 10 }], m: "制作台", t: 10
+                s: [{ name: "硅石" }], q: [{ name: "石矿", n: 10 }], m: "冶炼设备", t: 10
             },
             {
                 s: [{ name: "铁块" }], group: "组件", m: "冶炼设备", q: [
@@ -825,7 +825,7 @@
             
            
             {
-                s: [{ name: "光子合并器", n: 1 }], group: "组件", m: "射线接收塔", q: [
+                s: [{ name: "光子合并器", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "光栅石", n: 1 },
                     { name: "电路板", n: 1 }
                 ], t: 3
@@ -1108,7 +1108,7 @@
                 });
                 $("#seldata").append(jgroup);
             });
-
+ 
             for (var i = 110; i < 400; i=i+10) {
                 $("#selore").append("<option value='" + i/100 + "'>" + i + "%</option>");
             }
@@ -1133,7 +1133,7 @@
             for (var j = 0; j < item.q.length; j++) { 
                 if (icons[item.q[j].name]) {
                     title.push("<img class='sicon' src='data:image/png;base64," + icons[item.q[j].name] + "' title='" + item.q[j].name+"' />");
-                } else {
+                } else {                        
                     title.push(item.q[j].name);
                 }
                 title.push("<sub>" + (item.q[j].n || 1) + "</sub>");
@@ -1208,7 +1208,8 @@
                     xqs: [],
                     icons: icons,
                     items: [],
-                    items2: []
+                    items2: [],
+                    ig_names:[]
                 },
                 methods: {
 
@@ -1328,6 +1329,7 @@
             }
             out_list.push({ name: name, value: value });
         }
+        var ig_names = [];//排除的物品
         //加载需求
         function loadNumber(itemName, n) {
             try {
@@ -1342,6 +1344,9 @@
                 }
                 for (var i = 0; item.q && i < item.q.length; i++) {
                     var q = item.q[i];
+                    if ($.inArray(q.name, ig_names) != -1) {
+                        continue;
+                    }
                     loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
                 }
             } catch (e) { 
@@ -1489,6 +1494,7 @@
                         itemName: item.name,
                         href: info.name == item.m[j].name ? "javascript:void(0)" : "javascript: selectM(\"" + item.name + "\",\"" + item.m[j].name + "\")",
                         name: item.m[j].name,
+                        title: "设备速度:" + (item.m[j].speed.toFixed(1)),
                         showName: item.m[j].name.replace("制作台","")
                     };
                     outitem.m.push(m);
@@ -1521,6 +1527,7 @@
             app.items = items;
             app.items2 = items2;
             app.total = total;
+            app.ig_names = ig_names;
             var energy = 0;
             for (var i = 0; i < total.length; i++) {
                 energy += total[i].energy || 0;
@@ -1546,6 +1553,13 @@
 
                 jrow.addClass("row-tag");
             }
+        }
+        function f_ig(obj) {
+            var jcell = $(obj).parents("td:first");
+            var name = jcell.find("img").attr("title");
+            ig_names.push(name);
+            
+            update_all();
         }
         function projectsUpdate() {
 
@@ -1908,7 +1922,13 @@
                 <button onclick="f_save()">保存方案</button>
             </div>
         </div>
-
+        <div class="list" v-if="ig_names && ig_names.length">
+            排除计算： 
+                 <span v-for="name in ig_names">
+                     <img v-bind:src="'data:image/png;base64,' + icons[name]" style="width:40px;height:40px;" v-if="icons[name]" v-bind:title="name" />
+                     <span class="name" v-else=v-else>{{name}}</span>
+                 </span>
+        </div>
         <div class="list">
             <table border="0" cellspacing="0" cellpadding="0">
                 <tbody>
@@ -1930,7 +1950,12 @@
                         <td>
                             <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
                             <span class="name" v-else=v-else>{{item.name}}</span>
-                            <span class="op"><a href="javascript:void()" onclick="f_tag(this)">标注</a></span>
+                            <span class="op">
+                                <a href="javascript:void()" onclick="f_tag(this)">标注</a>
+                                <a href="javascript:void()" onclick="f_ig(this)">排除</a>
+
+                                
+                            </span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td><span class="number2">{{item.number2}}</span></td>
@@ -1941,7 +1966,7 @@
                         </td>
                         <td>
                             <div class="ms">
-                                <a v-bind:data-modein="m.name" v-bind:data-name="m.itemName" v-for="m in item.m" v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
+                                <a v-bind:data-modein="m.name"  v-bind:data-name="m.itemName" v-for="m in item.m" v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
                                     {{m.showName}}
                                 </a>
                             </div>
