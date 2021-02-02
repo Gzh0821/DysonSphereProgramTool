@@ -1568,9 +1568,11 @@
 
             var total = [];
             function addTotal(name, value) {
+                var energy = energyData[name] || 0;
+
                 for (var i = 0; i < total.length; i++) {
                     var item = total[i];
-                    var energy = energyData[name] || 0;
+                 
                     if (!item.energy) item.energy = 0;
                     if (item.name == name) {
                         item.value += value;
@@ -1578,7 +1580,7 @@
                         return;
                     }
                 }
-                total.push({ name: name, value: value });
+                total.push({ name: name, value: value, energy : energy * (value || 0)});
             }
 
 
