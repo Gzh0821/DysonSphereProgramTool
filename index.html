@@ -877,7 +877,7 @@
         energyData["制作台Mk.Ⅱ"] = 0.48;
         energyData["制作台Mk.Ⅲ"] = 0.78;
         energyData["电弧熔炉"] = 0.36;
-        energyData["矿脉"] = 0.1;
+        energyData["矿脉"] = 0.42 / 6;
         energyData["采矿机"] = 0.42;
         energyData["原油萃取站"] = 0.84;
         energyData["抽水机"] = 0.3;
@@ -1955,7 +1955,10 @@
             display: flex;
             flex-direction: column;
         }
-
+        .ms {
+            display: flex;
+            flex-direction: row;
+        }
         .m, .pf {
             display: block;
             margin: 3px;
