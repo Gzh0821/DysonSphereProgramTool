@@ -192,13 +192,6 @@
                 ], t: 4
             },
 
-            //此配方不兼容程序
-            //{
-            //    s: [{ name: "氢", n: 3 }, { name: "高级石墨", n: 1 }], group: "组件", m: "原油精炼机", q: [
-            //        { name: "氢", n: 2 },
-            //        { name: "精炼油", n: 1 } 
-            //    ], t: 4
-            //},
             {
                 s: [{ name: "氢", n: 1 }, { name: "石墨烯", n: 2 }], group: "组件", m: "化工设备", q: [
                     { name: "可燃冰", n: 2 }
@@ -857,6 +850,14 @@
                     { name: "湮灭约束球", n: 10 },
                     { name: "量子芯片", n: 10}
                 ], t: 30
+            },
+
+             
+            {
+                s: [{ name: "氢", n: 3 }, { name: "高级石墨", n: 1 }], group: "组件", m: "原油精炼机", q: [
+                    { name: "氢", n: 2 },
+                    { name: "精炼油", n: 1 } 
+                ], t: 4
             }
             
 
@@ -1050,7 +1051,10 @@
         var xqs = [
 
         ];
+        //独立生产 [{ id :"配方id",number : 1 }] 配置了这个，将独立生产以后再计算其他
+        var singleMake = [
 
+        ];
 
         var xqss = [];
         var game_data = {};
@@ -1209,6 +1213,7 @@
                     icons: icons,
                     items: [],
                     items2: [],
+                    items0:[],
                     ig_names:[]
                 },
                 methods: {
@@ -1281,6 +1286,7 @@
                 for (var i = 0; i < projects.length; i++) {
                     if (projects[i].name == value) {
                         xqs = projects[i].value;
+                        singleMake = projects[i].singleMake || [];
                         update_all();
                         return;
                     }
@@ -1306,9 +1312,10 @@
             });
         }
 
-
+        var single_list = []; //独立生产
         var xh_list = [];
         var out_list = [];
+
         function addXH(name, value) {
             for (var i = 0; i < xh_list.length; i++) {
                 var item = xh_list[i];
@@ -1328,14 +1335,22 @@
                 }
             }
             out_list.push({ name: name, value: value });
+        } 
+        function getSingle(itemName) {
+            for (var i = 0; i < single_list.length; i++) {
+                var item = single_list[i];
+                if (item.name == itemName) { 
+                    return item;
+                }
+            }
+            return null;
         }
         var ig_names = [];//排除的物品
         //加载需求
         function loadNumber(itemName, n) {
             try {
                 var item = find(itemName);
-                var info = getValue(itemName);
-
+                var info = getValue(itemName); 
                 addXH(itemName, n);
                 for (var i = 0; i < item.s.length; i++) {
                     if (item.s[i].name != itemName) {
@@ -1347,7 +1362,12 @@
                     if ($.inArray(q.name, ig_names) != -1) {
                         continue;
                     }
-                    loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
+                    //如果配方产物和原料有相同的 
+                    if (q.name == itemName) {
+                        addXH(itemName, -1 * n * (q.n || 1) / (item.n || 1)); 
+                    } else { 
+                        loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
+                    }
                 }
             } catch (e) { 
                 console.log(itemName);
@@ -1411,7 +1431,27 @@
             var outResult = [];
             xh_list = [];
             out_list = [];
+            single_list = [];
 
+            for (var m = 0; m < singleMake.length; m++) {
+                var item = data[singleMake[m].id];//配方
+                var info = getValue(item.s[0].name);//时间参数
+                var times = 60 * parseInt(singleMake[m].number)* info.speed / (item.t || 1);
+
+                for (var i = 0; i < item.s.length; i++) {
+                    single_list.push({
+                        id: singleMake[m].id,
+                        number: singleMake[m].number,
+                        name: item.s[i].name,
+                        value: times * (item.s[i].n || 1)
+                    });
+                    loadNumber(item.s[i].name, -1 * times * (item.s[i].n || 1)); 
+                }
+                for (var j = 0; item.q && j < item.q.length; j++) { 
+                    loadNumber(item.q[j].name,  times * (item.q[j].n || 1)); 
+                }
+                
+            }
             for (var m = 0; m < xqs.length; m++) {
                 var currentItem = xqs[m].item;
                 loadNumber(currentItem.name, xqs[m].number);
@@ -1422,6 +1462,7 @@
                 }
                 return false;
             }
+            var items0 = [];
             var items = [];
             var items2 = [];
             for (var i = 0; i < xh_list.length; i++) {
@@ -1439,6 +1480,24 @@
                 mergeMul();
             }
 
+
+            for (var i = 0; i < single_list.length; i++) {
+                if (!single_list[i].value) continue; 
+                var item = data[single_list[i].id];
+                var info = getValue(single_list[i].name); 
+                var outitem = {
+                    name: single_list[i].name,
+                    number1: single_list[i].value,
+                    number2: single_list[i].number,
+                    time: info.time.toFixed(1),
+                    t: info.t.toFixed(1),
+                    speed: info.speed.toFixed(1),
+                    pfTitle: getPfTitle(item),
+                    mName: info.name.replace("制作台","")
+                }; 
+                items0.push(outitem); 
+            }
+
             var total = [];
             function addTotal(name, value) {
                 for (var i = 0; i < total.length; i++) {
@@ -1453,6 +1512,8 @@
                 }
                 total.push({ name: name, value: value });
             }
+
+
             for (var i = 0; i < xh_list.length; i++) {
                 if (!xh_list[i].value) continue;
 
@@ -1465,7 +1526,7 @@
                 }
                 var outitem = {
                     name: xh_list[i].name,
-                    number1: xh_list[i].value.toFixed(1),
+                    number1: xh_list[i].value.toFixed(0),
                     number2: xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "",
                     time: info.time.toFixed(1),
                     t: info.t.toFixed(1),
@@ -1522,7 +1583,7 @@
                 };
                 items2.push(outitem);
             }
-
+            app.items0 = items0;
             app.xqs = xqs;
             app.items = items;
             app.items2 = items2;
@@ -1555,8 +1616,7 @@
             }
         }
         function f_ig(obj) {
-            var jcell = $(obj).parents("td:first");
-            var name = jcell.find("img").attr("title");
+            var name = $(obj).attr("data-name");
             ig_names.push(name);
             
             update_all();
@@ -1580,8 +1640,11 @@
             }
         }
         function f_save() { 
+            var name = prompt("输入方案名");
+            if (!name) return;
             projects.push({
-                name: prompt("输入方案名"),
+                name: name,
+                singleMake: singleMake,
                 value: xqs
             });
             saveSettingProjects();
@@ -1592,6 +1655,52 @@
                 alert("游戏资源尚未加载完毕")
             }
             $("#UIselector").show(); 
+        }
+        function f_split(obj) {
+              
+            var name = $(obj).attr("data-name");
+
+
+             
+            $("#Split").html("<p>选择配方：</p>");
+            var pfs = getPfs(name);
+            if (pfs.length == 1) {
+                alert("不存在多配方");
+                return;
+            }
+            var selected = null;
+            for (var i = 0; i < pfs.length; i++) { 
+                (function (i) {
+                    var jlink = $("<div class='split-pf'></div>");
+                    jlink.html(getPfTitle(pfs[i]));
+                    jlink.appendTo($("#Split")).click(function () {
+                        selected = pfs[i];
+                        $("#Split .split-pf").removeClass("split-pf-selected");
+                        jlink.addClass("split-pf-selected");
+                    });
+                })(i);
+            }
+            $("#Split").append("<p>设备数量：</p>");
+            $("#Split").append("<div><input type='text' value='1' class='split-number' /></div>");
+            $("#Split").append("<div><button>确定</button> </div>");
+            $("#Split").find("button").click(function () {
+                if (!selected) {
+                    alert("未选择配方");
+                    return;
+                }
+                singleMake.push({
+                    id: selected.id,
+                    number: parseFloat($("#Split").find(":text").val())
+                });
+                update_all();
+                $("#Split").hide();
+            });
+
+            setTimeout(function () {
+                $("#Split").show();
+            },50);
+
+
         }
         var icons = {}
         function f_initIcons() {
@@ -1619,7 +1728,10 @@
                 if (!$(e.target).closest('#UIselector').length) {
                     $('#UIselector').hide();
                 }
-
+                if (!$(e.target).closest('#Split').length) {
+                    $('#Split').hide();
+                }
+                
             });
             $("#UIselector").html('<div id="selector" class="selector" style="width: ' + w + 'px; height: ' + h + 'px"><div id="tabs"></div></div>').hide();
             var w = 900;
@@ -1751,21 +1863,24 @@
                 background: #506777;
             }
 
-            .ms, .pfs {
-                display: flex;
-            }
+        .ms, .pfs {
+            display: flex;
+            flex-direction: column;
+        }
 
         .m, .pf {
             display: block;
             margin: 3px;
             padding: 3px 8px;
             font-size: 12px;
-            color:white;
+            color: white;
             text-decoration: none;
             background: #878787;
+            max-width: 320px;
         }
-        .m{ 
+        .m {
             text-decoration: underline;
+            max-width: 90px;
         }
         .selected {
             background: #42586c;
@@ -1810,14 +1925,17 @@
             line-height: 30px;
 
         }
+
         #txtore {
-            margin-left:5px;
+            margin-left: 5px;
         }
         .name {
                 width: 200px;
             }
 
-
+        td.opcell a {
+            font-size: 12px;
+        }
 
         table {
             width: 100%;
@@ -1830,7 +1948,7 @@
         }
 
         td {
-            padding: 10px 30px;
+            padding: 10px 4px;
             border: 1px dashed #d3d3d3;
         }
 
@@ -1854,7 +1972,9 @@
             .op a {
                 color: #333;
             }
-
+        a {
+            color: #333; 
+        }
         td:hover .op {
             display: inline-block;
         }
@@ -1866,6 +1986,32 @@
             position: absolute;
             left: 50px;
             top: 50px;
+        }
+        #Split {
+            position: fixed;
+            left: 50px;
+            top: 50px;
+            color:white;
+            background: #5d6e88;
+            padding:20px;
+        }
+        .split-pf {
+            background: #878787;
+            padding:3px;
+            margin-bottom:4px;
+            border:1px solid #ddd;
+            cursor:pointer;
+        }
+            .split-pf:hover, .split-pf-selected {
+                background: #5d6e88;
+            }
+        .split-number {
+            width: 130px;
+            height: 24px;
+            line-height: 30px;
+        }
+        #Split button {
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -1915,6 +2061,9 @@
             </button>
         </span>
     </div>
+    <div id="Split" style="display:none;">
+
+    </div>
     <div id="UIselector" style="display:none;">
 
     </div>
@@ -1928,17 +2077,18 @@
             </div>
         </div>
         <div class="list" v-if="ig_names && ig_names.length">
-            排除计算： 
-                 <span v-for="name in ig_names">
-                     <img v-bind:src="'data:image/png;base64,' + icons[name]" style="width:40px;height:40px;" v-if="icons[name]" v-bind:title="name" />
-                     <span class="name" v-else=v-else>{{name}}</span>
-                 </span>
+            排除计算：
+            <span v-for="name in ig_names">
+                <img v-bind:src="'data:image/png;base64,' + icons[name]" style="width:40px;height:40px;" v-if="icons[name]" v-bind:title="name" />
+                <span class="name" v-else=v-else>{{name}}</span>
+            </span>
             <button onclick="f_reset_ig()">重置</button>
         </div>
         <div class="list">
             <table border="0" cellspacing="0" cellpadding="0">
                 <tbody>
                     <tr class="header">
+                        <td style="width:100px;">操作</td>
                         <td style="width:100px;">物品</td>
                         <td style="width:100px;">
                             每分钟需求
@@ -1952,40 +2102,62 @@
                         <!--<td>设备制作速度<br /><span style="font-size:12px">(可自定义)</span></td>-->
                         <!--<td style="width:150px;">最终速度(秒)</td>-->
                     </tr>
-                    <tr v-for="item in items" v-bind:class="item.rowClass">
-                        <td>
-                            <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
-                            <span class="name" v-else=v-else>{{item.name}}</span>
-                            <span class="op">
-                                <a href="javascript:void()" onclick="f_tag(this)">标注</a>
-                                <a href="javascript:void()" onclick="f_ig(this)">排除</a>
 
-                                
+                    <tr v-for="item in items0" v-bind:class="item.rowClass">
+                        <td></td> 
+                        <td>
+                            <span class="name">
+                                <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
+                                <span class="name" v-else=v-else>{{item.name}}</span>
                             </span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td><span class="number2">{{item.number2}}</span></td>
                         <td>
+                            <a class="pf selected" v-html="item.pfTitle"></a>
+                        </td>
+                        <td>
+                            <a class="m selected">{{item.mName}}</a>
+                        </td> 
+                    </tr>
+
+                    <tr v-for="item in items" v-bind:class="item.rowClass">
+                        <td class="opcell">
+                            <a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_ig(this)">排除</a>
+                            <a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_split(this)">多配方</a>
+                            <a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_tag(this)">标注</a>
+                        </td>
+                        <td>
+                            <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
+                            <span class="name" v-else=v-else>{{item.name}}</span>
+                        </td>
+                        <td><span class="number1">{{item.number1}}</span></td>
+                        <td><span class="number2">{{item.number2}}</span></td>
+                        <td>
                             <div class="pfs">
-                                <a v-for="pf in item.pf" v-bind:class="pf.class" v-bind:href='pf.href' v-html="pf.title"  ></a>
+                                <a v-for="pf in item.pf" v-bind:class="pf.class" v-bind:href='pf.href' v-html="pf.title"></a>
                             </div>
                         </td>
                         <td>
                             <div class="ms">
-                                <a v-bind:data-modein="m.name"  v-bind:data-name="m.itemName" v-for="m in item.m" v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
+                                <a v-bind:data-modein="m.name" v-bind:data-name="m.itemName" v-for="m in item.m" v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
                                     {{m.showName}}
                                 </a>
                             </div>
                         </td>
                         <!--<td>
-                            <input type="text" v-bind:class="item.speedClass" v-on:change="speedChange(item)" v-model="item.speed" />
-                        </td>
-                        <td>
-                            {{item.time}}
-                        </td>-->
+            <input type="text" v-bind:class="item.speedClass" v-on:change="speedChange(item)" v-model="item.speed" />
+        </td>
+        <td>
+            {{item.time}}
+        </td>-->
+
+
                     </tr>
+
+
                     <tr class="total">
-                        <td colspan="2" align="right">合计： </td>
+                        <td colspan="3" align="right">合计： </td>
                         <td colspan="5">
                             <span v-for="item in total"> {{item.name}}*{{item.value}} </span>
                             <br />
@@ -1995,13 +2167,15 @@
                         </td>
                     </tr>
                     <tr class="" v-if="items2 && items2.length">
-                        <td colspan="5" align="left">多余产物 <br />(负数代表多余、正数代表缺少，如1000则需要额外补齐，-1000则需要额外消耗) </td>
+                        <td colspan="6" align="left">多余产物 <br />(负数代表多余、正数代表缺少，如1000则需要额外补齐，-1000则需要额外消耗) </td>
                     </tr>
                     <tr v-for="item in items2" v-bind:class="item.rowClass">
+                        <td></td>
+
                         <td>
                             <span class="name">
                                 <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
-                                <span class="name" v-else=v-else>{{item.name}}</span> 
+                                <span class="name" v-else=v-else>{{item.name}}</span>
                             </span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
@@ -2009,16 +2183,19 @@
                         <td></td>
                         <td></td>
                         <!--<td></td>
-                        <td></td>-->
+        <td></td>-->
                     </tr>
 
 
                     <tr class="">
                         <td colspan="1" align="right">备注 </td>
-                        <td colspan="4">
+                        <td colspan="5">
                             参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />
                             如果【增加】后没反应可以试一下重置配方/设备<br />
-                            可以对某个物品进行标注(改颜色)比如已经完成生产线的物品<br />
+                            物品左边可以进行操作：<br />
+                            1，标注:可以对某个物品进行(改颜色)比如已经完成生产线的物品<br />
+                            2，多配方:可以对某个物品进行同时多个配方的计算<br />
+                            3，排除:可以对某个物品进行排除计算<br />
                             采矿机默认按6个矿脉计算，原油萃取站按4/s计算<br />
                             轨道采集重氢按0.02/s 其他按1/s<br />
                             有问题联系QQ1028-21-03
