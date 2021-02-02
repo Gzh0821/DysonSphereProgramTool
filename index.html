@@ -1507,6 +1507,7 @@
                         id: singleMake[m].id,
                         number: singleMake[m].number,
                         name: item.s[i].name,
+                        mName : info.name,
                         value: times * (item.s[i].n || 1)
                     });
                     loadNumber(item.s[i].name, -1 * times * (item.s[i].n || 1));
@@ -1557,7 +1558,7 @@
                     t: info.t.toFixed(1),
                     speed: info.speed.toFixed(1),
                     pfTitle: getPfTitle(item),
-                    mName: item.mName
+                    mName: single_list[i].mName
                 };
                 items0.push(outitem);
             }
@@ -2213,7 +2214,8 @@
                             <a class="pf selected" v-html="item.pfTitle"></a>
                         </td>
                         <td>
-                            {{item.mName}}
+                            <a class="m selected">  {{item.mName}}</a>
+                          
                         </td> 
                     </tr>
 
