@@ -889,7 +889,7 @@
         energyData["能量枢纽"] = 0;
 
 
-        var version = "06";
+        var version = "07";
 
         function f_initData() {
 
@@ -976,7 +976,7 @@
             });
             console.log(data);
         }
-
+        var settingsLocal = {};//不存储cookie
         var settings = {};
         function saveSetting() {
             $.cookie('machine_settings' + version, JSON.stringify(settings));
@@ -1018,18 +1018,22 @@
             }
         }
         //获取配方默认的机器
-        function getMachine(name) {
-            var item = find(name);
+        function getMachine(arg) {
+            var item = typeof (arg) == "string" ? find(arg) : arg;
             if (!item) return null;
-            var machine = settings[name] || null;
+            var machine = settings[item.id] || null;
             if (machine != null) return machine;
+
+            machine = settingsLocal[item.id] || null;
+            if (machine != null) return machine;
+            
             return item.m[0].name;
         }
         //获取时间  参数
-        function getValue(name) {
-            var item = find(name);
+        function getValue(arg) {
+            var item = typeof (arg) == "string" ? find(arg) : arg;
             if (!item) return null;
-            var machine = getMachine(name);
+            var machine = getMachine(item);
             var speed = settings_time[machine];
 
             if (speed) {
@@ -1311,15 +1315,14 @@
                     }
                 }
             });
-            $("#selmodein").click(function () {
-                var value = $("#selmodein").val();
-                $(".ms a").each(function () {
-                    var name = $(this).attr("data-name");
-                    var modein = $(this).attr("data-modein");
-                    if (modein == value) {
-                        settings[name] = modein;
-                    }
+            $("#selmodein").change(function () {
+                var value = $("#selmodein").val(); 
+                $(data).each(function () {
+                    if (this.mName == "制作台") {
+                        settingsLocal[this.id] = value;
+                    } 
                 });
+                 
                 saveSetting();
                 update_all();
             });
@@ -1496,10 +1499,10 @@
             xh_list = [];
             out_list = [];
             single_list = [];
-
+             
             for (var m = 0; m < singleMake.length; m++) {
                 var item = data[singleMake[m].id];//配方
-                var info = getValue(item.s[0].name);//时间参数
+                var info = getValue(item);
                 var times = 60 * parseInt(singleMake[m].number) * info.speed / (item.t || 1);
 
                 for (var i = 0; i < item.s.length; i++) {
@@ -1507,7 +1510,7 @@
                         id: singleMake[m].id,
                         number: singleMake[m].number,
                         name: item.s[i].name,
-                        mName : info.name,
+                        mName: info.name,
                         value: times * (item.s[i].n || 1)
                     });
                     loadNumber(item.s[i].name, -1 * times * (item.s[i].n || 1));
@@ -1618,7 +1621,7 @@
                     var m = {
                         class: info.name == item.m[j].name ? "m selected" : "m",
                         itemName: item.name,
-                        href: info.name == item.m[j].name ? "javascript:void(0)" : "javascript: selectM(\"" + item.name + "\",\"" + item.m[j].name + "\")",
+                        href: info.name == item.m[j].name ? "javascript:void(0)" : "javascript: selectM(\"" + item.id + "\",\"" + item.m[j].name + "\")",
                         name: item.m[j].name,
                         title: "设备速度:" + (item.m[j].speed.toFixed(1)),
                         showName: item.m[j].name.replace("制作台", "")
@@ -1663,8 +1666,8 @@
             }
             app.totalEnergy = energy.toFixed(2);
         }
-        function selectM(name, m) {
-            settings[name] = m;
+        function selectM(id, m) {
+            settings[id] = m;
             saveSetting();
             update_all();
         }
