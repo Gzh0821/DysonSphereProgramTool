@@ -1421,7 +1421,8 @@
                 addXH(itemName, n);
                 for (var i = 0; i < item.s.length; i++) {
                     if (item.s[i].name != itemName) {
-                        addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1));
+                       // addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1));
+                        addXH(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1)); 
                     }
                 }
                 for (var i = 0; item.q && i < item.q.length; i++) {
@@ -2050,7 +2051,9 @@
             padding: 3px 4px;
             border: 1px dashed #d3d3d3;
         }
-
+        .header td {
+            padding: 10px 4px;
+        }
         .xqsrow td {
             background: #fff2f2;
         }
@@ -2195,16 +2198,23 @@
                 <tbody>
                     <tr class="header">
                         <td style="width:100px;">操作</td>
-                        <td style="width:100px;">物品</td>
+                        <td style="width:100px;">
+                        物品 
+                        <br /><span style="font-size:12px">(点击图标显示详情)</span>
+                        </td>
                         <td style="width:100px;">
                             每分钟需求
+                             <br /><span style="font-size:12px">(负数代表多余)</span>
                         </td>
                         <td style="width:100px;">设备数量</td>
                         <td>
                             配方
                             <br /><span style="font-size:12px">(可选)</span>
                         </td>
-                        <td>制作于</td>
+                        <td>
+                            制作于
+                            <br /><span style="font-size:12px">(可选)</span>
+                        </td>
                         <!--<td>设备制作速度<br /><span style="font-size:12px">(可自定义)</span></td>-->
                         <!--<td style="width:150px;">最终速度(秒)</td>-->
                     </tr>
@@ -2231,7 +2241,7 @@
                     <tr v-for="item in items" v-bind:class="item.rowClass">
                         <td class="opcell">
                             <a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_ig(this)">排除</a>
-                            <a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_split(this)">多配方</a>
+                            <a href="javascript:void(0)" v-if=" item.pf &&  item.pf.length > 1" v-bind:data-name="item.name" onclick="f_split(this)">多配方</a>
                             <a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_tag(this)">标注</a>
                         </td>
                         <td class="cell-name" v-bind:data-name="item.name">
