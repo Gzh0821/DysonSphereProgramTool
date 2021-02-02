@@ -1421,8 +1421,7 @@
                 addXH(itemName, n);
                 for (var i = 0; i < item.s.length; i++) {
                     if (item.s[i].name != itemName) {
-                       // addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1));
-                        addXH(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1)); 
+                        addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1)); 
                     }
                 }
                 for (var i = 0; item.q && i < item.q.length; i++) {
@@ -1544,10 +1543,11 @@
                     xh.value2 = xh.value / (1 / info.time) / 60 / (item.n || 1);
                 }
             }
-            if ($("#isMerge").get(0).checked) {
-                //处理合并 多个产出使用了同一个配方
-                mergeMul();
-            }
+            //if ($("#isMerge").get(0).checked) {
+            //    处理合并 多个产出使用了同一个配方
+               
+            //}
+            mergeMul();
 
 
             for (var i = 0; i < single_list.length; i++) {
@@ -1567,6 +1567,20 @@
                 items0.push(outitem);
             }
 
+            for (var i = 0; i < out_list.length; i++) {
+                addXH(out_list[i].name, out_list[i].value);
+                out_list[i].value = 0; 
+            }
+            for (var i = 0; i < xh_list.length; i++) {
+                var xh = xh_list[i];
+                if (!xh.value) continue;
+                var itemName = xh.name;
+                var item = find(itemName);
+                var info = getValue(itemName);
+                if (xh.value < 0) {
+                    xh.value2 = 0;
+                }
+            }
             var total = [];
             function addTotal(name, value) {
                 var energy = energyData[name] || 0;
@@ -2146,7 +2160,7 @@
         <button id="btnReset4">
             重置配方
         </button>
-        <input type="checkbox" id="isMerge" checked />合并同配方多产物
+        <!--<input type="checkbox" id="isMerge" checked />合并同配方多产物-->
         <input type="checkbox" id="hideSource" />隐藏原料
         <select id="selmodein">
             <option value="制作台Mk.Ⅰ">制作台Mk.Ⅰ</option>
