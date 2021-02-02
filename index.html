@@ -964,7 +964,7 @@
                     ];
                 }
 
-
+                item.mName = item.m;
                 item.m = ms;
 
             });
@@ -1493,7 +1493,7 @@
                     t: info.t.toFixed(1),
                     speed: info.speed.toFixed(1),
                     pfTitle: getPfTitle(item),
-                    mName: info.name.replace("制作台","")
+                    mName: item.mName
                 }; 
                 items0.push(outitem); 
             }
@@ -2117,7 +2117,7 @@
                             <a class="pf selected" v-html="item.pfTitle"></a>
                         </td>
                         <td>
-                            <a class="m selected">{{item.mName}}</a>
+                            {{item.mName}}
                         </td> 
                     </tr>
 
