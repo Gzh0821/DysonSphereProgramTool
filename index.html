@@ -1178,6 +1178,7 @@
             if (name == "电弧熔炉") name = "电弧炉";
             if (name == "原油精炼机") name = "原油精炼厂";
             if (name == "粒子对撞机") name = "微型粒子对撞机";
+            if (name == "射线接收塔") name = "射线接收站";
             
             if (icons[name]) {
                 title.push("<img class='sicon' src='data:image/png;base64," + icons[name] + "' title='" + name + "' />");
@@ -1677,10 +1678,14 @@
                         continue;
                     }
                 }
+                var img = getIconImg(info.name);
+                if (img.indexOf("<img") == -1) {
+                    img = "X" + img;
+                }
                 var outitem = {
                     name: xh_list[i].name,
                     number1: xh_list[i].value.toFixed(0),
-                    number2: (xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "") + getIconImg(info.name),
+                    number2: (xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "") + img,
                     time: info.time.toFixed(1),
                     t: info.t.toFixed(1),
                     speed: info.speed.toFixed(1),
