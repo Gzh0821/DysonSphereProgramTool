@@ -868,7 +868,11 @@
                 ], t: 6
             },
 
-
+            {
+                s: [{ name: "重氢", n: 0.01}, { name: "氢", n: 0.99 }], group: "组件", m: "分馏塔", q: [
+                    { name: "氢", n: 1 }
+                ], t: 1
+            }, 
         ];
 
         var energyData = {};
@@ -887,12 +891,12 @@
         energyData["轨道采集器"] = 0;
         energyData["射线接收塔"] = 5;
         energyData["能量枢纽"] = 0;
+        energyData["分馏塔"] = 0.48;
 
 
         var version = "08";
 
         function f_initData() {
-
 
             $(data).each(function (i, item) {
                 item.id = i;//配方的id，用index设置，data改变时应该重置配方
@@ -970,6 +974,12 @@
                     ];
                 }
 
+                if (item.m == "分馏塔") {
+                    ms = [
+                        { name: "分馏塔", speed: 15 }
+                    ];
+                }
+                
                 item.mName = item.m;
                 item.m = ms;
 
@@ -1123,6 +1133,10 @@
                 $("#seldata").append(jgroup);
             });
 
+            
+            for (var i = 1; i < 200; i = i + 1) {
+                $("#selmaince").append("<option value='" + i  + "'>需要" + i + "个设备</option>");
+            }
             for (var i = 110; i < 400; i = i + 10) {
                 $("#selore").append("<option value='" + i / 100 + "'>" + i + "%</option>");
             }
@@ -1155,26 +1169,26 @@
             }
             return pfs;
         }
+        function getIconShow(name, number) {
+            var title = [];
+            if (icons[name]) {
+                title.push("<img class='sicon' src='data:image/png;base64," + icons[name] + "' title='" + name + "' />");
+            } else {
+                title.push(name);
+            }
+            title.push("<sub>" + number + "</sub>");
+            return title.join("");
+        }
         function getPfTitle(item) {
             var title = [];
-            for (var j = 0; j < item.q.length; j++) {
-                if (icons[item.q[j].name]) {
-                    title.push("<img class='sicon' src='data:image/png;base64," + icons[item.q[j].name] + "' title='" + item.q[j].name + "' />");
-                } else {
-                    title.push(item.q[j].name);
-                }
-                title.push("<sub>" + (item.q[j].n || 1) + "</sub>");
+            for (var j = 0; j < item.q.length; j++) { 
+                title.push(getIconShow(item.q[j].name,item.q[j].n || 1));
             }
             if (item.q.length) {
                 title.push('<img class="to" src="./to.png" />');
             }
-            for (var j = 0; j < item.s.length; j++) {
-                if (icons[item.s[j].name]) {
-                    title.push("<img class='sicon' src='data:image/png;base64," + icons[item.s[j].name] + "' title='" + item.s[j].name + "'/>");
-                } else {
-                    title.push(item.s[j].name);
-                }
-                title.push("<sub>" + (item.s[j].n || 1) + "</sub>");
+            for (var j = 0; j < item.s.length; j++) { 
+                title.push(getIconShow(item.s[j].name, item.s[j].n || 1));
 
             }
             title.push("(" + (item.t || 1).toFixed(0) + "s)");
@@ -1184,7 +1198,7 @@
 
         }
 
-        //找到这个物品的配方
+        //找到这个物品的配方(同时赋值s[XX]里的 t 和 n )
         function find(name) {
             function get(item) {
                 for (var j = 0; j < item.s.length; j++) {
@@ -1215,15 +1229,34 @@
 
 
         function f_add3() {
+            
             var value = $("#seldata").val();
-            currentItem = find(value);
+            currentItem = find(value); 
+            var number = parseInt($("#txtnumber").val());
+            var v = $("#selmaince").val();
+            if (v) {
+                var info = getValue(currentItem);
+                for (var i = 0; i < currentItem.s.length; i++) {
+                    if (currentItem.s[i].name == value) {
+                        number = parseInt(v) * 60 / (currentItem.t || 1) * info.speed * (currentItem.s[i].n || 1);
+                    }
+                }
+            }
+
+            addItem(currentItem, number);
+        }
+        function addItem(item,number) {
+             
             xqs.push({
-                item: currentItem,
-                number: parseInt($("#txtnumber").val())
+                item: item,
+                number: number
             });
 
             update_all();
         }
+
+
+
         var app = null;
         function f_init() {
 
@@ -1403,14 +1436,19 @@
             }
             out_list.push({ name: name, value: value });
         }
-        function getSingle(itemName) {
-            for (var i = 0; i < single_list.length; i++) {
-                var item = single_list[i];
-                if (item.name == itemName) {
-                    return item;
+        //其他产出是否包括在原料里面(如某配方 原料和产物都有氢)
+        function getSameNameWithSource(item,itemName) {
+            for (var i = 0; i < item.s.length; i++) {
+                if (item.s[i].name != itemName) {
+                    for (var j = 0; item.q && j < item.q.length; j++) {
+                        var q = item.q[j];
+                        if (q.name == item.s[i].name) {
+                            return q.name;
+                        }
+                    }
                 }
             }
-            return null;
+            return null; 
         }
         var ig_names = [];//排除的物品
         //加载需求
@@ -1418,9 +1456,26 @@
             try {
                 var item = find(itemName);
                 var info = getValue(itemName);
+                var sameName = getSameNameWithSource(item, itemName);
+                if (sameName) {
+                    for (var i = 0; i < item.s.length; i++) { 
+                        if (item.s[i].name == sameName) {
+                            for (var j = 0; item.q && j < item.q.length; j++) {
+                                var q = item.q[j];
+                                if (q.name == sameName) {
+                                    var minNumber = Math.min(q.n || 1, item.s[i].n || 1);
+                                    q.n = (q.n || 1) - minNumber;
+                                    item.s[i].n = (item.s[i].n || 1) - minNumber; //抵消
+                                }
+                            }
+                        }
+                    }
+                }
+
                 addXH(itemName, n);
                 for (var i = 0; i < item.s.length; i++) {
                     if (item.s[i].name != itemName) {
+                        if (item.s[i].n === 0) continue;
                         addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1)); 
                     }
                 }
@@ -1429,9 +1484,10 @@
                     if ($.inArray(q.name, ig_names) != -1) {
                         continue;
                     }
+                    if (q.n === 0) continue;
                     //如果配方产物和原料有相同的
                     if (q.name == itemName) {
-                        addXH(itemName, -1 * n * (q.n || 1) / (item.n || 1));
+                        //addXH(itemName, -1 * n * (q.n || 1) / (item.n || 1));
                     } else {
                         loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
                     }
@@ -1622,7 +1678,13 @@
                     m: [],
                     pf: []
                 };
-
+                 
+                if (xh_list[i].name == "太阳帆") {
+                    outitem.numberOther = "(可供" + getIconShow("电磁轨道弹射器" ,outitem.number1 / 20)  +")";
+                }
+                if (xh_list[i].name == "小型运载火箭") {
+                    outitem.numberOther = "(可供" + getIconShow("垂直发射井", outitem.number1 / 5) + ")";
+                }
                 addTotal(info.name, Math.ceil(outitem.number2));
                 var pfds = getPfs(xh_list[i].name);
 
@@ -1790,6 +1852,9 @@
 
 
         }
+        var icons_define = {
+            "氢": [-1, 3, 7,"氢"]
+        };
         var icons = {}
         function f_initIcons() {
             var reg = /^(\d)-(\d{1,2})-(.*)+/;
@@ -1858,12 +1923,23 @@
                         jicon.click(function () {
                             var name = $(this).attr("data-name");
                             if (!name) return;
+                            if (name == "电弧炉") name = "电弧熔炉";
+                             
                             currentItem = find(name);
-                            xqs.push({
-                                item: currentItem,
-                                number: parseInt($("#txtnumber").val())
-                            });
-                            update_all();
+                             
+                            var number = parseInt($("#txtnumber").val());
+                            var v = $("#selmaince").val();
+                            if (v) {
+                                var info = getValue(currentItem);
+                                for (var i = 0; i < currentItem.s.length; i++) {
+                                    if (currentItem.s[i].name == name) {
+                                        number = parseInt(v) * 60 / (currentItem.t || 1) * info.speed * (currentItem.s[i].n || 1);
+                                    }
+                                }
+                            } 
+                            addItem(currentItem, number);
+
+                             
                             $("#UIselector").hide();
                         })
                     }
@@ -1872,8 +1948,14 @@
                 for (var i = 0; i < icons.length; i++) {
                     var icon = icons[i];
                     var reg = /^(\d)-(\d{1,2})-(.*)+/;
+                    var x = null;
                     if (reg.test(icon.name)) {
-                        var x = icon.name.match(reg);
+                        x = icon.name.match(reg);
+                     
+                    } else if (icons_define[icon.name]) {
+                        x = icons_define[icon.name];
+                    }
+                    if (x) { 
                         jicons.find(">.iconrow:eq(" + (parseInt(x[1]) - 1) + ")")
                             .find(">.icon:eq(" + (parseInt(x[2]) - 1) + ")")
                             .html("").append("<img src='data:image/png;base64," + icon.value + "' />").attr("data-name", x[3]).attr("title", x[3]);
@@ -2140,6 +2222,9 @@
 </head>
 <body style="padding:5px;">
     每分钟数量：<input type="text" id="txtnumber" value="60" />
+    或者： <select id="selmaince">
+    <option value="">选择设备数量</option>
+    </select>
     <a href="javascript:f_add()" style="margin-left:10px;margin-right:10px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADYElEQVRYR8VXS3LaQBB9rYDJLoIT4KqIbcgJgk9gfIIkS6NUGZ/A9gmMqwJeBp8g+ATGJzDZIlcZXwDJu/DJdGpGCEYSSIKkyuyAmenXrz+vm7DFx/zuHBoGagxUwWwSUVVeZ+YBiDwCBkKg732zbrM+S2kHzcsn09ibXTKoTgQz7bwPCB6Be2KaP/VO972kO4kAStfOGQs0sxqOGlJADLTGx9bFJhBrAUivaW92F1CsX2bwL2LqCfAIBo3Uf4LLBqjMxHUCfYgD4QFP8wfr2IgBMNvDKoHudK8ZeCFGS0xzrTRK/ZDNm0xoEvAuACPZYPCBZ1cGOsAQAN/z+VOYcr4Rk3wzzXDU68VbXSIchkBMc/v6WyEAxfbwIUQ742JsW+dZEm/TmVLbOQfhbAWCB65d+Rh8XwKIHsR/MB4YSXpbATCvn8ok5g8r6vlm3Kh8SfJc5Qrh56LsjqKxjd4ttp1eEA6VD4tQKAClzrAL0Gf1GPDCk1w5LeYhrzKwpXKiMB+tEtN3cgHA4SXiDI8p0Hpsd7gjWXBtq0hm57FugBWVqqQnuWKa97sCUCVamLtLW6AjKrUfWyA+WdB/7zasWpas34UB+W6x4/QJ+KRsMF1R+IfsZbcrAP0eA/ek174gHHjHVl9nQGa7YdCymWhNpUaAYouBPhFC91Q4Bd9Gq0MPuVRRKnVWCbgOQLHtuDuLEXjkNir7IYeunZrBuFs2olQAHUfq/LKnZ8kPjaVn17bKiQCKneEgULCNIQDVo4aZIEOgkknFkteEANxLDIFU1ldPwlAZMm5d24p5u472XasgVoav3oh8LXiFVgy8uA3LjIuRplRJGb9tCOLDjiZGMaVi7o7tytckAL4cUx/+qFVPk+NSe/gDREridcXdOJAI4NRrWK1t6n7T2dSBJLio9wTVSpmbnl25+hcQcrQHYznWyanabVTUQiM/8aE0NDSoLaObZcGIggwWmoB2RT3jmae56sahVB4KYhsdqeWCIX7nrtJmBWX47fwkutAo42tyZfNiUpj11y4ZC+UTfzCAAX/tEjCNN6gyq/Ycmyck7TzJ1zItJjqVMnmiC8Y2+RAsNEmjfbbltDBrqeU0oyoqw3I5zbDQpAIISamcHxk1JlZZrKuh+s40EIS+13jfy8rUX7PLSzEQ0meQAAAAAElFTkSuQmCC" /></a>
     <select id="seldata"></select>
 
@@ -2213,12 +2298,12 @@
                     <tr class="header">
                         <td style="width:100px;">操作</td>
                         <td style="width:100px;">
-                        物品 
-                        <br /><span style="font-size:12px">(点击图标显示详情)</span>
+                            物品
+                            <br /><span style="font-size:12px">(点击图标显示详情)</span>
                         </td>
                         <td style="width:100px;">
                             每分钟需求
-                             <br /><span style="font-size:12px">(负数代表多余)</span>
+                            <br /><span style="font-size:12px">(负数代表多余)</span>
                         </td>
                         <td style="width:100px;">设备数量</td>
                         <td>
@@ -2234,8 +2319,8 @@
                     </tr>
 
                     <tr v-for="item in items0" v-bind:class="item.rowClass">
-                        <td></td> 
-                        <td class="cell-name"  v-bind:data-name="item.name">
+                        <td></td>
+                        <td class="cell-name" v-bind:data-name="item.name">
                             <span class="name">
                                 <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
                                 <span class="name" v-else=v-else>{{item.name}}</span>
@@ -2248,8 +2333,8 @@
                         </td>
                         <td>
                             <a class="m selected">  {{item.mName}}</a>
-                          
-                        </td> 
+
+                        </td>
                     </tr>
 
                     <tr v-for="item in items" v-bind:class="item.rowClass">
@@ -2263,7 +2348,10 @@
                             <span class="name" v-else=v-else>{{item.name}}</span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
-                        <td><span class="number2">{{item.number2}}</span></td>
+                        <td>
+                            <span class="number2">{{item.number2}}</span>
+                            <span v-if="item.numberOther" v-html="item.numberOther"></span>
+                        </td>
                         <td>
                             <div class="pfs">
                                 <a v-for="pf in item.pf" v-bind:class="pf.class" v-bind:href='pf.href' v-html="pf.title"></a>
@@ -2277,11 +2365,11 @@
                             </div>
                         </td>
                         <!--<td>
-            <input type="text" v-bind:class="item.speedClass" v-on:change="speedChange(item)" v-model="item.speed" />
-        </td>
-        <td>
-            {{item.time}}
-        </td>-->
+                            <input type="text" v-bind:class="item.speedClass" v-on:change="speedChange(item)" v-model="item.speed" />
+                        </td>
+                        <td>
+                            {{item.time}}
+                        </td>-->
 
 
                     </tr>
@@ -2310,11 +2398,13 @@
                             </span>
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
-                        <td><span class="number2">{{item.number2}}</span></td>
+                        <td>
+                            <span class="number2">{{item.number2}}</span>
+                        </td>
                         <td></td>
                         <td></td>
                         <!--<td></td>
-        <td></td>-->
+                        <td></td>-->
                     </tr>
 
 
@@ -2330,6 +2420,7 @@
                             3，排除:可以对某个物品进行排除计算<br />
                             采矿机默认按6个矿脉计算，原油萃取站按4/s计算<br />
                             轨道采集重氢按0.02/s 其他按1/s<br />
+                            分馏塔按9个重氢每分钟计算<br />
                             临界光子按最大效率计算 仅供参考<br />
                             有问题联系QQ1028-21-03
                         </td>
