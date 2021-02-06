@@ -6,6 +6,9 @@
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
 
+    <!--<script src="./Scripts/jquery/jquery-1.9.0-min.js"></script>
+    <script src="./Scripts/jquery.cookie.js"></script>
+    <script src="./Scripts/vue.min.js"></script>-->
     <script src="./Scripts/jquery.tips.js"></script>
 
 
@@ -869,10 +872,10 @@
             },
 
             {
-                s: [{ name: "重氢", n: 0.01}, { name: "氢", n: 0.99 }], group: "组件", m: "分馏塔", q: [
+                s: [{ name: "重氢", n: 0.01 }, { name: "氢", n: 0.99 }], group: "组件", m: "分馏塔", q: [
                     { name: "氢", n: 1 }
                 ], t: 1
-            }, 
+            },
         ];
 
         var energyData = {};
@@ -979,7 +982,7 @@
                         { name: "分馏塔", speed: 15 }
                     ];
                 }
-                
+
                 item.mName = item.m;
                 item.m = ms;
 
@@ -1036,7 +1039,7 @@
 
             machine = settingsLocal[item.id] || null;
             if (machine != null) return machine;
-            
+
             return item.m[0].name;
         }
         //获取时间  参数
@@ -1133,9 +1136,9 @@
                 $("#seldata").append(jgroup);
             });
 
-            
+
             for (var i = 1; i < 200; i = i + 1) {
-                $("#selmaince").append("<option value='" + i  + "'>需要" + i + "个设备</option>");
+                $("#selmaince").append("<option value='" + i + "'>需要" + i + "个设备</option>");
             }
             for (var i = 110; i < 400; i = i + 10) {
                 $("#selore").append("<option value='" + i / 100 + "'>" + i + "%</option>");
@@ -1163,31 +1166,41 @@
                 for (var j = 0; item.q && j < item.q.length; j++) {
                     if (item.q[j].name == name) {
                         var pf = $.extend(true, {}, item);
-                        pfs.push(pf); 
+                        pfs.push(pf);
                     }
                 }
             }
             return pfs;
         }
-        function getIconShow(name, number) {
+        function getIconImg(name) {
             var title = [];
+            if (name == "研究站") name = "矩阵研究站";
+            if (name == "电弧熔炉") name = "电弧炉";
+            if (name == "原油精炼机") name = "原油精炼厂";
+            if (name == "粒子对撞机") name = "微型粒子对撞机";
+            
             if (icons[name]) {
                 title.push("<img class='sicon' src='data:image/png;base64," + icons[name] + "' title='" + name + "' />");
             } else {
                 title.push(name);
             }
+            return title.join("");
+        }
+        function getIconShow(name, number) {
+            var title = [];
+            title.push(getIconImg(name));
             title.push("<sub>" + number + "</sub>");
             return title.join("");
         }
         function getPfTitle(item) {
             var title = [];
-            for (var j = 0; j < item.q.length; j++) { 
-                title.push(getIconShow(item.q[j].name,item.q[j].n || 1));
+            for (var j = 0; j < item.q.length; j++) {
+                title.push(getIconShow(item.q[j].name, item.q[j].n || 1));
             }
             if (item.q.length) {
                 title.push('<img class="to" src="./to.png" />');
             }
-            for (var j = 0; j < item.s.length; j++) { 
+            for (var j = 0; j < item.s.length; j++) {
                 title.push(getIconShow(item.s[j].name, item.s[j].n || 1));
 
             }
@@ -1229,9 +1242,9 @@
 
 
         function f_add3() {
-            
+
             var value = $("#seldata").val();
-            currentItem = find(value); 
+            currentItem = find(value);
             var number = parseInt($("#txtnumber").val());
             var v = $("#selmaince").val();
             if (v) {
@@ -1245,8 +1258,8 @@
 
             addItem(currentItem, number);
         }
-        function addItem(item,number) {
-             
+        function addItem(item, number) {
+
             xqs.push({
                 item: item,
                 number: number
@@ -1349,13 +1362,13 @@
                 }
             });
             $("#selmodein").change(function () {
-                var value = $("#selmodein").val(); 
+                var value = $("#selmodein").val();
                 $(data).each(function () {
                     if (this.mName == "制作台") {
                         settingsLocal[this.id] = value;
-                    } 
+                    }
                 });
-                 
+
                 saveSetting();
                 update_all();
             });
@@ -1365,8 +1378,8 @@
             $("#hideSource").change(function () {
                 update_all();
             });
-            $(document).click(function (e) { 
-                var jname = null; 
+            $(document).click(function (e) {
+                var jname = null;
                 if ($(e.target).is(".cell-name")) {
                     jname = $(e.target);
                 }
@@ -1376,8 +1389,7 @@
                 if ($(e.target).parent().parent().is(".cell-name")) {
                     jname = $(e.target).parent().parent();
                 }
-                if (jname)
-                { 
+                if (jname) {
                     var msgs = [];
                     var name = jname.attr("data-name");
                     msgs.push("<p>" + name + "</p>");
@@ -1396,7 +1408,7 @@
                             msgs.push("<p><a class='pf pf2'>" + title + "</a></p>");
                         }
                     }
-                
+
                     jname.tips({
                         side: 3,  //1,2,3,4 分别代表 上右下左
                         msg: msgs.join(""),
@@ -1404,10 +1416,10 @@
                         bg: '#4A5C72',//背景色，默认为红色
                         time: 2,
                         x: 0,
-                        y: 0 
+                        y: 0
                     });
                 }
-               
+
 
             });
         }
@@ -1437,7 +1449,7 @@
             out_list.push({ name: name, value: value });
         }
         //其他产出是否包括在原料里面(如某配方 原料和产物都有氢)
-        function getSameNameWithSource(item,itemName) {
+        function getSameNameWithSource(item, itemName) {
             for (var i = 0; i < item.s.length; i++) {
                 if (item.s[i].name != itemName) {
                     for (var j = 0; item.q && j < item.q.length; j++) {
@@ -1448,7 +1460,7 @@
                     }
                 }
             }
-            return null; 
+            return null;
         }
         var ig_names = [];//排除的物品
         //加载需求
@@ -1458,7 +1470,7 @@
                 var info = getValue(itemName);
                 var sameName = getSameNameWithSource(item, itemName);
                 if (sameName) {
-                    for (var i = 0; i < item.s.length; i++) { 
+                    for (var i = 0; i < item.s.length; i++) {
                         if (item.s[i].name == sameName) {
                             for (var j = 0; item.q && j < item.q.length; j++) {
                                 var q = item.q[j];
@@ -1476,7 +1488,7 @@
                 for (var i = 0; i < item.s.length; i++) {
                     if (item.s[i].name != itemName) {
                         if (item.s[i].n === 0) continue;
-                        addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1)); 
+                        addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1));
                     }
                 }
                 for (var i = 0; item.q && i < item.q.length; i++) {
@@ -1555,7 +1567,7 @@
             xh_list = [];
             out_list = [];
             single_list = [];
-             
+
             for (var m = 0; m < singleMake.length; m++) {
                 var item = data[singleMake[m].id];//配方
                 var info = getValue(item);
@@ -1601,7 +1613,7 @@
             }
             //if ($("#isMerge").get(0).checked) {
             //    处理合并 多个产出使用了同一个配方
-               
+
             //}
             mergeMul();
 
@@ -1625,7 +1637,7 @@
 
             for (var i = 0; i < out_list.length; i++) {
                 addXH(out_list[i].name, out_list[i].value);
-                out_list[i].value = 0; 
+                out_list[i].value = 0;
             }
             for (var i = 0; i < xh_list.length; i++) {
                 var xh = xh_list[i];
@@ -1643,7 +1655,7 @@
 
                 for (var i = 0; i < total.length; i++) {
                     var item = total[i];
-                 
+
                     if (!item.energy) item.energy = 0;
                     if (item.name == name) {
                         item.value += value;
@@ -1651,7 +1663,7 @@
                         return;
                     }
                 }
-                total.push({ name: name, value: value, energy : energy * (value || 0)});
+                total.push({ name: name, value: value, energy: energy * (value || 0) });
             }
 
 
@@ -1668,7 +1680,7 @@
                 var outitem = {
                     name: xh_list[i].name,
                     number1: xh_list[i].value.toFixed(0),
-                    number2: xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "",
+                    number2: (xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "") + getIconImg(info.name),
                     time: info.time.toFixed(1),
                     t: info.t.toFixed(1),
                     speed: info.speed.toFixed(1),
@@ -1678,9 +1690,9 @@
                     m: [],
                     pf: []
                 };
-                 
+
                 if (xh_list[i].name == "太阳帆") {
-                    outitem.numberOther = "(可供" + getIconShow("电磁轨道弹射器" ,outitem.number1 / 20)  +")";
+                    outitem.numberOther = "(可供" + getIconShow("电磁轨道弹射器", outitem.number1 / 20) + ")";
                 }
                 if (xh_list[i].name == "小型运载火箭") {
                     outitem.numberOther = "(可供" + getIconShow("垂直发射井", outitem.number1 / 5) + ")";
@@ -1853,7 +1865,7 @@
 
         }
         var icons_define = {
-            "氢": [-1, 3, 7,"氢"]
+            "氢": [-1, 3, 7, "氢"]
         };
         var icons = {}
         function f_initIcons() {
@@ -1884,13 +1896,13 @@
                 if (!$(e.target).closest('#Split').length) {
                     $('#Split').hide();
                 }
-                 
-                
+
+
 
             });
             $("#UIselector").html('<div id="selector" class="selector" style="width: ' + w + 'px; height: ' + h + 'px"><div id="tabs"></div></div>').hide();
             var w = 900;
-            var h = 700; 
+            var h = 700;
 
             var jimg1 = $("<div class='tab selected'><img src='./component-icon.png'/></div>").appendTo("#tabs");
             var jimg2 = $("<div class='tab'><img src='./factory-icon.png'/></div>").appendTo("#tabs");
@@ -1924,9 +1936,9 @@
                             var name = $(this).attr("data-name");
                             if (!name) return;
                             if (name == "电弧炉") name = "电弧熔炉";
-                             
+
                             currentItem = find(name);
-                             
+
                             var number = parseInt($("#txtnumber").val());
                             var v = $("#selmaince").val();
                             if (v) {
@@ -1936,10 +1948,10 @@
                                         number = parseInt(v) * 60 / (currentItem.t || 1) * info.speed * (currentItem.s[i].n || 1);
                                     }
                                 }
-                            } 
+                            }
                             addItem(currentItem, number);
 
-                             
+
                             $("#UIselector").hide();
                         })
                     }
@@ -1951,11 +1963,11 @@
                     var x = null;
                     if (reg.test(icon.name)) {
                         x = icon.name.match(reg);
-                     
+
                     } else if (icons_define[icon.name]) {
                         x = icons_define[icon.name];
                     }
-                    if (x) { 
+                    if (x) {
                         jicons.find(">.iconrow:eq(" + (parseInt(x[1]) - 1) + ")")
                             .find(">.icon:eq(" + (parseInt(x[2]) - 1) + ")")
                             .html("").append("<img src='data:image/png;base64," + icon.value + "' />").attr("data-name", x[3]).attr("title", x[3]);
@@ -2053,10 +2065,12 @@
             display: flex;
             flex-direction: column;
         }
+
         .ms {
             display: flex;
             flex-direction: row;
         }
+
         .m, .pf {
             display: block;
             margin: 3px;
@@ -2067,9 +2081,11 @@
             background: #878787;
             max-width: 320px;
         }
-        .pf2 { 
-            background: #111; 
+
+        .pf2 {
+            background: #111;
         }
+
         .m {
             text-decoration: underline;
             max-width: 90px;
@@ -2147,9 +2163,11 @@
             padding: 3px 4px;
             border: 1px dashed #d3d3d3;
         }
+
         .header td {
             padding: 10px 4px;
         }
+
         .xqsrow td {
             background: #fff2f2;
         }
@@ -2277,9 +2295,11 @@
     </div>
     <div id="result">
         <div class="list">
-            <div v-for="x in xqs">
-                {{ x.item.name  }} * {{x.number}}
-            </div>
+            <span v-for="x in xqs"> 
+                <img v-bind:src="'data:image/png;base64,' + icons[x.item.name]" style="width:40px;height:40px;" v-if="icons[x.item.name]" v-bind:title="x.item.name" />
+                <span class="name" v-else=v-else>{{x.item.name}}</span>
+                * {{x.number}}
+            </span>
             <div v-if="xqs && xqs.length">
                 <button onclick="f_save()">保存方案</button>
             </div>
@@ -2349,7 +2369,7 @@
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td>
-                            <span class="number2">{{item.number2}}</span>
+                            <span class="number2" v-html="item.number2"></span>
                             <span v-if="item.numberOther" v-html="item.numberOther"></span>
                         </td>
                         <td>
