@@ -1685,7 +1685,8 @@
                 var outitem = {
                     name: xh_list[i].name,
                     number1: xh_list[i].value.toFixed(0),
-                    number2: (xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "") + img,
+                    number2: (xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : ""),
+                    number2full : (xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "") + img,
                     time: info.time.toFixed(1),
                     t: info.t.toFixed(1),
                     speed: info.speed.toFixed(1),
@@ -2374,7 +2375,7 @@
                         </td>
                         <td><span class="number1">{{item.number1}}</span></td>
                         <td>
-                            <span class="number2" v-html="item.number2"></span>
+                            <span class="number2" v-html="item.number2full"></span>
                             <span v-if="item.numberOther" v-html="item.numberOther"></span>
                         </td>
                         <td>
