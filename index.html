@@ -515,7 +515,7 @@
             {
                 s: [{ name: "无线输电塔", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "电力感应塔", n: 1 },
-                    { name: "电浆激发器", n: 1 }
+                    { name: "电浆激发器", n: 3 }
                 ], t: 3
             },
 
@@ -1334,7 +1334,67 @@
                 });
                 update_all();
 
+            });
+            $("#btnSetting").click(function () {
+
+                $("#MoreSetting").toggle();
             })
+            $("#fractionatorSpeed").change(function () {
+                $(data).each(function () {
+                    if (this.m) {
+                        for (var i = 0; i < this.m.length; i++) {
+                            if (this.m[i].name == "分馏塔") {
+                                this.m[i].speed = parseFloat($("#fractionatorSpeed").val()) / (0.01 * 60);
+                            }
+                        }
+                    } 
+                });
+                update_all();
+            });
+            $("#oilSpeed").change(function () {
+                $(data).each(function () {
+                    if (this.m) {
+                        for (var i = 0; i < this.m.length; i++) {
+                            if (this.m[i].name == "原油萃取站") {
+                                this.m[i].speed = parseFloat($("#oilSpeed").val());
+                            }
+                        }
+                    } 
+                });
+                update_all();
+            });
+            $("#gzSpeed").change(function () {
+                $(data).each(function () {
+                    if (this.s && this.s[0].name == "临界光子") {
+                        if (this.m) {
+                            for (var i = 0; i < this.m.length; i++) {
+                                if (this.m[i].name == "射线接收塔") {
+                                    this.t = 60 / parseFloat($("#gzSpeed").val()) * (this.q && this.q.length ? 0.5 : 1);
+                                }
+                            }
+                        }
+                    }
+                });
+                update_all();
+            }); 
+
+            $(".speed1").change(function () {
+                var name = $(this).attr("data-name");
+                var value = $(this).val();
+                $(data).each(function () {
+                    if (this.s && this.s[0].name == name) { 
+                        if (this.m) {
+                            for (var i = 0; i < this.m.length; i++) {
+                                if (this.m[i].name == "轨道采集器") {
+                                    this.t = 1 / parseFloat(value);
+                                }
+                            }
+                        }
+                    }
+                });
+                update_all();
+            });
+
             $("#btnReset4").click(function () {
                 settings_pf = {};
                 saveSettingPf();
@@ -1490,6 +1550,7 @@
                 }
                 for (var i = 0; item.q && i < item.q.length; i++) {
                     var q = item.q[i];
+                    //if (q.name == "精炼油") debugger;
                     if ($.inArray(q.name, ig_names) != -1) {
                         continue;
                     }
@@ -1594,7 +1655,7 @@
                     if (xqs[m].item.name == name) return true;
                 }
                 return false;
-            }
+            } 
             var items0 = [];
             var items = [];
             var items2 = [];
@@ -2136,7 +2197,11 @@
             margin: 10px;
             padding: 10px;
         }
-
+        #MoreSetting {
+            border: 1px #d3d3d3 dashed;
+            margin: 10px;
+            padding: 10px;
+        }
         #txtnumber, #txtore {
             width: 40px;
             height: 24px;
@@ -2242,12 +2307,20 @@
         #Split button {
             margin-top: 10px;
         }
+        .textbox{
+            border:1px solid #d3d3d3;
+            width:85px;
+        }
+        .label {
+            width: 160px;
+            display: inline-block;
+        }
     </style>
 </head>
 <body style="padding:5px;">
     每分钟数量：<input type="text" id="txtnumber" value="60" />
     或者： <select id="selmaince">
-    <option value="">选择设备数量</option>
+        <option value="">选择设备数量</option>
     </select>
     <a href="javascript:f_add()" style="margin-left:10px;margin-right:10px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADYElEQVRYR8VXS3LaQBB9rYDJLoIT4KqIbcgJgk9gfIIkS6NUGZ/A9gmMqwJeBp8g+ATGJzDZIlcZXwDJu/DJdGpGCEYSSIKkyuyAmenXrz+vm7DFx/zuHBoGagxUwWwSUVVeZ+YBiDwCBkKg732zbrM+S2kHzcsn09ibXTKoTgQz7bwPCB6Be2KaP/VO972kO4kAStfOGQs0sxqOGlJADLTGx9bFJhBrAUivaW92F1CsX2bwL2LqCfAIBo3Uf4LLBqjMxHUCfYgD4QFP8wfr2IgBMNvDKoHudK8ZeCFGS0xzrTRK/ZDNm0xoEvAuACPZYPCBZ1cGOsAQAN/z+VOYcr4Rk3wzzXDU68VbXSIchkBMc/v6WyEAxfbwIUQ742JsW+dZEm/TmVLbOQfhbAWCB65d+Rh8XwKIHsR/MB4YSXpbATCvn8ok5g8r6vlm3Kh8SfJc5Qrh56LsjqKxjd4ttp1eEA6VD4tQKAClzrAL0Gf1GPDCk1w5LeYhrzKwpXKiMB+tEtN3cgHA4SXiDI8p0Hpsd7gjWXBtq0hm57FugBWVqqQnuWKa97sCUCVamLtLW6AjKrUfWyA+WdB/7zasWpas34UB+W6x4/QJ+KRsMF1R+IfsZbcrAP0eA/ek174gHHjHVl9nQGa7YdCymWhNpUaAYouBPhFC91Q4Bd9Gq0MPuVRRKnVWCbgOQLHtuDuLEXjkNir7IYeunZrBuFs2olQAHUfq/LKnZ8kPjaVn17bKiQCKneEgULCNIQDVo4aZIEOgkknFkteEANxLDIFU1ldPwlAZMm5d24p5u472XasgVoav3oh8LXiFVgy8uA3LjIuRplRJGb9tCOLDjiZGMaVi7o7tytckAL4cUx/+qFVPk+NSe/gDREridcXdOJAI4NRrWK1t6n7T2dSBJLio9wTVSpmbnl25+hcQcrQHYznWyanabVTUQiM/8aE0NDSoLaObZcGIggwWmoB2RT3jmae56sahVB4KYhsdqeWCIX7nrtJmBWX47fwkutAo42tyZfNiUpj11y4ZC+UTfzCAAX/tEjCNN6gyq/Ycmyck7TzJ1zItJjqVMnmiC8Y2+RAsNEmjfbbltDBrqeU0oyoqw3I5zbDQpAIISamcHxk1JlZZrKuh+s40EIS+13jfy8rUX7PLSzEQ0meQAAAAAElFTkSuQmCC" /></a>
     <select id="seldata"></select>
@@ -2255,6 +2328,9 @@
 
     <button id="btnAdd3">
         增加需求
+    </button>
+    <button id="btnSetting">
+        参数设置
     </button>
     <div style="margin-top:5px;">
         <button id="btnReset2">
@@ -2280,6 +2356,7 @@
         <select id="selore">
             <option value="1">100%</option>
         </select>
+       
         <span id="projectdiv" style="display:none;">
             <select id="selprojects"></select>
             <button id="btnLoadProject">
@@ -2296,9 +2373,21 @@
     <div id="UIselector" style="display:none;">
 
     </div>
+
+
+    <div id="MoreSetting" style="display:none;">
+        <p><span class="label"> 分馏塔每分钟产量： </span><input id="fractionatorSpeed" class="textbox" type="number" value="18" />  </p>
+        <p><span class="label">原油速度：</span> <input id="oilSpeed" class="textbox" type="number" value="4" />   </p>
+        <p><span class="label">轨道采集-重氢：</span> <input data-name="重氢" class="speed1 textbox" type="number" value="0.02" />  </p>
+        <p><span class="label">轨道采集-可燃冰：</span> <input data-name="可燃冰" class="speed1 textbox" type="number" value="1.00" />   </p>
+        <p><span class="label">轨道采集-氢：</span> <input data-name="氢" class="speed1 textbox" type="number" value="1.00" />   </p>
+        <p><span class="label">临界光子每分钟产量： </span><input id="gzSpeed" class="textbox" type="number" value="5" />  </p>
+
+        
+    </div>
     <div id="result">
         <div class="list">
-            <span v-for="x in xqs"> 
+            <span v-for="x in xqs">
                 <img v-bind:src="'data:image/png;base64,' + icons[x.item.name]" style="width:40px;height:40px;" v-if="icons[x.item.name]" v-bind:title="x.item.name" />
                 <span class="name" v-else=v-else>{{x.item.name}}</span>
                 * {{x.number}}
@@ -2308,7 +2397,7 @@
                     重置
                 </button>
                 <button onclick="f_save()">保存方案</button>
-            </span> 
+            </span>
         </div>
         <div class="list" v-if="ig_names && ig_names.length">
             排除计算：
@@ -2444,10 +2533,8 @@
                             1，标注:可以对某个物品进行(改颜色)比如已经完成生产线的物品<br />
                             2，多配方:可以对某个物品进行同时多个配方的计算<br />
                             3，排除:可以对某个物品进行排除计算<br />
-                            采矿机默认按6个矿脉计算，原油萃取站按4/s计算<br />
-                            轨道采集重氢按0.02/s 其他按1/s<br />
-                            分馏塔按18个重氢每分钟计算<br />
-                            临界光子按最大效率计算 仅供参考<br />
+                            采矿机默认按6个矿脉计算 <br />
+                            临界光子、原油效率、分馏塔、 轨道采集 可从【参数配置】中配置  <br /> 
                             有问题联系QQ1028-21-03
                         </td>
                     </tr>
