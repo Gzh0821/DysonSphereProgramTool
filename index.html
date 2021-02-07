@@ -1505,6 +1505,15 @@
             }
             out_list.push({ name: name, value: value });
         }
+        function findOut(name) {
+            for (var i = 0; i < out_list.length; i++) {
+                var item = out_list[i];
+                if (item.name == name) {
+                    return item.value;
+                }
+            }
+            return null;
+        }
         //其他产出是否包括在原料里面(如某配方 原料和产物都有氢)
         function getSameNameWithSource(item, itemName) {
             for (var i = 0; i < item.s.length; i++) {
@@ -1596,6 +1605,8 @@
                     }
                 }
             }
+
+            
         }
         function mergeMul() {
             var gs = [];
@@ -1617,6 +1628,35 @@
             console.log(gs); //gs:分组
             for (var i = 0; i < gs.length; i++) {
                 doMergeMul(gs[i]);
+            }
+        }
+
+        function checkResult() {
+            //当前设备数量是否会 出现几个产出都多余，比如氢-120 精炼油-120，那么应该把设备调整到合适数量
+            function isOverflow(item, info) {
+                for (var j = 0; j < item.s.length; j++) {
+                    var x = findOut(item.s[j].name);
+                    if (x == null) return false;
+                    var mn = 60 / item.t * info.speed * (item.s[j].n || 1); //1分钟1个设备产量 
+                    if (x > -1 * mn) return false;
+                }
+                return true;
+            }
+
+            for (var i = 0; i < xh_list.length; i++) {
+                var number = xh_list[i].value;
+                var item = find(xh_list[i].name);
+                var info = getValue(item);
+
+                while (isOverflow(item, info) && xh_list[i].value2) { //直到满足条件
+
+                    xh_list[i].value2 = xh_list[i].value2 - 1;//调整数量
+                    for (var j = 0; j < item.s.length; j++) {
+                        var mn = 60 / item.t * info.speed * (item.s[j].n || 1); //1分钟1个设备产量 
+                        addOut(item.s[j].name, mn);
+                    }
+                    //console.log(JSON.stringify(out_list));
+                }
             }
         }
         function update_all() {
@@ -1669,13 +1709,9 @@
                 if (xh.value > 0) {
                     xh.value2 = xh.value / (1 / info.time) / 60 / (item.n || 1);
                 }
-            }
-            //if ($("#isMerge").get(0).checked) {
-            //    处理合并 多个产出使用了同一个配方
-
-            //}
-             mergeMul();
-
+            } 
+            mergeMul();//处理合并 多个产出使用了同一个配方
+            checkResult();//优化当前结果
             
             for (var i = 0; i < single_list.length; i++) {
                 if (!single_list[i].value) continue;
