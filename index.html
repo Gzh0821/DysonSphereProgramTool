@@ -1522,7 +1522,7 @@
         var ig_names = [];//排除的物品
         //加载需求
         function loadNumber(itemName, n) {
-            try {
+            try { 
                 var item = find(itemName);
                 var info = getValue(itemName);
                 var sameName = getSameNameWithSource(item, itemName);
@@ -1550,7 +1550,6 @@
                 }
                 for (var i = 0; item.q && i < item.q.length; i++) {
                     var q = item.q[i];
-                    //if (q.name == "精炼油") debugger;
                     if ($.inArray(q.name, ig_names) != -1) {
                         continue;
                     }
@@ -1586,6 +1585,7 @@
             for (var i = 0; i < xhs.length; i++) {
                 if (xhs[i].value2 > max) maxValue2Index = i;
             }
+            
             for (var i = 0; i < xhs.length; i++) {
                 if (i != maxValue2Index && xhs[i].value2 > 0) {
                     var number = xhs[i].value;
@@ -1650,6 +1650,7 @@
                 var currentItem = xqs[m].item;
                 loadNumber(currentItem.name, xqs[m].number);
             }
+             
             function isXqs(name) {
                 for (var m = 0; m < xqs.length; m++) {
                     if (xqs[m].item.name == name) return true;
@@ -1673,9 +1674,9 @@
             //    处理合并 多个产出使用了同一个配方
 
             //}
-            mergeMul();
+             mergeMul();
 
-
+            
             for (var i = 0; i < single_list.length; i++) {
                 if (!single_list[i].value) continue;
                 var item = data[single_list[i].id];
@@ -1693,10 +1694,10 @@
                 items0.push(outitem);
             }
 
-            for (var i = 0; i < out_list.length; i++) {
-                addXH(out_list[i].name, out_list[i].value);
-                out_list[i].value = 0;
-            }
+            //for (var i = 0; i < out_list.length; i++) {
+            //    addXH(out_list[i].name, out_list[i].value);
+            //    out_list[i].value = 0;
+            //}
             for (var i = 0; i < xh_list.length; i++) {
                 var xh = xh_list[i];
                 if (!xh.value) continue;
@@ -1753,7 +1754,7 @@
                     m: [],
                     pf: []
                 };
-
+                if (!outitem.number2) outitem.number2full = "";
                 if (xh_list[i].name == "太阳帆") {
                     outitem.numberOther = "(可供" + getIconShow("电磁轨道弹射器", outitem.number1 / 20) + ")";
                 }
