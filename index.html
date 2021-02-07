@@ -1306,11 +1306,7 @@
             loadSettingProjects();
 
             projectsUpdate();
-            $("#btnAdd3").click(f_add3);
-            $("#btnReset1").click(function () {
-                xqs = [];
-                update_all();
-            });
+            $("#btnAdd3").click(f_add3); 
             $("#btnReset2").click(function () {
                 settings = {};
                 saveSetting();
@@ -1789,6 +1785,10 @@
 
             update_all();
         }
+        function f_reset() {
+            xqs = [];
+            update_all();
+        }
         function f_reset_ig() {
             ig_names = [];
 
@@ -2254,10 +2254,7 @@
 
 
     <button id="btnAdd3">
-        增加
-    </button>
-    <button id="btnReset1">
-        重置
+        增加需求
     </button>
     <div style="margin-top:5px;">
         <button id="btnReset2">
@@ -2306,9 +2303,12 @@
                 <span class="name" v-else=v-else>{{x.item.name}}</span>
                 * {{x.number}}
             </span>
-            <div v-if="xqs && xqs.length">
+            <span v-if="xqs && xqs.length">
+                <button onclick="f_reset()">
+                    重置
+                </button>
                 <button onclick="f_save()">保存方案</button>
-            </div>
+            </span> 
         </div>
         <div class="list" v-if="ig_names && ig_names.length">
             排除计算：
