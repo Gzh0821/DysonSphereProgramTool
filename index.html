@@ -1191,18 +1191,33 @@
             var title = [];
             title.push(getIconImg(name));
             title.push("<sub>" + number + "</sub>");
+
             return title.join("");
         }
-        function getPfTitle(item) {
+        function getPfTitle(item,info) {
             var title = [];
             for (var j = 0; j < item.q.length; j++) {
                 title.push(getIconShow(item.q[j].name, item.q[j].n || 1));
+
+                if (info && $("#showMaxOneBelt").get(0).checked) {
+                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.q[j].n || 1));
+                    title.push("<sub class='maxOneBelt'>" + number.toFixed(1));
+                    title.push("</sub>");
+                }
             }
+
             if (item.q.length) {
                 title.push('<img class="to" src="./to.png" />');
             }
             for (var j = 0; j < item.s.length; j++) {
                 title.push(getIconShow(item.s[j].name, item.s[j].n || 1));
+
+
+                if (info && $("#showMaxOneBelt").get(0).checked) {
+                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.s[j].n || 1));
+                    title.push("<sub class='maxOneBelt'>" + number.toFixed(1));
+                    title.push("</sub>");
+                }
 
             }
             title.push("(" + (item.t || 1).toFixed(0) + "s)");
@@ -1338,6 +1353,9 @@
             $("#btnSetting").click(function () {
 
                 $("#MoreSetting").toggle();
+            })
+            $("#showMaxOneBelt").change(function () {
+                update_all();
             })
             $("#fractionatorSpeed").change(function () {
                 $(data).each(function () {
@@ -1724,7 +1742,7 @@
                     time: info.time.toFixed(1),
                     t: info.t.toFixed(1),
                     speed: info.speed.toFixed(1),
-                    pfTitle: getPfTitle(item),
+                    pfTitle: getPfTitle(item,info),
                     mName: single_list[i].mName
                 };
                 items0.push(outitem);
@@ -1804,7 +1822,7 @@
                     var pf = {
                         class: item.id == pfds[j].id ? "pf selected" : "pf",
                         href: item.id == pfds[j].id ? "javascript:void(0)" : "javascript: selectPf(\"" + item.name + "\",\"" + pfds[j].id + "\")",
-                        title: getPfTitle(pfds[j])
+                        title: getPfTitle(pfds[j], item.id == pfds[j].id ? info : null)
                     };
                     outitem.pf.push(pf);
                 }
@@ -2352,6 +2370,9 @@
             width: 160px;
             display: inline-block;
         }
+        .maxOneBelt{
+            color:#000;
+        }
     </style>
 </head>
 <body style="padding:5px;">
@@ -2374,8 +2395,8 @@
             重置设备
         </button>
         <!--<button id="btnReset3">
-            重置速度
-        </button>-->
+        重置速度
+    </button>-->
         <button id="btnReset4">
             重置配方
         </button>
@@ -2389,11 +2410,12 @@
             <option value="制作台Mk.Ⅲ">制作台Mk.Ⅲ</option>
 
         </select>
-        采矿效率：
+        采矿作业速度：
         <select id="selore">
             <option value="1">100%</option>
         </select>
-       
+        <input type="checkbox" id="showMaxOneBelt" />1条传送带最高支持设备数量
+
         <span id="projectdiv" style="display:none;">
             <select id="selprojects"></select>
             <button id="btnLoadProject">
