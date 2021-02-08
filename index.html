@@ -1666,11 +1666,15 @@
                 var item = find(xh_list[i].name);
                 var info = getValue(item);
 
-                while (isOverflow(item, info) && xh_list[i].value2) { //直到满足条件
-
-                    xh_list[i].value2 = xh_list[i].value2 - 1;//调整数量
+                while (isOverflow(item, info) && xh_list[i].value2 > 0) { //直到满足条件
+                     
+                    var nn = 1;
+                    if (xh_list[i].value2 < 1) {
+                        nn = xh_list[i].value2;
+                    }
+                    xh_list[i].value2 = xh_list[i].value2 - nn;//调整数量
                     for (var j = 0; j < item.s.length; j++) {
-                        var mn = 60 / item.t * info.speed * (item.s[j].n || 1); //1分钟1个设备产量 
+                        var mn = nn * 60 / item.t * info.speed * (item.s[j].n || 1); //1分钟1个设备产量 
                         addOut(item.s[j].name, mn);
                     }
                     //console.log(JSON.stringify(out_list));
@@ -1728,8 +1732,8 @@
                     xh.value2 = xh.value / (1 / info.time) / 60 / (item.n || 1);
                 }
             } 
-            mergeMul();//处理合并 多个产出使用了同一个配方
-            checkResult();//优化当前结果
+            //mergeMul();//处理合并 多个产出使用了同一个配方 ,暂时弃用，checkResult会处理这种情况
+            checkResult();//优化当前结果，遍历配方，如果 出现几个产出都多余，比如氢-120 精炼油-120，那么应该把设备调整到合适数量
             
             for (var i = 0; i < single_list.length; i++) {
                 if (!single_list[i].value) continue;
@@ -1748,10 +1752,10 @@
                 items0.push(outitem);
             }
 
-            //for (var i = 0; i < out_list.length; i++) {
-            //    addXH(out_list[i].name, out_list[i].value);
-            //    out_list[i].value = 0;
-            //}
+            for (var i = 0; i < out_list.length; i++) {
+                addXH(out_list[i].name, out_list[i].value);
+                out_list[i].value = 0;
+            }
             for (var i = 0; i < xh_list.length; i++) {
                 var xh = xh_list[i];
                 if (!xh.value) continue;
