@@ -600,7 +600,7 @@
 
             {
                 s: [{ name: "微型聚变发电站", n: 1 }], group: "建筑", m: "制作台", q: [
-                    { name: "钢材", n: 12 },
+                    { name: "钛合金", n: 12 },
                     { name: "超级磁场环", n: 10 },
                     { name: "碳纳米管", n: 8 },
                     { name: "处理器", n: 4 }
@@ -989,6 +989,7 @@
             });
             console.log(data);
         }
+        var pointLength = 1;
         var settingsLocal = {};//不存储cookie
         var settings = {};
         function saveSetting() {
@@ -1140,9 +1141,9 @@
             for (var i = 1; i < 200; i = i + 1) {
                 $("#selmaince").append("<option value='" + i + "'>需要" + i + "个设备</option>");
             }
-            for (var i = 110; i < 400; i = i + 10) {
-                $("#selore").append("<option value='" + i / 100 + "'>" + i + "%</option>");
-            }
+            //for (var i = 110; i < 1000; i = i + 10) {
+            //    $("#selore").append("<option value='" + i / 100 + "'>" + i + "%</option>");
+            //}
         }
         //找到这个物品的配方
         function getPfs(name) {
@@ -1201,7 +1202,7 @@
 
                 if (info && $("#showMaxOneBelt").get(0).checked) {
                     var number = 1800 / (60 / (item.t || 1) * info.speed * (item.q[j].n || 1));
-                    title.push("<sub class='maxOneBelt'>" + number.toFixed(1));
+                    title.push("<sub class='maxOneBelt'>" + number.toFixed(pointLength));
                     title.push("</sub>");
                 }
             }
@@ -1215,7 +1216,7 @@
 
                 if (info && $("#showMaxOneBelt").get(0).checked) {
                     var number = 1800 / (60 / (item.t || 1) * info.speed * (item.s[j].n || 1));
-                    title.push("<sub class='maxOneBelt'>" + number.toFixed(1));
+                    title.push("<sub class='maxOneBelt'>" + number.toFixed(pointLength));
                     title.push("</sub>");
                 }
 
@@ -1339,9 +1340,11 @@
                     if (this.m) {
                         for (var i = 0; i < this.m.length; i++) {
                             if (this.m[i].name == "矿脉") {
-                                this.m[i].speed = 0.5 * 1 * parseFloat($("#selore").val());
+                                this.m[i].speed = 0.5 * 1 *0.01* parseFloat($("#selore").val());
                             } if (this.m[i].name == "采矿机") {
-                                this.m[i].speed = 0.5 * 6 * parseFloat($("#selore").val());
+                                this.m[i].speed = 0.5 * 6 * 0.01 *  parseFloat($("#selore").val());
+                            } if (this.m[i].name == "抽水机") {
+                                this.m[i].speed = 50 * 0.01 * parseFloat($("#selore").val()) / 60;
                             }
                         }
                     }
@@ -1357,6 +1360,10 @@
             $("#showMaxOneBelt").change(function () {
                 update_all();
             })
+            $("#pointLength").change(function () {
+                pointLength = parseInt($(this).val());
+                update_all();
+            });
             $("#fractionatorSpeed").change(function () {
                 $(data).each(function () {
                     if (this.m) {
@@ -1431,6 +1438,7 @@
                     if (projects[i].name == value) {
                         xqs = projects[i].value;
                         singleMake = projects[i].singleMake || [];
+                        ig_names = projects[i].ig_names || [];
                         update_all();
                         return;
                     }
@@ -1749,9 +1757,9 @@
                     name: single_list[i].name,
                     number1: single_list[i].value,
                     number2: single_list[i].number,
-                    time: info.time.toFixed(1),
-                    t: info.t.toFixed(1),
-                    speed: info.speed.toFixed(1),
+                    time: info.time.toFixed(pointLength),
+                    t: info.t.toFixed(pointLength),
+                    speed: info.speed.toFixed(pointLength),
                     pfTitle: getPfTitle(item,info),
                     mName: single_list[i].mName
                 };
@@ -1807,11 +1815,11 @@
                 var outitem = {
                     name: xh_list[i].name,
                     number1: xh_list[i].value.toFixed(0),
-                    number2: (xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : ""),
-                    number2full : (xh_list[i].value2 ? xh_list[i].value2.toFixed(1) : "") + img,
-                    time: info.time.toFixed(1),
-                    t: info.t.toFixed(1),
-                    speed: info.speed.toFixed(1),
+                    number2: (xh_list[i].value2 ? xh_list[i].value2.toFixed(pointLength) : ""),
+                    number2full : (xh_list[i].value2 ? xh_list[i].value2.toFixed(pointLength) : "") + img,
+                    time: info.time.toFixed(pointLength),
+                    t: info.t.toFixed(pointLength),
+                    speed: info.speed.toFixed(pointLength),
                     speedClass: info.isChange ? "time time2" : "time",
                     rowClass: isXqs(xh_list[i].name) ? "xqsrow" : "",
                     machineName: info.name,
@@ -1842,7 +1850,7 @@
                         itemName: item.name,
                         href: info.name == item.m[j].name ? "javascript:void(0)" : "javascript: selectM(\"" + item.id + "\",\"" + item.m[j].name + "\")",
                         name: item.m[j].name,
-                        title: "设备速度:" + (item.m[j].speed.toFixed(1)),
+                        title: "设备速度:" + (item.m[j].speed.toFixed(pointLength)),
                         showName: item.m[j].name.replace("制作台", "")
                     };
                     if (m.showName == "采矿机") {
@@ -1861,11 +1869,11 @@
                 var info = getValue(out_list[i].name);
                 var outitem = {
                     name: out_list[i].name,
-                    number1: out_list[i].value.toFixed(1),
-                    number2: out_list[i].value2 ? out_list[i].value2.toFixed(1) : "",
-                    time: info.time.toFixed(1),
-                    t: info.t.toFixed(1),
-                    speed: info.speed.toFixed(1),
+                    number1: out_list[i].value.toFixed(pointLength),
+                    number2: out_list[i].value2 ? out_list[i].value2.toFixed(pointLength) : "",
+                    time: info.time.toFixed(pointLength),
+                    t: info.t.toFixed(pointLength),
+                    speed: info.speed.toFixed(pointLength),
                     speedClass: info.isChange ? "time time2" : "time",
                     rowClass: "outrow",
                     m: [],
@@ -1883,7 +1891,7 @@
             for (var i = 0; i < total.length; i++) {
                 energy += total[i].energy || 0;
             }
-            app.totalEnergy = energy.toFixed(2);
+            app.totalEnergy = energy.toFixed(pointLength);
         }
         function selectM(id, m) {
             settings[id] = m;
@@ -1939,6 +1947,7 @@
             projects.push({
                 name: name,
                 singleMake: singleMake,
+                ig_names: ig_names || [],
                 value: xqs
             });
             saveSettingProjects();
@@ -2372,9 +2381,11 @@
         #Split button {
             margin-top: 10px;
         }
-        .textbox{
-            border:1px solid #d3d3d3;
-            width:85px;
+        .textbox {
+            border: 1px solid #d3d3d3;
+            width: 85px;
+            height: 24px;
+            line-height: 30px;
         }
         .label {
             width: 160px;
@@ -2421,9 +2432,7 @@
 
         </select>
         采矿作业速度：
-        <select id="selore">
-            <option value="1">100%</option>
-        </select>
+        <input type="text" class="textbox" id="selore" value="100" style="width:40px;" />% 
         <input type="checkbox" id="showMaxOneBelt" />1条传送带最高支持设备数量
 
         <span id="projectdiv" style="display:none;">
@@ -2451,8 +2460,9 @@
         <p><span class="label">轨道采集-可燃冰：</span> <input data-name="可燃冰" class="speed1 textbox" type="number" value="1.00" />   </p>
         <p><span class="label">轨道采集-氢：</span> <input data-name="氢" class="speed1 textbox" type="number" value="1.00" />   </p>
         <p><span class="label">临界光子每分钟产量： </span><input id="gzSpeed" class="textbox" type="number" value="5" />  </p>
+        <p><span class="label">小数点后保留： </span><input id="pointLength" class="textbox" type="number" value="1" /> 位 </p>
 
-        
+
     </div>
     <div id="result">
         <div class="list">
