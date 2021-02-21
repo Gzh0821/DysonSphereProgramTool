@@ -1365,7 +1365,7 @@
                             } if (this.m[i].name == "采矿机") {
                                 this.m[i].speed = Math.min(0.5 * 6 * 0.01 * parseFloat($("#selore").val()),30);
                             } if (this.m[i].name == "抽水机") {
-                                this.m[i].speed = 50 * 0.01 * parseFloat($("#selore").val()) / 60;
+                                this.m[i].speed = Math.min(50 * 0.01 * parseFloat($("#selore").val()) / 60, 30);
                             }  
                         }
                     }
