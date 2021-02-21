@@ -1104,7 +1104,7 @@
         var isDataLoaded = false;
         $(function () {
             $.ajax({
-                url: "./data.json?" + version,
+                url: "./data.json?v" + version,
                 dataType: "json",
                 timeout: 1000000,
                 success: function (data) {
@@ -1361,9 +1361,9 @@
                     if (this.m) {
                         for (var i = 0; i < this.m.length; i++) {
                             if (this.m[i].name == "矿脉") {
-                                this.m[i].speed = 0.5 * 1 *0.01* parseFloat($("#selore").val());
+                                this.m[i].speed = Math.min(0.5 * 1 *0.01* parseFloat($("#selore").val()),30);
                             } if (this.m[i].name == "采矿机") {
-                                this.m[i].speed = 0.5 * 6 * 0.01 *  parseFloat($("#selore").val());
+                                this.m[i].speed = Math.min(0.5 * 6 * 0.01 * parseFloat($("#selore").val()),30);
                             } if (this.m[i].name == "抽水机") {
                                 this.m[i].speed = 50 * 0.01 * parseFloat($("#selore").val()) / 60;
                             }  
@@ -1927,7 +1927,10 @@
                         showName: item.m[j].name.replace("制作台", "")
                     };
                     if (m.showName == "采矿机") {
-                        m.title += " 采矿机按6个矿脉计算"
+                        m.title += " 采矿机按6个矿脉计算(因所限传送带速度最高30)"
+                    }
+                    if (m.showName == "矿脉") {
+                        m.title += " (速度最高30)"
                     }
                     outitem.m.push(m);
 
