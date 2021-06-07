@@ -1,7 +1,9 @@
 <html>
 <head>
-    <title>戴森球计划量化工具</title>
+    <title>戴森球计划量产量化计算器工具</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="戴森球计划,量产量化工具,量产量化计算器,自动化工具,生产工具" />
+	<meta name="description" content="《戴森球计划》自动化量产计算器，可以全自动计算量产某个产品的具体产能需求。" />
     <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script src="https://cdn.bootcss.com/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
@@ -737,6 +739,14 @@
                     { name: "磁线圈", n: 2 }
                 ], t: 3
             },
+			{
+			    s: [{ name: "位面熔炉", n: 1 }], group: "建筑", m: "制作台", q: [
+			        { name: "电弧熔炉", n: 1 },
+			        { name: "框架材料", n: 5 },
+			        { name: "位面过滤器", n: 4 },
+			        { name: "单极磁石", n: 15 }
+			    ], t: 5
+			},
             {
                 s: [{ name: "分馏塔", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "钢材", n: 8 },
@@ -889,9 +899,10 @@
         var energyData = {};
         energyData["研究站"] = 0.48;
         energyData["制作台Mk.Ⅰ"] = 0.27;
-        energyData["制作台Mk.Ⅱ"] = 0.48;
-        energyData["制作台Mk.Ⅲ"] = 0.78;
+        energyData["制作台Mk.Ⅱ"] = 0.54;
+        energyData["制作台Mk.Ⅲ"] = 1.08;
         energyData["电弧熔炉"] = 0.36;
+        energyData["位面熔炉"] = 1.44;
         energyData["矿脉"] = 0.42 / 6;
         energyData["采矿机"] = 0.42;
         energyData["原油萃取站"] = 0.84;
@@ -900,7 +911,7 @@
         energyData["化工厂"] = 0.72;
         energyData["粒子对撞机"] = 12;
         energyData["轨道采集器"] = 0;
-        energyData["射线接收塔"] = 5;
+        energyData["射线接收塔"] = 0;
         energyData["能量枢纽"] = 0;
         energyData["分馏塔"] = 0.72;
 
@@ -932,7 +943,8 @@
 
                 if (item.m == "冶炼设备") {
                     ms = [
-                        { name: "电弧熔炉", speed: 1 }
+                        { name: "电弧熔炉", speed: 1 },
+                        { name: "位面熔炉", speed: 2 },
                     ];
                 }
                 if (item.m == "采矿机") {
@@ -1195,7 +1207,8 @@
         function getIconImg(name) {
             var title = [];
             if (name == "研究站") name = "矩阵研究站";
-            if (name == "电弧熔炉") name = "电弧炉";
+            if (name == "电弧熔炉") name = "电弧熔炉";
+			if (name == "位面熔炉") name = "位面熔炉";
             if (name == "原油精炼机") name = "原油精炼厂";
             if (name == "粒子对撞机") name = "微型粒子对撞机";
             if (name == "射线接收塔") name = "射线接收站";
@@ -1528,6 +1541,17 @@
                 saveSetting();
                 update_all();
             });
+			$("#furnace").change(function () {
+			    var value = $("#furnace").val();
+			    $(data).each(function () {
+			        if (this.mName == "冶炼设备") {
+			            settingsLocal[this.id] = value;
+			        }
+			    });
+			
+			    saveSetting();
+			    update_all();
+			});
             $("#isMerge").change(function () {
                 update_all();
             });
@@ -2153,8 +2177,9 @@
                         jicon.click(function () {
                             var name = $(this).attr("data-name");
                             if (!name) return;
-                            if (name == "电弧炉") name = "电弧熔炉";
-
+                            if (name == "电弧熔炉") name = "电弧熔炉";
+                            if (name == "位面熔炉") name = "位面熔炉";
+							
                             currentItem = find(name);
 
                             var number = parseInt($("#txtnumber").val());
@@ -2508,6 +2533,11 @@
             <option value="制作台Mk.Ⅲ">制作台Mk.Ⅲ</option>
 
         </select>
+		<select id="furnace">
+		    <option value="电弧熔炉">电弧熔炉</option>
+		    <option value="位面熔炉">位面熔炉</option>
+		
+		</select>
         采矿作业速度：
         <input type="text" class="textbox" id="selore" value="100" style="width:40px;" />% 
         <input type="checkbox" id="showMaxOneBelt" />1条传送带最高支持设备数量
@@ -2690,12 +2720,16 @@
                             3，排除:可以对某个物品进行排除计算<br />
                             采矿机默认按6个矿脉计算 <br />
                             临界光子、原油效率、分馏塔、 轨道采集 可从【参数配置】中配置  <br /> 
-                            有问题联系QQ1028-21-03
+							———————————————————————————<br /> 
+							原作者以弃更，本站将继续为大家更新！<br /> 
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
+<div style="text-align:center;"><p><a href="https://www.svlik.com/" target="_blank">Svlik's Blog</a> |
+<a href="https://gitee.com/svlik/DysonSphereProgramTool" target="_blank">协议</a> |
+<script src="https://s22.cnzz.com/z_stat.php?id=1267402358&amp;web_id=1267402358"></script></p><div>
 </body>
 </html> 
