@@ -1,0 +1,275 @@
+﻿        .sicon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .selector, .layui-layer-demo {
+            background: #4A5C72;
+        }
+
+        .selector {
+        }
+
+            .selector .icons {
+                flex-direction: column;
+                padding: 20px;
+                display: none;
+            }
+
+            .selector .icons-selected {
+                display: -webkit-flex;
+                display: flex;
+            }
+
+            .selector .icons .iconrow {
+                display: -webkit-flex;
+                display: flex;
+                flex: auto;
+            }
+
+            .selector .icons .icon:hover {
+                background: #3F6D84;
+            }
+
+            .selector .icons .icon {
+                flex: auto;
+                margin-right: 2px;
+                margin-bottom: 2px;
+                cursor: pointer;
+                text-align: center;
+            }
+
+                .selector .icons .icon .s, .selector .icons .icon img {
+                    width: 50px;
+                    height: 50px;
+                    margin-top: 10px;
+                }
+
+        #tabs {
+            margin-top: 20px;
+            margin-left: 20px;
+            height: 80px;
+        }
+
+        .layui-layer-page .layui-layer-content {
+            overflow: hidden;
+        }
+
+        .icons {
+            background: #2D3241;
+            clear: both;
+            margin-top: 40px;
+            margin-left: 20px;
+        }
+
+            .icons .icon {
+                background: #364450;
+            }
+
+        #tabs img {
+            width: 64px;
+            height: 64px;
+        }
+
+        #tabs .tab {
+            padding: 10px;
+            cursor: pointer;
+            float: left;
+        }
+
+            #tabs .tab.selected {
+                background: #506777;
+            }
+
+        .ms, .pfs {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .ms {
+            display: flex;
+            flex-direction: row;
+        }
+
+        .m, .pf {
+            display: block;
+            margin: 3px;
+            padding: 3px 8px;
+            font-size: 12px;
+            color: white;
+            text-decoration: none;
+            background: #878787;
+            max-width: 320px;
+        }
+
+        .pf2 {
+            background: #111;
+        }
+
+        .m {
+            text-decoration: underline;
+            max-width: 90px;
+        }
+
+        .selected {
+            background: #42586c;
+            color: white;
+        }
+
+        a.pf {
+            color: white;
+        }
+
+        a.selected {
+            color: white;
+            text-decoration: none;
+        }
+
+        .time {
+            border: 1px #cfcfcf solid;
+            width: 60px;
+            padding: 4px;
+            outline: none;
+        }
+
+        .time2 {
+            border-color: #ef1f1f;
+        }
+
+        select {
+            height: 30px;
+            line-height: 30px;
+        }
+
+        button {
+            height: 30px;
+        }
+
+        .list {
+            border: 1px #d3d3d3 dashed;
+            margin: 10px;
+            padding: 10px;
+        }
+        #MoreSetting {
+            border: 1px #d3d3d3 dashed;
+            margin: 10px;
+            padding: 10px;
+        }
+        #txtnumber, #txtore {
+            width: 40px;
+            height: 24px;
+            line-height: 30px;
+        }
+
+        #txtore {
+            margin-left: 5px;
+        }
+
+        .name {
+            width: 200px;
+        }
+
+        td.opcell a {
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+        }
+
+        .header td {
+            background: #f2f2f2;
+        }
+
+        td {
+            padding: 3px 4px;
+            border: 1px dashed #d3d3d3;
+        }
+
+        .header td {
+            padding: 10px 4px;
+        }
+
+        .xqsrow td {
+            background: #fff2f2;
+        }
+
+        .outrow td {
+        }
+
+        .to {
+            color: black;
+        }
+
+        .op {
+            display: none;
+            font-size: 12px;
+        }
+
+            .op a {
+                color: #333;
+            }
+
+        a {
+            color: #333;
+        }
+
+        td:hover .op {
+            display: inline-block;
+        }
+
+        .row-tag td {
+            background: #e2e2e2;
+        }
+
+        #UIselector {
+            position: absolute;
+            left: 50px;
+            top: 50px;
+        }
+
+        #Split {
+            position: fixed;
+            left: 50px;
+            top: 50px;
+            color: white;
+            background: #5d6e88;
+            padding: 20px;
+        }
+
+        .split-pf {
+            background: #878787;
+            padding: 3px;
+            margin-bottom: 4px;
+            border: 1px solid #ddd;
+            cursor: pointer;
+        }
+
+            .split-pf:hover, .split-pf-selected {
+                background: #5d6e88;
+            }
+
+        .split-number {
+            width: 130px;
+            height: 24px;
+            line-height: 30px;
+        }
+
+        #Split button {
+            margin-top: 10px;
+        }
+        .textbox {
+            border: 1px solid #d3d3d3;
+            width: 85px;
+            height: 24px;
+            line-height: 30px;
+        }
+        .label {
+            width: 160px;
+            display: inline-block;
+        }
+        .maxOneBelt{
+            color:#000;
+        }
