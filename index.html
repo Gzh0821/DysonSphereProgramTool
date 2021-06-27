@@ -1,187 +1,202 @@
 <html>
-<head>
-    <title>戴森球计划量产量化计算器工具</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="keywords" content="戴森球计划,量产量化工具,量产量化计算器,自动化工具,生产工具" />
-	<meta name="description" content="《戴森球计划》自动化量产计算器，可以全自动计算量产某个产品的具体产能需求。" />
-    <script src="./Scripts/jquery.min.2.1.4.js"></script>
-    <script src="./Scripts/jquery.cookie.min.1.4.1.js"></script>
-    <script src="./Scripts/vue.min.2.5.16.js"></script>
+	<head>
+		<title>戴森球计划量产量化计算器工具</title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="戴森球计划,量产量化工具,量产量化计算器,自动化工具,生产工具" />
+		<meta name="description" content="《戴森球计划》自动化量产计算器，可以全自动计算量产某个产品的具体产能需求。" />
+		<script src="./Scripts/jquery.min.2.1.4.js"></script>
+		<script src="./Scripts/jquery.cookie.min.1.4.1.js"></script>
+		<script src="./Scripts/vue.min.2.5.16.js"></script>
 
-    <!--<script src="./Scripts/jquery/jquery-1.9.0-min.js"></script>
+		<!--<script src="./Scripts/jquery/jquery-1.9.0-min.js"></script>
     <script src="./Scripts/jquery.cookie.js"></script>
     <script src="./Scripts/vue.min.js"></script>-->
-    <script src="./Scripts/jquery.tips.js"></script>
-    <script src="./Scripts/data.js"></script>
-	<link rel="stylesheet" type="text/css" href="./Scripts/style.css">
-</head>
-<body style="padding:5px;">
-    每分钟数量：<input type="text" id="txtnumber" value="60" />
-    或者： <select id="selmaince">
-        <option value="">选择设备数量</option>
-    </select>
-    <a href="javascript:f_add()" style="margin-left:10px;margin-right:10px;"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADYElEQVRYR8VXS3LaQBB9rYDJLoIT4KqIbcgJgk9gfIIkS6NUGZ/A9gmMqwJeBp8g+ATGJzDZIlcZXwDJu/DJdGpGCEYSSIKkyuyAmenXrz+vm7DFx/zuHBoGagxUwWwSUVVeZ+YBiDwCBkKg732zbrM+S2kHzcsn09ibXTKoTgQz7bwPCB6Be2KaP/VO972kO4kAStfOGQs0sxqOGlJADLTGx9bFJhBrAUivaW92F1CsX2bwL2LqCfAIBo3Uf4LLBqjMxHUCfYgD4QFP8wfr2IgBMNvDKoHudK8ZeCFGS0xzrTRK/ZDNm0xoEvAuACPZYPCBZ1cGOsAQAN/z+VOYcr4Rk3wzzXDU68VbXSIchkBMc/v6WyEAxfbwIUQ742JsW+dZEm/TmVLbOQfhbAWCB65d+Rh8XwKIHsR/MB4YSXpbATCvn8ok5g8r6vlm3Kh8SfJc5Qrh56LsjqKxjd4ttp1eEA6VD4tQKAClzrAL0Gf1GPDCk1w5LeYhrzKwpXKiMB+tEtN3cgHA4SXiDI8p0Hpsd7gjWXBtq0hm57FugBWVqqQnuWKa97sCUCVamLtLW6AjKrUfWyA+WdB/7zasWpas34UB+W6x4/QJ+KRsMF1R+IfsZbcrAP0eA/ek174gHHjHVl9nQGa7YdCymWhNpUaAYouBPhFC91Q4Bd9Gq0MPuVRRKnVWCbgOQLHtuDuLEXjkNir7IYeunZrBuFs2olQAHUfq/LKnZ8kPjaVn17bKiQCKneEgULCNIQDVo4aZIEOgkknFkteEANxLDIFU1ldPwlAZMm5d24p5u472XasgVoav3oh8LXiFVgy8uA3LjIuRplRJGb9tCOLDjiZGMaVi7o7tytckAL4cUx/+qFVPk+NSe/gDREridcXdOJAI4NRrWK1t6n7T2dSBJLio9wTVSpmbnl25+hcQcrQHYznWyanabVTUQiM/8aE0NDSoLaObZcGIggwWmoB2RT3jmae56sahVB4KYhsdqeWCIX7nrtJmBWX47fwkutAo42tyZfNiUpj11y4ZC+UTfzCAAX/tEjCNN6gyq/Ycmyck7TzJ1zItJjqVMnmiC8Y2+RAsNEmjfbbltDBrqeU0oyoqw3I5zbDQpAIISamcHxk1JlZZrKuh+s40EIS+13jfy8rUX7PLSzEQ0meQAAAAAElFTkSuQmCC" /></a>
-    <select id="seldata"></select>
+		<script src="./Scripts/jquery.tips.js"></script>
+		<script src="./Scripts/data.js"></script>
+		<link rel="stylesheet" type="text/css" href="./Scripts/style.css">
+	</head>
+	<body style="padding:5px;">
+		每分钟数量：<input type="text" id="txtnumber" value="60" />
+		或者： <select id="selmaince">
+			<option value="">选择设备数量</option>
+		</select>
+		<a href="javascript:f_add()" style="margin-left:10px;margin-right:10px;"><img
+				src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADYElEQVRYR8VXS3LaQBB9rYDJLoIT4KqIbcgJgk9gfIIkS6NUGZ/A9gmMqwJeBp8g+ATGJzDZIlcZXwDJu/DJdGpGCEYSSIKkyuyAmenXrz+vm7DFx/zuHBoGagxUwWwSUVVeZ+YBiDwCBkKg732zbrM+S2kHzcsn09ibXTKoTgQz7bwPCB6Be2KaP/VO972kO4kAStfOGQs0sxqOGlJADLTGx9bFJhBrAUivaW92F1CsX2bwL2LqCfAIBo3Uf4LLBqjMxHUCfYgD4QFP8wfr2IgBMNvDKoHudK8ZeCFGS0xzrTRK/ZDNm0xoEvAuACPZYPCBZ1cGOsAQAN/z+VOYcr4Rk3wzzXDU68VbXSIchkBMc/v6WyEAxfbwIUQ742JsW+dZEm/TmVLbOQfhbAWCB65d+Rh8XwKIHsR/MB4YSXpbATCvn8ok5g8r6vlm3Kh8SfJc5Qrh56LsjqKxjd4ttp1eEA6VD4tQKAClzrAL0Gf1GPDCk1w5LeYhrzKwpXKiMB+tEtN3cgHA4SXiDI8p0Hpsd7gjWXBtq0hm57FugBWVqqQnuWKa97sCUCVamLtLW6AjKrUfWyA+WdB/7zasWpas34UB+W6x4/QJ+KRsMF1R+IfsZbcrAP0eA/ek174gHHjHVl9nQGa7YdCymWhNpUaAYouBPhFC91Q4Bd9Gq0MPuVRRKnVWCbgOQLHtuDuLEXjkNir7IYeunZrBuFs2olQAHUfq/LKnZ8kPjaVn17bKiQCKneEgULCNIQDVo4aZIEOgkknFkteEANxLDIFU1ldPwlAZMm5d24p5u472XasgVoav3oh8LXiFVgy8uA3LjIuRplRJGb9tCOLDjiZGMaVi7o7tytckAL4cUx/+qFVPk+NSe/gDREridcXdOJAI4NRrWK1t6n7T2dSBJLio9wTVSpmbnl25+hcQcrQHYznWyanabVTUQiM/8aE0NDSoLaObZcGIggwWmoB2RT3jmae56sahVB4KYhsdqeWCIX7nrtJmBWX47fwkutAo42tyZfNiUpj11y4ZC+UTfzCAAX/tEjCNN6gyq/Ycmyck7TzJ1zItJjqVMnmiC8Y2+RAsNEmjfbbltDBrqeU0oyoqw3I5zbDQpAIISamcHxk1JlZZrKuh+s40EIS+13jfy8rUX7PLSzEQ0meQAAAAAElFTkSuQmCC" /></a>
+		<select id="seldata"></select>
 
 
-    <button id="btnAdd3">
-        增加需求
-    </button>
-    <button id="btnSetting">
-        参数设置
-    </button>
-    <div style="margin-top:5px;">
-        <button id="btnReset2">
-            重置设备
-        </button>
-        <!--<button id="btnReset3">
+		<button id="btnAdd3">
+			增加需求
+		</button>
+		<button id="btnSetting">
+			参数设置
+		</button>
+		<div style="margin-top:5px;">
+			<button id="btnReset2">
+				重置设备
+			</button>
+			<!--<button id="btnReset3">
         重置速度
     </button>-->
-        <button id="btnReset4">
-            重置配方
-        </button>
-        <!--<input type="checkbox" id="isMerge" checked />合并同配方多产物-->
-        <input type="checkbox" id="hideSource" />隐藏原料
-        <select id="selmodein">
-            <option value="制作台Mk.Ⅰ">制作台Mk.Ⅰ</option>
-            <option value="制作台Mk.Ⅱ">
-                制作台Mk.Ⅱ
-            </option>
-            <option value="制作台Mk.Ⅲ">制作台Mk.Ⅲ</option>
+			<button id="btnReset4">
+				重置配方
+			</button>
+			<!--<input type="checkbox" id="isMerge" checked />合并同配方多产物-->
+			<input type="checkbox" id="hideSource" />隐藏原料
+			<select id="selmodein">
+				<option value="制作台Mk.Ⅰ">制作台Mk.Ⅰ</option>
+				<option value="制作台Mk.Ⅱ">
+					制作台Mk.Ⅱ
+				</option>
+				<option value="制作台Mk.Ⅲ">制作台Mk.Ⅲ</option>
 
-        </select>
-		<select id="furnace">
-		    <option value="电弧熔炉">电弧熔炉</option>
-		    <option value="位面熔炉">位面熔炉</option>
-		
-		</select>
-        采矿作业速度：
-        <input type="text" class="textbox" id="selore" value="100" style="width:40px;" />% 
-        <input type="checkbox" id="showMaxOneBelt" />1条传送带最高支持设备数量
+			</select>
+			<select id="furnace">
+				<option value="电弧熔炉">电弧熔炉</option>
+				<option value="位面熔炉">位面熔炉</option>
 
-        <span id="projectdiv" style="display:none;">
-            <select id="selprojects"></select>
-            <button id="btnLoadProject">
-                加载方案
-            </button>
-            <button id="btnReset5">
-                重置方案
-            </button>
-        </span>
-    </div>
-    <div id="Split" style="display:none;">
+			</select>
+			采矿作业速度：
+			<input type="text" class="textbox" id="selore" value="100" style="width:40px;" />%
+			<input type="checkbox" id="showMaxOneBelt" />1条传送带最高支持设备数量
 
-    </div>
-    <div id="UIselector" style="display:none;">
+			<span id="projectdiv" style="display:none;">
+				<select id="selprojects"></select>
+				<button id="btnLoadProject">
+					加载方案
+				</button>
+				<button id="btnReset5">
+					重置方案
+				</button>
+			</span>
+		</div>
+		<div id="Split" style="display:none;">
 
-    </div>
+		</div>
+		<div id="UIselector" style="display:none;">
+
+		</div>
 
 
-    <div id="MoreSetting" style="display:none;">
-        <p><span class="label">分馏塔每分钟产量： </span><input id="fractionatorSpeed" class="textbox" type="number" value="18" />  </p>
-        <p><span class="label">原油速度：</span> <input id="oilSpeed" class="textbox" type="number" value="4" />   </p>
-        <p><span class="label">轨道采集-重氢：</span> <input data-name="重氢" id="speed1_2" class="speed1 textbox" type="number" value="0.02" />  </p>
-        <p><span class="label">轨道采集-可燃冰：</span> <input data-name="可燃冰" id="speed1_3" class="speed1 textbox" type="number" value="0.5" />   </p>
-        <p><span class="label">轨道采集-氢(巨冰)：</span> <input data-name="氢" id="speed1_4" class="speed1 textbox" type="number" value="0.5" />   </p>  
-        <p><span class="label">轨道采集-氢(气态)：</span> <input data-name="氢" id="speed1_1" class="speed1 textbox" type="number" value="1" />   </p>
-        <p><span class="label">临界光子每分钟产量： </span><input id="gzSpeed" class="textbox" type="number" value="5" />  </p>
-        <p><span class="label">小数点后保留： </span><input id="pointLength" class="textbox" type="number" value="1" /> 位 </p>
-    </div>
-    <div id="result">
-        <div class="list">
-            <span v-for="x in xqs">
-                <img v-bind:src="'data:image/png;base64,' + icons[x.item.name]" style="width:40px;height:40px;" v-if="icons[x.item.name]" v-bind:title="x.item.name" />
-                <span class="name" v-else=v-else>{{x.item.name}}</span>
-                * {{x.number}}
-            </span>
-            <span v-if="xqs && xqs.length">
-                <button onclick="f_reset()">
-                    重置
-                </button>
-                <button onclick="f_save()">保存方案</button>
-            </span>
-        </div>
-        <div class="list" v-if="ig_names && ig_names.length">
-            排除计算：
-            <span v-for="name in ig_names">
-                <img v-bind:src="'data:image/png;base64,' + icons[name]" style="width:40px;height:40px;" v-if="icons[name]" v-bind:title="name" />
-                <span class="name" v-else=v-else>{{name}}</span>
-            </span>
-            <button onclick="f_reset_ig()">重置</button>
-        </div>
-        <div class="list">
-            <table border="0" cellspacing="0" cellpadding="0">
-                <tbody>
-                    <tr class="header">
-                        <td style="width:100px;">操作</td>
-                        <td style="width:100px;">
-                            物品
-                            <br /><span style="font-size:12px">(点击图标显示详情)</span>
-                        </td>
-                        <td style="width:100px;">
-                            每分钟需求
-                            <br /><span style="font-size:12px">(负数代表多余)</span>
-                        </td>
-                        <td style="width:100px;">设备数量</td>
-                        <td>
-                            配方
-                            <br /><span style="font-size:12px">(可选)</span>
-                        </td>
-                        <td>
-                            制作于
-                            <br /><span style="font-size:12px">(可选)</span>
-                        </td>
-                        <!--<td>设备制作速度<br /><span style="font-size:12px">(可自定义)</span></td>-->
-                        <!--<td style="width:150px;">最终速度(秒)</td>-->
-                    </tr>
+		<div id="MoreSetting" style="display:none;">
+			<p><span class="label">分馏塔每分钟产量： </span><input id="fractionatorSpeed" class="textbox" type="number"
+					value="18" /> </p>
+			<p><span class="label">原油速度：</span> <input id="oilSpeed" class="textbox" type="number" value="4" /> </p>
+			<p><span class="label">轨道采集-重氢：</span> <input data-name="重氢" id="speed1_2" class="speed1 textbox"
+					type="number" value="0.02" /> </p>
+			<p><span class="label">轨道采集-可燃冰：</span> <input data-name="可燃冰" id="speed1_3" class="speed1 textbox"
+					type="number" value="0.5" /> </p>
+			<p><span class="label">轨道采集-氢(巨冰)：</span> <input data-name="氢" id="speed1_4" class="speed1 textbox"
+					type="number" value="0.5" /> </p>
+			<p><span class="label">轨道采集-氢(气态)：</span> <input data-name="氢" id="speed1_1" class="speed1 textbox"
+					type="number" value="1" /> </p>
+			<p><span class="label">临界光子每分钟产量： </span><input id="gzSpeed" class="textbox" type="number" value="5" /> </p>
+			<p><span class="label">小数点后保留： </span><input id="pointLength" class="textbox" type="number" value="1" /> 位
+			</p>
+		</div>
+		<div id="result">
+			<div class="list">
+				<span v-for="x in xqs">
+					<img v-bind:src="'data:image/png;base64,' + icons[x.item.name]" style="width:40px;height:40px;"
+						v-if="icons[x.item.name]" v-bind:title="x.item.name" />
+					<span class="name" v-else=v-else>{{x.item.name}}</span>
+					* {{x.number}}
+				</span>
+				<span v-if="xqs && xqs.length">
+					<button onclick="f_reset()">
+						重置
+					</button>
+					<button onclick="f_save()">保存方案</button>
+				</span>
+			</div>
+			<div class="list" v-if="ig_names && ig_names.length">
+				排除计算：
+				<span v-for="name in ig_names">
+					<img v-bind:src="'data:image/png;base64,' + icons[name]" style="width:40px;height:40px;"
+						v-if="icons[name]" v-bind:title="name" />
+					<span class="name" v-else=v-else>{{name}}</span>
+				</span>
+				<button onclick="f_reset_ig()">重置</button>
+			</div>
+			<div class="list">
+				<table border="0" cellspacing="0" cellpadding="0">
+					<tbody>
+						<tr class="header">
+							<td style="width:100px;">操作</td>
+							<td style="width:100px;">
+								物品
+								<br /><span style="font-size:12px">(点击图标显示详情)</span>
+							</td>
+							<td style="width:100px;">
+								每分钟需求
+								<br /><span style="font-size:12px">(负数代表多余)</span>
+							</td>
+							<td style="width:100px;">设备数量</td>
+							<td>
+								配方
+								<br /><span style="font-size:12px">(可选)</span>
+							</td>
+							<td>
+								制作于
+								<br /><span style="font-size:12px">(可选)</span>
+							</td>
+							<!--<td>设备制作速度<br /><span style="font-size:12px">(可自定义)</span></td>-->
+							<!--<td style="width:150px;">最终速度(秒)</td>-->
+						</tr>
 
-                    <tr v-for="item in items0" v-bind:class="item.rowClass">
-                        <td></td>
-                        <td class="cell-name" v-bind:data-name="item.name">
-                            <span class="name">
-                                <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
-                                <span class="name" v-else=v-else>{{item.name}}</span>
-                            </span>
-                        </td>
-                        <td><span class="number1">{{item.number1}}</span></td>
-                        <td><span class="number2">{{item.number2}}</span></td>
-                        <td>
-                            <a class="pf selected" v-html="item.pfTitle"></a>
-                        </td>
-                        <td>
-                            <a class="m selected">  {{item.mName}}</a>
+						<tr v-for="item in items0" v-bind:class="item.rowClass">
+							<td></td>
+							<td class="cell-name" v-bind:data-name="item.name">
+								<span class="name">
+									<img v-bind:src="'data:image/png;base64,' + icons[item.name]"
+										style="width:40px;height:40px;" v-if="icons[item.name]"
+										v-bind:title="item.name" />
+									<span class="name" v-else=v-else>{{item.name}}</span>
+								</span>
+							</td>
+							<td><span class="number1">{{item.number1}}</span></td>
+							<td><span class="number2">{{item.number2}}</span></td>
+							<td>
+								<a class="pf selected" v-html="item.pfTitle"></a>
+							</td>
+							<td>
+								<a class="m selected"> {{item.mName}}</a>
 
-                        </td>
-                    </tr>
+							</td>
+						</tr>
 
-                    <tr v-for="item in items" v-bind:class="item.rowClass">
-                        <td class="opcell">
-                            <a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_ig(this)">排除</a>
-                            <a href="javascript:void(0)" v-if=" item.pf &&  item.pf.length > 1" v-bind:data-name="item.name" onclick="f_split(this)">多配方</a>
-                            <a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_tag(this)">标注</a>
-                        </td>
-                        <td class="cell-name" v-bind:data-name="item.name">
-                            <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
-                            <span class="name" v-else=v-else>{{item.name}}</span>
-                        </td>
-                        <td><span class="number1">{{item.number1}}</span></td>
-                        <td>
-                            <span class="number2" v-html="item.number2full"></span>
-                            <span v-if="item.numberOther" v-html="item.numberOther"></span>
-                        </td>
-                        <td>
-                            <div class="pfs">
-                                <a v-for="pf in item.pf" v-bind:class="pf.class" v-bind:href='pf.href' v-html="pf.title"></a>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="ms">
-                                <a v-bind:data-modein="m.name" v-bind:data-name="m.itemName" v-for="m in item.m" v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
-                                    {{m.showName}}
-                                </a>
-                            </div>
-                        </td>
-                        <!--<td>
+						<tr v-for="item in items" v-bind:class="item.rowClass">
+							<td class="opcell">
+								<a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_ig(this)">排除</a>
+								<a href="javascript:void(0)" v-if=" item.pf &&  item.pf.length > 1"
+									v-bind:data-name="item.name" onclick="f_split(this)">多配方</a>
+								<a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_tag(this)">标注</a>
+							</td>
+							<td class="cell-name" v-bind:data-name="item.name">
+								<img v-bind:src="'data:image/png;base64,' + icons[item.name]"
+									style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
+								<span class="name" v-else=v-else>{{item.name}}</span>
+							</td>
+							<td><span class="number1">{{item.number1}}</span></td>
+							<td>
+								<span class="number2" v-html="item.number2full"></span>
+								<span v-if="item.numberOther" v-html="item.numberOther"></span>
+							</td>
+							<td>
+								<div class="pfs">
+									<a v-for="pf in item.pf" v-bind:class="pf.class" v-bind:href='pf.href'
+										v-html="pf.title"></a>
+								</div>
+							</td>
+							<td>
+								<div class="ms">
+									<a v-bind:data-modein="m.name" v-bind:data-name="m.itemName" v-for="m in item.m"
+										v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
+										{{m.showName}}
+									</a>
+								</div>
+							</td>
+							<!--<td>
                             <input type="text" v-bind:class="item.speedClass" v-on:change="speedChange(item)" v-model="item.speed" />
                         </td>
                         <td>
@@ -189,78 +204,81 @@
                         </td>-->
 
 
-                    </tr>
+						</tr>
 
 
-                    <tr class="total">
-                        <td colspan="3" align="right">合计： </td>
-                        <td colspan="5">
-                            <span v-for="item in total"> {{item.name}}*{{item.value}} </span>
-                            <br />
-                            <span>
-                                耗能估算：{{totalEnergy}}M
-                            </span>
-                        </td>
-                    </tr>
-                    <tr class="" v-if="items2 && items2.length">
-                        <td colspan="6" align="left">多余产物 <br />(负数代表多余、正数代表缺少，如1000则需要额外补齐，-1000则需要额外消耗) </td>
-                    </tr>
-                    <tr v-for="item in items2" v-bind:class="item.rowClass">
-                        <td></td>
+						<tr class="total">
+							<td colspan="3" align="right">合计： </td>
+							<td colspan="5">
+								<span v-for="item in total"> {{item.name}}*{{item.value}} </span>
+								<br />
+								<span>
+									耗能估算：{{totalEnergy}}M
+								</span>
+							</td>
+						</tr>
+						<tr class="" v-if="items2 && items2.length">
+							<td colspan="6" align="left">多余产物 <br />(负数代表多余、正数代表缺少，如1000则需要额外补齐，-1000则需要额外消耗) </td>
+						</tr>
+						<tr v-for="item in items2" v-bind:class="item.rowClass">
+							<td></td>
 
-                        <td>
-                            <span class="name">
-                                <img v-bind:src="'data:image/png;base64,' + icons[item.name]" style="width:40px;height:40px;" v-if="icons[item.name]" v-bind:title="item.name" />
-                                <span class="name" v-else=v-else>{{item.name}}</span>
-                            </span>
-                        </td>
-                        <td><span class="number1">{{item.number1}}</span></td>
-                        <td>
-                            <span class="number2">{{item.number2}}</span>
-                        </td>
-                        <td></td>
-                        <td></td>
-                        <!--<td></td>
+							<td>
+								<span class="name">
+									<img v-bind:src="'data:image/png;base64,' + icons[item.name]"
+										style="width:40px;height:40px;" v-if="icons[item.name]"
+										v-bind:title="item.name" />
+									<span class="name" v-else=v-else>{{item.name}}</span>
+								</span>
+							</td>
+							<td><span class="number1">{{item.number1}}</span></td>
+							<td>
+								<span class="number2">{{item.number2}}</span>
+							</td>
+							<td></td>
+							<td></td>
+							<!--<td></td>
                         <td></td>-->
-                    </tr>
+						</tr>
 
 
-                    <tr class="">
-                        <td colspan="1" align="right">更新说明 </td>
-                        <td colspan="5">
-							使用【CTRL】+【F5】即可刷新缓存看到当前页面最新版本！<br /> 
-							更新时间：2021年6月18日20:38:58<br /> 
-							你也可以使用老版本:
-							<select id="furnace" onchange="window.open(this.value);" style="height:20px">
-<option>请选择版本</option>
-					    <option value="https://www.svlik.com/t/dsq/0.7.18.6940">0.7.18.6940</option>
-		</select>
-                        </td>
-                    </tr>
-                    <tr class="">
-                        <td colspan="1" align="right">使用说明 </td>
-                        <td colspan="5">
-                            点击物品图标可显示 物品作为原料和产品的详细配方 <br />
-                            参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />
-                            如果【增加】后没反应可以试一下重置配方/设备<br />
-                            物品左边可以进行操作：<br />
-                            1，标注:可以对某个物品进行(改颜色)比如已经完成生产线的物品<br />
-                            2，多配方:可以对某个物品进行同时多个配方的计算<br />
-                            3，排除:可以对某个物品进行排除计算<br />
-                            采矿机默认按6个矿脉计算 <br />
-                            临界光子、原油效率、分馏塔、 轨道采集 可从【参数配置】中配置  <br /> 
-							———————————————————————————<br /> 
-							原作者已提桶跑路，已获得原作者后续维护的权限，本站将继续为大家更新！<br /> 
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-<div style="text-align:center;"><p><a href="https://www.svlik.com/" target="_blank">Svlik's Blog</a> |
-<a href="https://gitee.com/svlik/DysonSphereProgramTool" target="_blank">协议</a> |
-<script src="https://s22.cnzz.com/z_stat.php?id=1267402358&amp;web_id=1267402358"></script>
-</p>
-<div>
-</body>
-</html> 
+						<tr class="">
+							<td colspan="1" align="right">更新说明 </td>
+							<td colspan="5">
+								使用【CTRL】+【F5】即可刷新缓存看到当前页面最新版本！<br />
+								更新时间：2021年6月18日20:38:58<br />
+								你也可以使用老版本:
+								<select id="furnace" onchange="actions(this)" style="height:20px">
+									<option value="">请选择版本</option>
+									<option value="https://www.svlik.com/t/dsq/0.7.18.6940">0.7.18.6940</option>
+								</select>
+							</td>
+						</tr>
+						<tr class="">
+							<td colspan="1" align="right">使用说明 </td>
+							<td colspan="5">
+								点击物品图标可显示 物品作为原料和产品的详细配方 <br />
+								参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />
+								如果【增加】后没反应可以试一下重置配方/设备<br />
+								物品左边可以进行操作：<br />
+								1，标注:可以对某个物品进行(改颜色)比如已经完成生产线的物品<br />
+								2，多配方:可以对某个物品进行同时多个配方的计算<br />
+								3，排除:可以对某个物品进行排除计算<br />
+								采矿机默认按6个矿脉计算 <br />
+								临界光子、原油效率、分馏塔、 轨道采集 可从【参数配置】中配置 <br />
+								———————————————————————————<br />
+								原作者已提桶跑路，已获得原作者后续维护的权限，本站将继续为大家更新！<br />
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div style="text-align:center;">
+			<p><a href="https://www.svlik.com/" target="_blank">Svlik's Blog</a> |
+				<a href="https://gitee.com/svlik/DysonSphereProgramTool" target="_blank">协议</a> |
+				<script src="https://s22.cnzz.com/z_stat.php?id=1267402358&amp;web_id=1267402358"></script>
+			</p>
+			<div>
+	</body>
+</html>

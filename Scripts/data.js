@@ -1,4 +1,4 @@
-﻿        //配方 ，如果数据改变时有可能需要重置配方
+        //配方 ，如果数据改变时有可能需要重置配方
         var data = [
             {
                 //s ： 产物(可能多产物)
@@ -999,7 +999,7 @@
                 item.m = ms;
 
             });
-            console.log(data);
+            // console.log(data);
         }
         var pointLength = 1;
         var settingsLocal = {};//不存储cookie
@@ -1461,19 +1461,19 @@
                                      
                                     if (this.s[0].name == "氢") { 
                                         this.t = 1 / (getSum(speed1_1, speed1_2, 8, 8) / 60);
-                                        console.log("T1:" + this.t);
+                                        // console.log("T1:" + this.t);
                                     } else if (this.s[0].name == "重氢") { 
                                         this.t = 1 / (getSum(speed1_2, speed1_1, 8, 8) / 60);
-                                        console.log("T2:" + this.t);
+                                        // console.log("T2:" + this.t);
                                     }
                                 }
                                 if (this.m[i].name == "轨道采集器(巨冰)") {
                                     if (this.s[0].name == "氢") {
                                         this.t = 1 / (getSum(speed1_4, speed1_3, 8, 4.8) / 60);
-                                        console.log("T3:" + this.t);
+                                        // console.log("T3:" + this.t);
                                     } else if (this.s[0].name == "可燃冰") { 
                                         this.t = 1 / (getSum(speed1_3, speed1_4, 4.8, 8) / 60);
-                                        console.log("T4:" + this.t);
+                                        // console.log("T4:" + this.t);
                                     }
                                 }
                             }
@@ -1675,7 +1675,7 @@
                     }
                 }
             } catch (e) {
-                console.log(itemName);
+                // console.log(itemName);
                 throw e;
             }
 
@@ -1729,7 +1729,7 @@
 
                 }
             }
-            console.log(gs); //gs:分组
+            // console.log(gs); //gs:分组
             for (var i = 0; i < gs.length; i++) {
                 doMergeMul(gs[i]);
             }
@@ -2040,6 +2040,15 @@
             }
             $("#UIselector").show();
         }
+		function actions(that)
+		{
+			// console.log(that.value)
+			if( !that.value){
+				return false;
+			}else{
+				window.open(that.value);
+			}
+		}
         function f_split(obj) {
 
             var name = $(obj).attr("data-name");
