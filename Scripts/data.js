@@ -2001,16 +2001,16 @@
             update_all();
         }
         function f_remove_ig(obj){
-			var remove_name = $(obj).attr("title");
-			var new_ig_names=[];
-			ig_names.forEach(function (ig_name){
-				if(ig_name!=remove_name){
-					new_ig_names.push(ig_name);
-				}
-			})
-			ig_names=new_ig_names;
-			update_all();
-		}
+            var remove_name = $(obj).attr("title");
+            var new_ig_names=[];
+            ig_names.forEach(function (ig_name){
+                if(ig_name!=remove_name){
+                    new_ig_names.push(ig_name);
+                }
+            })
+            ig_names=new_ig_names;
+            update_all();
+        }
         function f_reset() {
             xqs = [];
             update_all();
