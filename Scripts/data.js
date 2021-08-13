@@ -1193,7 +1193,7 @@
         function getIconShow(name, number) {
             var title = [];
             title.push(getIconImg(name));
-            title.push("<sub>" + number + "</sub>");
+            title.push("<sub>" + number.toFixed(2) + "</sub>");
 
             return title.join("");
         }
