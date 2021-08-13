@@ -162,21 +162,8 @@
             },
 
 
-
             {
-                s: [{ name: "重氢" }], group: "组件", m: "轨道采集器2", q: [
-
-                ], t: 1  
-            },
-            {
-                s: [{ name: "氢" }], group: "组件", m: "轨道采集器", q: [
-
-                ], t: 1
-            },
-            
-             
-            {
-                s: [{ name: "氢" }], group: "组件", m: "轨道采集器2", q: [
+                s: [{ name: "氢" }, { name: "重氢" }], group: "组件", m: "轨道采集器2", q: [
 
                 ], t: 1
             }, 
@@ -195,7 +182,7 @@
             },
              
             {
-                s: [{ name: "可燃冰" }], group: "组件", m: "轨道采集器", q: [
+                s: [{ name: "可燃冰" }, { name: "氢" }], group: "组件", m: "轨道采集器", q: [
 
                 ], t: 1
             },
@@ -1206,7 +1193,7 @@
         function getIconShow(name, number) {
             var title = [];
             title.push(getIconImg(name));
-            title.push("<sub>" + number + "</sub>");
+            title.push("<sub>" + number.toFixed(2) + "</sub>");
 
             return title.join("");
         }
@@ -1452,30 +1439,22 @@
                     return sum;
                 }
                 $(data).each(function () {
-                    if (this.s &&
-                        (this.s[0].name == "氢" || this.s[0].name == "重氢" || this.s[0].name == "可燃冰")
-                    ) {
-                        if (this.m) {
-                            for (var i = 0; i < this.m.length; i++) {
-                                if (this.m[i].name == "轨道采集器(气态)") {
-                                     
-                                    if (this.s[0].name == "氢") { 
-                                        this.t = 1 / (getSum(speed1_1, speed1_2, 8, 8) / 60);
-                                        // console.log("T1:" + this.t);
-                                    } else if (this.s[0].name == "重氢") { 
-                                        this.t = 1 / (getSum(speed1_2, speed1_1, 8, 8) / 60);
-                                        // console.log("T2:" + this.t);
-                                    }
-                                }
-                                if (this.m[i].name == "轨道采集器(巨冰)") {
-                                    if (this.s[0].name == "氢") {
-                                        this.t = 1 / (getSum(speed1_4, speed1_3, 8, 4.8) / 60);
-                                        // console.log("T3:" + this.t);
-                                    } else if (this.s[0].name == "可燃冰") { 
-                                        this.t = 1 / (getSum(speed1_3, speed1_4, 4.8, 8) / 60);
-                                        // console.log("T4:" + this.t);
-                                    }
-                                }
+                    if (!this.m) return;
+                    if (this.m[0].name == "轨道采集器(气态)") {
+                        for (var i = 0; i < this.s.length; i++) {
+                            if (this.s[i].name == "氢") { 
+                                this.s[i].n = getSum(speed1_1, speed1_2, 8, 8) / 60;
+                            } else if (this.s[i].name == "重氢") { 
+                                this.s[i].n = getSum(speed1_2, speed1_1, 8, 8) / 60;
+                            }
+                        }
+                    }
+                    else if (this.m[0].name == "轨道采集器(巨冰)") {
+                        for (var i = 0; i < this.s.length; i++) {
+                            if (this.s[i].name == "氢") {
+                                this.s[i].n = getSum(speed1_4, speed1_3, 8, 4.8) / 60;
+                            } else if (this.s[i].name == "可燃冰") { 
+                                this.s[i].n = getSum(speed1_3, speed1_4, 4.8, 8) / 60;
                             }
                         }
                     }
