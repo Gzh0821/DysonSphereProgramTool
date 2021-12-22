@@ -162,8 +162,21 @@
             },
 
 
+
             {
-                s: [{ name: "氢" }, { name: "重氢" }], group: "组件", m: "轨道采集器2", q: [
+                s: [{ name: "重氢" }], group: "组件", m: "轨道采集器2", q: [
+
+                ], t: 1  
+            },
+            {
+                s: [{ name: "氢" }], group: "组件", m: "轨道采集器", q: [
+
+                ], t: 1
+            },
+            
+             
+            {
+                s: [{ name: "氢" }], group: "组件", m: "轨道采集器2", q: [
 
                 ], t: 1
             }, 
@@ -182,7 +195,7 @@
             },
              
             {
-                s: [{ name: "可燃冰" }, { name: "氢" }], group: "组件", m: "轨道采集器", q: [
+                s: [{ name: "可燃冰" }], group: "组件", m: "轨道采集器", q: [
 
                 ], t: 1
             },
@@ -539,13 +552,13 @@
                 ], t: 1
             },
             {
-                s: [{ name: "小型储物仓", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "小型储物仓", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "铁块", n: 4 },
                     { name: "石材", n: 4 }
                 ], t: 2
             },
             {
-                s: [{ name: "大型储物仓", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "大型储物仓", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "钢材", n: 8 },
                     { name: "石材", n: 8 }
                 ], t: 4
@@ -602,26 +615,26 @@
 
 
             {
-                s: [{ name: "分拣器" }], group: "组件", m: "制作台", q: [
+                s: [{ name: "分拣器" }], group: "建筑", m: "制作台", q: [
                     { name: "铁块", n: 1 },
                     { name: "电路板", n: 1 }
                 ], t: 1
             },
             {
-                s: [{ name: "高速分拣器", n: 2 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "高速分拣器", n: 2 }], group: "建筑", m: "制作台", q: [
                     { name: "分拣器", n: 2 },
                     { name: "电动机", n: 1 }
                 ], t: 1
             },
 
             {
-                s: [{ name: "极速分拣器", n: 2 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "极速分拣器", n: 2 }], group: "建筑", m: "制作台", q: [
                     { name: "高速分拣器", n: 2 },
                     { name: "电磁涡轮", n: 1 }
                 ], t: 1
             },
             {
-                s: [{ name: "采矿机", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "采矿机", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "铁块", n: 4 },
                     { name: "电路板", n: 2 },
                     { name: "磁线圈", n: 2 },
@@ -629,7 +642,7 @@
                 ], t: 3
             },
             {
-                s: [{ name: "抽水机", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "抽水机", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "铁块", n: 8 },
                     { name: "石材", n: 4 },
                     { name: "电动机", n: 4 },
@@ -637,7 +650,7 @@
                 ], t: 4
             },
             {
-                s: [{ name: "原油萃取站", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "原油萃取站", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "钢材", n: 12 },
                     { name: "石材", n: 12 },
                     { name: "电路板", n: 6 },
@@ -645,7 +658,7 @@
                 ], t: 8
             },
             {
-                s: [{ name: "原油精炼厂", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "原油精炼厂", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "钢材", n: 10 },
                     { name: "石材", n: 10 },
                     { name: "电路板", n: 6 },
@@ -653,7 +666,7 @@
                 ], t: 6
             },
             {
-                s: [{ name: "垂直发射井", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "垂直发射井", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "钛合金", n: 80 },
                     { name: "框架材料", n: 30 },
                     { name: "引力透镜", n: 20 },
@@ -663,10 +676,20 @@
 
 
             {
-                s: [{ name: "四向分流器", n: 1 }], group: "组件", m: "制作台", q: [
+                s: [{ name: "四向分流器", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "铁块", n: 3 },
                     { name: "齿轮", n: 2 },
                     { name: "电路板", n: 1 }
+                ], t: 2
+            },
+
+
+            {
+                s: [{ name: "流速监测器", n: 1 }], group: "建筑", m: "制作台", q: [
+                    { name: "铁块", n: 3 },
+                    { name: "齿轮", n: 2 },
+                    { name: "玻璃", n: 1 },
+                    { name: "电路板", n: 2 }
                 ], t: 2
             },
 
@@ -772,7 +795,7 @@
                 ], t: 30
             },
             {
-                s: [{ name: "加力推进器", n: 1 }], group: "建筑", m: "制作台", q: [
+                s: [{ name: "加力推进器", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "钛合金", n: 5 },
                     { name: "电磁涡轮", n: 5 }
                 ], t: 6
@@ -786,20 +809,20 @@
                 ], t: 30
             },
             {
-                s: [{ name: "推进器", n: 1 }], group: "建筑", m: "制作台", q: [
+                s: [{ name: "推进器", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "钢材", n: 2 },
                     { name: "铜块", n: 3 }
                 ], t: 4
             },
             {
-                s: [{ name: "物流运输机", n: 1 }], group: "建筑", m: "制作台", q: [
+                s: [{ name: "物流运输机", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "铁块", n: 5 },
                     { name: "处理器", n: 2 },
                     { name: "推进器", n: 2 }
                 ], t: 4
             },
             {
-                s: [{ name: "星际物流运输机", n: 1 }], group: "建筑", m: "制作台", q: [
+                s: [{ name: "星际物流运输机", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "钛合金", n: 10 },
                     { name: "处理器", n: 10 },
                     { name: "加力推进器", n: 2 }
@@ -1193,7 +1216,7 @@
         function getIconShow(name, number) {
             var title = [];
             title.push(getIconImg(name));
-            title.push("<sub>" + number.toFixed(2) + "</sub>");
+            title.push("<sub>" + number + "</sub>");
 
             return title.join("");
         }
@@ -1439,22 +1462,30 @@
                     return sum;
                 }
                 $(data).each(function () {
-                    if (!this.m) return;
-                    if (this.m[0].name == "轨道采集器(气态)") {
-                        for (var i = 0; i < this.s.length; i++) {
-                            if (this.s[i].name == "氢") { 
-                                this.s[i].n = getSum(speed1_1, speed1_2, 8, 8) / 60;
-                            } else if (this.s[i].name == "重氢") { 
-                                this.s[i].n = getSum(speed1_2, speed1_1, 8, 8) / 60;
-                            }
-                        }
-                    }
-                    else if (this.m[0].name == "轨道采集器(巨冰)") {
-                        for (var i = 0; i < this.s.length; i++) {
-                            if (this.s[i].name == "氢") {
-                                this.s[i].n = getSum(speed1_4, speed1_3, 8, 4.8) / 60;
-                            } else if (this.s[i].name == "可燃冰") { 
-                                this.s[i].n = getSum(speed1_3, speed1_4, 4.8, 8) / 60;
+                    if (this.s &&
+                        (this.s[0].name == "氢" || this.s[0].name == "重氢" || this.s[0].name == "可燃冰")
+                    ) {
+                        if (this.m) {
+                            for (var i = 0; i < this.m.length; i++) {
+                                if (this.m[i].name == "轨道采集器(气态)") {
+                                     
+                                    if (this.s[0].name == "氢") { 
+                                        this.t = 1 / (getSum(speed1_1, speed1_2, 8, 8) / 60);
+                                        // console.log("T1:" + this.t);
+                                    } else if (this.s[0].name == "重氢") { 
+                                        this.t = 1 / (getSum(speed1_2, speed1_1, 8, 8) / 60);
+                                        // console.log("T2:" + this.t);
+                                    }
+                                }
+                                if (this.m[i].name == "轨道采集器(巨冰)") {
+                                    if (this.s[0].name == "氢") {
+                                        this.t = 1 / (getSum(speed1_4, speed1_3, 8, 4.8) / 60);
+                                        // console.log("T3:" + this.t);
+                                    } else if (this.s[0].name == "可燃冰") { 
+                                        this.t = 1 / (getSum(speed1_3, speed1_4, 4.8, 8) / 60);
+                                        // console.log("T4:" + this.t);
+                                    }
+                                }
                             }
                         }
                     }
@@ -1977,17 +2008,6 @@
             var name = $(obj).attr("data-name");
             ig_names.push(name);
 
-            update_all();
-        }
-        function f_remove_ig(obj){
-            var remove_name = $(obj).attr("title");
-            var new_ig_names=[];
-            ig_names.forEach(function (ig_name){
-                if(ig_name!=remove_name){
-                    new_ig_names.push(ig_name);
-                }
-            })
-            ig_names=new_ig_names;
             update_all();
         }
         function f_reset() {
