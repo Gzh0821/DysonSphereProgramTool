@@ -1260,11 +1260,13 @@
         }
         function getPfTitle(item,info) {
             var title = [];
+            var speed1_5 = parseFloat($("#speed1_5").val());
             for (var j = 0; j < item.q.length; j++) {
                 title.push(getIconShow(item.q[j].name, item.q[j].n || 1));
 
                 if (info && $("#showMaxOneBelt").get(0).checked) {
-                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.q[j].n || 1));
+                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.q[j].n || 1)) * speed1_5;
+					console.log(1+' '+speed1_5);
                     title.push("<sub class='maxOneBelt'>" + number.toFixed(pointLength));
                     title.push("</sub>");
                 }
@@ -1278,7 +1280,8 @@
 
 
                 if (info && $("#showMaxOneBelt").get(0).checked) {
-                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.s[j].n || 1));
+                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.s[j].n || 1)) * speed1_5;
+					console.log(2+' '+speed1_5);
                     title.push("<sub class='maxOneBelt'>" + number.toFixed(pointLength));
                     title.push("</sub>");
                 }
