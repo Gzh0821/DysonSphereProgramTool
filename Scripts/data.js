@@ -959,15 +959,17 @@
         energyData["能量枢纽"] = 0;
         energyData["分馏塔"] = 0.72;
 
-        var spaceData = {};
-        spaceData["研究站"] = 16;
-        spaceData["制作台Mk.Ⅰ"] = spaceData["制作台Mk.Ⅱ"] = spaceData["制作台Mk.Ⅲ"] = 9;
-        spaceData["电弧熔炉"] = spaceData["位面熔炉"] = 9;
-        spaceData["原油精炼机"] = 12;
-        spaceData["化工厂"] = 12;
-        spaceData["射线接收塔"] = 12;
-        spaceData["能量枢纽"] = 12;
-        spaceData["分馏塔"] = 12;
+
+        var spaceData = {};//占用格子
+        spaceData["研究站"] = 36;
+        spaceData["制作台Mk.Ⅰ"] = spaceData["制作台Mk.Ⅱ"] = spaceData["制作台Mk.Ⅲ"] = 16;
+        spaceData["电弧熔炉"] = spaceData["位面熔炉"] = 16;
+        spaceData["原油精炼机"] = 28;
+        spaceData["化工厂"] = 35;
+        spaceData["射线接收塔"] = 24;
+        spaceData["能量枢纽"] = 64;
+        spaceData["分馏塔"] = 16;
+		spaceData["粒子对撞机"] = 45;
 
         var defaultAccType = "增产剂Mk.Ⅰ";
         var defaultAccValue = "无";

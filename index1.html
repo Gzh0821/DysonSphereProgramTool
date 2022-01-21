@@ -59,8 +59,16 @@
 			<select id="furnace">
 				<option value="电弧熔炉">电弧熔炉</option>
 				<option value="位面熔炉">位面熔炉</option>
-
 			</select>
+			<select id="accType">
+				<option value="增产剂Mk.Ⅰ">增产剂Mk.Ⅰ</option>
+				<option value="增产剂Mk.Ⅱ">
+					增产剂Mk.Ⅱ
+				</option>
+				<option value="增产剂Mk.Ⅲ">增产剂Mk.Ⅲ</option>
+			</select>
+			<select id="accValue"><option value="无">无</option><option value="加速">加速</option><option value="增产">增产</option></select>
+			<input type="checkbox" id="includeAcc" checked/>自动量化增产剂
 			采矿作业速度：
 			<input type="text" class="textbox" id="selore" value="100" style="width:40px;" />%
 			<input type="checkbox" id="showMaxOneBelt" />1条传送带最高支持设备数量
@@ -85,7 +93,8 @@
 
 		<div id="MoreSetting" style="display:none;">
 			<p><span class="label">分馏塔每分钟产量： </span><input id="fractionatorSpeed" class="textbox" type="number" value="18" /> </p>
-			<p><span class="label">运输站集装物流等级：</span> <input id="speed1_5" class="textbox" type="number" value="1" /> </p>
+			<p><span class="label">运输站集装物流：</span> <input id="speed1_5" class="textbox" type="number" value="1" /> </p>
+			<p><span class="label">大型采矿机：</span> <input id="speed1_6" class="textbox" type="number" value="100" /> </p>
 			<p><span class="label">原油速度：</span> <input id="oilSpeed" class="textbox" type="number" value="4" /> </p>
 			<p><span class="label">轨道采集-重氢：</span> <input data-name="重氢" id="speed1_2" class="speed1 textbox"
 					type="number" value="0.02" /> </p>
@@ -142,6 +151,15 @@
 								<br /><span style="font-size:12px">(可选)</span>
 							</td>
 							<td>
+								增产剂等级
+								<br /><span style="font-size:12px">(可选)</span>
+							</td>
+							<td>
+								增产剂效果
+								<br /><span style="font-size:12px">(可选)</span>
+							</td>
+							
+							<td>
 								制作于
 								<br /><span style="font-size:12px">(可选)</span>
 							</td>
@@ -166,10 +184,8 @@
 							</td>
 							<td>
 								<a class="m selected"> {{item.mName}}</a>
-
 							</td>
 						</tr>
-
 						<tr v-for="item in items" v-bind:class="item.rowClass">
 							<td class="opcell">
 								<a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_ig(this)">排除</a>
@@ -195,6 +211,23 @@
 							</td>
 							<td>
 								<div class="ms">
+									<a v-bind:data-modein="a.name" v-bind:data-name="a.itemName" v-for="a in item.accType"
+										v-bind:title="a.title" v-bind:class="a.class" v-bind:href='a.href'>
+										{{a.showName}}
+									</a>
+								</div>
+							</td>
+							<td>
+								<div class="ms">
+									<a v-bind:data-modein="a.name" v-bind:data-name="a.itemName" v-for="a in item.accValue"
+										v-bind:title="a.title" v-bind:class="a.class" v-bind:href='a.href'>
+										{{a.showName}}
+									</a>
+								</div>
+								<span class="number1">需求：{{item.accTotal}}</span></td>
+							</td>
+							<td>
+								<div class="ms">
 									<a v-bind:data-modein="m.name" v-bind:data-name="m.itemName" v-for="m in item.m"
 										v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
 										{{m.showName}}
@@ -217,13 +250,14 @@
 							<td colspan="5">
 								<span v-for="item in total"> {{item.name}}*{{item.value}} </span>
 								<br />
+								<span>占地格子数：{{totalSpace}}</span><br/>
 								<span>
 									耗能估算：{{totalEnergy}}M
 								</span>
 							</td>
 						</tr>
 						<tr class="" v-if="items2 && items2.length">
-							<td colspan="6" align="left">多余产物 <br />(负数代表多余、正数代表缺少，如1000则需要额外补齐，-1000则需要额外消耗) </td>
+							<td colspan="8" align="left">多余产物 <br />(负数代表多余、正数代表缺少，如1000则需要额外补齐，-1000则需要额外消耗) </td>
 						</tr>
 						<tr v-for="item in items2" v-bind:class="item.rowClass">
 							<td></td>
@@ -242,16 +276,16 @@
 							</td>
 							<td></td>
 							<td></td>
-							<!--<td></td>
-                        <td></td>-->
+							<td></td>
+							<td></td>
 						</tr>
 
 
 						<tr class="">
 							<td colspan="1" align="right">更新说明 </td>
-							<td colspan="5">
+							<td colspan="7">
 								使用【CTRL】+【F5】即可刷新缓存看到当前页面最新版本！<br />
-								更新时间：2022年1月20日22:26:45<br />
+								更新时间：2022年1月21日18:12:08<br />
 								你也可以使用其他版本:
 								<select id="furnace" onchange="actions(this)" style="height:20px">
 									<option value="">—当前版本:最新版[0.9.24.11182]—</option>
@@ -264,7 +298,7 @@
 						</tr>
 						<tr class="">
 							<td colspan="1" align="right">使用说明 </td>
-							<td colspan="5">
+							<td colspan="7">
 								点击物品图标可显示 物品作为原料和产品的详细配方 <br />
 								参考数据：传送带360/m 高速传送带720/m 极速传送带1800/m <br />
 								如果【增加】后没反应可以试一下重置配方/设备<br />
@@ -272,12 +306,12 @@
 								1，标注:可以对某个物品进行(改颜色)比如已经完成生产线的物品<br />
 								2，多配方:可以对某个物品进行同时多个配方的计算<br />
 								3，排除:可以对某个物品进行排除计算<br />
-								采矿机默认按6个矿脉计算 <br />
-								临界光子、原油效率、分馏塔、轨道采集、运输站集装物流 可从【参数配置】中配置 <br />
-								无法支持喷涂机，大型采矿机的手动调节，有能力的小伙伴可以去gitee增加功能。 <br />
+								采矿机默认按6个矿脉，大型采矿机默认按20个<br />
+								喷涂机的加速与增产剂同样，所以可以直接使用增产剂来进行设置。<br />
+								临界光子、原油效率、分馏塔、轨道采集、运输站集装物流、大型采矿机 可从【参数配置】中配置<br />
 								———————————————————————————<br />
 								原作者已提桶跑路，已获得原作者后续维护的权限，本站将继续为大家更新！<br />
-								如有问题可以QQ艾特我(@122474363)<br />
+								如有问题可以QQ艾特我(@122474363)，也可去gitee增加功能。<br />
 							</td>
 						</tr>
 					</tbody>
