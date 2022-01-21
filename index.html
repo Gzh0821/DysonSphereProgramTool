@@ -12,12 +12,12 @@
 		<script src="./Scripts/data.js"></script>
 		<link rel="stylesheet" type="text/css" href="./Scripts/style.css"> -->
 		
-		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/jquery.min.2.1.4.js"></script>
-		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/jquery.cookie.min.1.4.1.js"></script>
-		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/vue.min.2.5.16.js"></script>
-		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/jquery.tips.js"></script>
-		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/data.js"></script>
-		<link rel="stylesheet" type="text/css" href="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/style.css">
+		<script src="./Scripts/jquery.min.2.1.4.js"></script>
+		<script src="./Scripts/jquery.cookie.min.1.4.1.js"></script>
+		<script src="./Scripts/vue.min.2.5.16.js"></script>
+		<script src="./Scripts/jquery.tips.js"></script>
+		<script src="./Scripts/data.js"></script>
+		<link rel="stylesheet" type="text/css" href="./Scripts/style.css">
 		
 	</head>
 	<body style="padding:5px;">
@@ -59,8 +59,15 @@
 			<select id="furnace">
 				<option value="电弧熔炉">电弧熔炉</option>
 				<option value="位面熔炉">位面熔炉</option>
-
 			</select>
+			<select id="accType">
+				<option value="增产剂Mk.Ⅰ">增产剂Mk.Ⅰ</option>
+				<option value="增产剂Mk.Ⅱ">
+					增产剂Mk.Ⅱ
+				</option>
+				<option value="增产剂Mk.Ⅲ">增产剂Mk.Ⅲ</option>
+			</select>
+			<select id="accValue"><option value="无">无</option><option value="加速">加速</option><option value="增产">增产</option></select>
 			采矿作业速度：
 			<input type="text" class="textbox" id="selore" value="100" style="width:40px;" />%
 			<input type="checkbox" id="showMaxOneBelt" />1条传送带最高支持设备数量
@@ -142,13 +149,22 @@
 								<br /><span style="font-size:12px">(可选)</span>
 							</td>
 							<td>
+								增产剂
+								<br /><span style="font-size:12px">(可选)</span>
+							</td>
+							<td>
+								效果
+								<br /><span style="font-size:12px">(可选)</span>
+							</td>
+							
+							<td>
 								制作于
 								<br /><span style="font-size:12px">(可选)</span>
 							</td>
 							<!--<td>设备制作速度<br /><span style="font-size:12px">(可自定义)</span></td>-->
 							<!--<td style="width:150px;">最终速度(秒)</td>-->
 						</tr>
-
+<!--
 						<tr v-for="item in items0" v-bind:class="item.rowClass">
 							<td></td>
 							<td class="cell-name" v-bind:data-name="item.name">
@@ -166,10 +182,8 @@
 							</td>
 							<td>
 								<a class="m selected"> {{item.mName}}</a>
-
 							</td>
-						</tr>
-
+						</tr> -->
 						<tr v-for="item in items" v-bind:class="item.rowClass">
 							<td class="opcell">
 								<a href="javascript:void(0)" v-bind:data-name="item.name" onclick="f_ig(this)">排除</a>
@@ -195,6 +209,23 @@
 							</td>
 							<td>
 								<div class="ms">
+									<a v-bind:data-modein="a.name" v-bind:data-name="a.itemName" v-for="a in item.accType"
+										v-bind:title="a.title" v-bind:class="a.class" v-bind:href='a.href'>
+										{{a.showName}}
+									</a>
+								</div>
+							</td>
+							<td>
+								<div class="ms">
+									<a v-bind:data-modein="a.name" v-bind:data-name="a.itemName" v-for="a in item.accValue"
+										v-bind:title="a.title" v-bind:class="a.class" v-bind:href='a.href'>
+										{{a.showName}}
+									</a>
+								</div>
+								<span class="number1">需求：{{item.accTotal}}</span></td>
+							</td>
+							<td>
+								<div class="ms">
 									<a v-bind:data-modein="m.name" v-bind:data-name="m.itemName" v-for="m in item.m"
 										v-bind:title="m.title" v-bind:class="m.class" v-bind:href='m.href'>
 										{{m.showName}}
@@ -212,6 +243,8 @@
 						</tr>
 
 
+							
+							<tr><td colspan="3" align="right">注： </td><td colspan="5"></td></tr>
 						<tr class="total">
 							<td colspan="3" align="right">合计： </td>
 							<td colspan="5">

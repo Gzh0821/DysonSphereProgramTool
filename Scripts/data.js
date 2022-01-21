@@ -444,6 +444,22 @@
 
 
             {
+                s: [{ name: "增产剂Mk.Ⅰ", n: 1 }], group: "消耗品", m: "制作台", q: [
+                    { name: "煤矿", n: 1 }
+                ], t: 0.5
+            },
+            {
+                s: [{ name: "增产剂Mk.Ⅱ", n: 1 }], group: "消耗品", m: "制作台", q: [
+                    { name: "增产剂Mk.Ⅰ", n: 2 }, { name: "金刚石", n: 1 }
+                ], t: 1
+            },
+            {
+                s: [{ name: "增产剂Mk.Ⅲ", n: 1 }], group: "消耗品", m: "制作台", q: [
+                    { name: "增产剂Mk.Ⅱ", n: 2 }, { name: "碳纳米管", n: 1 }
+                ], t: 2
+            },
+
+            {
                 s: [{ name: "硫酸", n: 1 }], group: "组件", m: "抽水机", q: [
                 ], t: 1
             },
@@ -943,8 +959,8 @@
         energyData["能量枢纽"] = 0;
         energyData["分馏塔"] = 0.72;
 
-
-       
+        var defaultAccType = "增产剂Mk.Ⅰ";
+        var defaultAccValue = "无";
 
         var version = "081";
 
@@ -1095,7 +1111,7 @@
         function getMachine(arg) {
             var item = typeof (arg) == "string" ? find(arg) : arg;
             if (!item) return null;
-            var machine = settings[item.id] || null;
+            var machine = (settings[item.id] || {}).m || null;
             if (machine != null) return machine;
 
             machine = settingsLocal[item.id] || null;
@@ -1584,6 +1600,12 @@
 			    saveSetting();
 			    update_all();
 			});
+            $('#accType').change(function() {
+                defaultAccType = $("#accType").val();
+            });
+            $('#accValue').change(function() {
+                defaultAccValue = $("#accValue").val();
+            });
             $("#isMerge").change(function () {
                 update_all();
             });
@@ -1650,6 +1672,15 @@
             }
             xh_list.push({ name: name, value: value });
         }
+        function addAccTotal(name, value) {
+            for (var i = 0; i < xh_list.length; i++) {
+                var item = xh_list[i];
+                if (item.name == name) {
+                    item.accTotal = (item.accTotal || 0) + value;  //需求
+                    return;
+                }
+            }
+        }
         function addOut(name, value) {
             for (var i = 0; i < out_list.length; i++) {
                 var item = out_list[i];
@@ -1685,8 +1716,11 @@
         }
         var ig_names = [];//排除的物品
         //加载需求
-        function loadNumber(itemName, n) {
-            try { 
+        function loadNumber(itemName, n, deep) {
+            try {
+                if ((itemName == '增产剂Mk.Ⅰ' || itemName == '增产剂Mk.Ⅱ' || itemName == '增产剂Mk.Ⅲ') && n < 0.1) {
+                    return;
+                }
                 var item = find(itemName);
                 var info = getValue(itemName);
                 var sameName = getSameNameWithSource(item, itemName);
@@ -1712,6 +1746,9 @@
                         addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1));
                     }
                 }
+                var accType = (settings[item.id] || {}).accType || defaultAccType;
+                var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
+                var accTotal = 0;
                 for (var i = 0; item.q && i < item.q.length; i++) {
                     var q = item.q[i];
                     if ($.inArray(q.name, ig_names) != -1) {
@@ -1722,9 +1759,25 @@
                     if (q.name == itemName) {
                         //addXH(itemName, -1 * n * (q.n || 1) / (item.n || 1));
                     } else {
-                        loadNumber(q.name, n * (q.n || 1) / (item.n || 1));
+                        var r = n * (q.n || 1) / (item.n || 1);
+                        var v = 1, tm = 0;
+                        if (accType == "增产剂Mk.Ⅰ") v = 1.125, tm=12;
+                        else if (accType == "增产剂Mk.Ⅱ") v = 1.2, tm=24;
+                        else if (accType == "增产剂Mk.Ⅲ") v = 1.25, tm=60;
+
+                        if (accValue == '加速') {
+                            accTotal += r / tm;
+                            loadNumber(accType, r / tm);
+                        } else if (accValue == '增产') {
+                            r /= v;
+                            accTotal += r / tm;
+                            loadNumber(accType, r / tm);
+                        }
+
+                        loadNumber(q.name, r);
                     }
                 }
+                addAccTotal(itemName, accTotal);
             } catch (e) {
                 // console.log(itemName);
                 throw e;
@@ -1865,6 +1918,8 @@
             var items0 = [];
             var items = [];
             var items2 = [];
+
+
             for (var i = 0; i < xh_list.length; i++) {
                 var xh = xh_list[i];
                 if (!xh.value) continue;
@@ -1873,6 +1928,18 @@
                 var info = getValue(itemName);
                 if (xh.value > 0) {
                     xh.value2 = xh.value / (1 / info.time) / 60 / (item.n || 1);
+                    var accType = (settings[item.id] || {}).accType || defaultAccType;
+                    var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
+                    if (accValue == "加速") {
+                        if (accType == "增产剂Mk.Ⅰ") xh.value2 /= 1.25;
+                        else if (accType == "增产剂Mk.Ⅱ") xh.value2 /= 1.5;
+                        else if (accType == "增产剂Mk.Ⅲ") xh.value2 /= 2;
+                    } else if (accValue == "增产") {
+                        var accType = (settings[item.id] || {}).accType || defaultAccType;
+                        if (accType == "增产剂Mk.Ⅰ") xh.value2 /= 1.125;
+                        else if (accType == "增产剂Mk.Ⅱ") xh.value2 /= 1.2;
+                        else if (accType == "增产剂Mk.Ⅲ") xh.value2 /= 1.25;
+                    }
                 }
             } 
             //mergeMul();//处理合并 多个产出使用了同一个配方 ,暂时弃用，checkResult会处理这种情况
@@ -1910,8 +1977,16 @@
                 }
             }
             var total = [];
-            function addTotal(name, value) {
+            function addTotal(name, value, s) {
                 var energy = energyData[name] || 0;
+
+                var accType = (s || {}).accType || defaultAccType;
+                var accValue = (s || {}).accValue || defaultAccValue;
+                if (accValue != "无") {
+                    if (accType == "增产剂Mk.Ⅰ") energy *= 1.3;
+                    else if (accType == "增产剂Mk.Ⅱ") energy *= 1.7;
+                    else if (accType == "增产剂Mk.Ⅲ") energy *= 2.5;
+                }
 
                 for (var i = 0; i < total.length; i++) {
                     var item = total[i];
@@ -1923,6 +1998,7 @@
                         return;
                     }
                 }
+
                 total.push({ name: name, value: value, energy: energy * (value || 0) });
             }
 
@@ -1953,7 +2029,10 @@
                     rowClass: isXqs(xh_list[i].name) ? "xqsrow" : "",
                     machineName: info.name,
                     m: [],
-                    pf: []
+                    pf: [],
+                    accType: [],
+                    accValue: [],
+                    accTotal: (xh_list[i].accTotal || 0).toFixed(2),
                 };
                 if (!outitem.number2) outitem.number2full = "";
                 if (xh_list[i].name == "太阳帆") {
@@ -1962,7 +2041,7 @@
                 if (xh_list[i].name == "小型运载火箭") {
                     outitem.numberOther = "(可供" + getIconShow("垂直发射井", outitem.number1 / 5) + ")";
                 }
-                addTotal(info.name, Math.ceil(outitem.number2));
+                addTotal(info.name, Math.ceil(outitem.number2), settings[item.id]);
                 var pfds = getPfs(xh_list[i].name);
 
                 for (var j = 0; j < pfds.length; j++) {
@@ -1994,6 +2073,31 @@
                     outitem.m.push(m);
 
                 }
+                var accType = (settings[item.id] || {}).accType || defaultAccType;
+                var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
+
+                ["增产剂Mk.Ⅰ", "增产剂Mk.Ⅱ", "增产剂Mk.Ⅲ"].forEach(function (one) {
+                    outitem.accType.push({
+                       class: one == accType ? "m selected" : "m",
+                       itemName: item.name,
+                       href: one == accType ? "javascript:void(0)" : "javascript: selectAccType(\"" + item.id + "\",\"" + one + "\")",
+                       name: one,
+                       title: one,
+                       showName: one.replace("增产剂", ""),
+                    })
+                });
+
+                ["无", "加速", "增产"].forEach(function (one) {
+                    outitem.accValue.push({
+                       class: one == accValue ? "m selected" : "m",
+                       itemName: item.name,
+                       href: one == accValue ? "javascript:void(0)" : "javascript: selectAccValue(\"" + item.id + "\",\"" + one + "\")",
+                       name: one,
+                       title: one,
+                       showName: one,
+                    })
+                });
+
                 items.push(outitem);
 
             }
@@ -2029,7 +2133,20 @@
             app.totalEnergy = energy.toFixed(pointLength);
         }
         function selectM(id, m) {
-            settings[id] = m;
+            settings[id] = settings[id] || {};
+            settings[id].m = m;
+            saveSetting();
+            update_all();
+        }
+        function selectAccType(id, accType) {
+            settings[id] = settings[id] || {};
+            settings[id].accType = accType;
+            saveSetting();
+            update_all();
+        }
+        function selectAccValue(id, accValue) {
+            settings[id] = settings[id] || {};
+            settings[id].accValue = accValue;
             saveSetting();
             update_all();
         }
