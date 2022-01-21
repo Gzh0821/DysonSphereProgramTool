@@ -1602,9 +1602,19 @@
 			});
             $('#accType').change(function() {
                 defaultAccType = $("#accType").val();
+                for (var i in settings) {
+                    delete settings[i].accType;
+                }
+                saveSetting();
+                update_all();
             });
             $('#accValue').change(function() {
                 defaultAccValue = $("#accValue").val();
+                for (var i in settings) {
+                    delete settings[i].accValue;
+                }
+                saveSetting();
+                update_all();
             });
             $("#isMerge").change(function () {
                 update_all();
@@ -1612,6 +1622,7 @@
             $("#hideSource").change(function () {
                 update_all();
             });
+            $("#includeAcc").change(update_all);
             $(document).click(function (e) {
                 var jname = null;
                 if ($(e.target).is(".cell-name")) {
@@ -1721,7 +1732,7 @@
                 if ($.inArray(itemName, ig_names) != -1) {
                     return;
                 }
-                if ((itemName == '增产剂Mk.Ⅰ' || itemName == '增产剂Mk.Ⅱ' || itemName == '增产剂Mk.Ⅲ') && n < 0.1) {
+                if ((itemName == '增产剂Mk.Ⅰ' || itemName == '增产剂Mk.Ⅱ' || itemName == '增产剂Mk.Ⅲ') && (n < 0.1 || !$('#includeAcc')[0].checked)) {
                     return;
                 }
                 var item = find(itemName);
