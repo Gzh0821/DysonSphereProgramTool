@@ -365,7 +365,7 @@
             {
                 s: [{ name: "重氢", n: 5 }], group: "组件", m: "粒子对撞机", q: [
                     { name: "氢", n: 10 }
-                ], t: 5
+                ], t: 5, noExtra: true
             },
             {
                 s: [{ name: "奇异物质", n: 1 }], group: "组件", m: "粒子对撞机", q: [
@@ -384,7 +384,7 @@
             {
                 s: [{ name: "反物质", n: 2 }, { name: "氢", n: 2 }], group: "组件", m: "粒子对撞机", q: [
                     { name: "临界光子", n: 2 }
-                ], t: 2
+                ], t: 2, noExtra: true
             },
 
             {
@@ -523,7 +523,7 @@
                 s: [{ name: "无线输电塔", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "电力感应塔", n: 1 },
                     { name: "电浆激发器", n: 3 }
-                ], t: 3
+                ], t: 3, noExtra: true
             },
 
             {
@@ -531,7 +531,7 @@
                     { name: "无线输电塔", n: 1 },
                     { name: "超级磁场环", n: 10 },
                     { name: "框架材料", n: 2 }
-                ], t: 5
+                ], t: 5, noExtra: true
             },
             {
                 s: [{ name: "风力涡轮机", n: 1 }], group: "建筑", m: "制作台", q: [
@@ -558,14 +558,14 @@
                 s: [{ name: "高速传送带", n: 3 }], group: "建筑", m: "制作台", q: [
                     { name: "传送带", n: 3 },
                     { name: "电磁涡轮", n: 1 }
-                ], t: 1
+                ], t: 1, noExtra: true
             },
             {
                 s: [{ name: "极速传送带", n: 3 }], group: "建筑", m: "制作台", q: [
                     { name: "高速传送带", n: 3 },
                     { name: "超级磁场环", n: 1 },
                     { name: "石墨烯", n: 1 }
-                ], t: 1
+                ], t: 1, noExtra: true
             },
             {
                 s: [{ name: "小型储物仓", n: 1 }], group: "建筑", m: "制作台", q: [
@@ -640,14 +640,14 @@
                 s: [{ name: "高速分拣器", n: 2 }], group: "建筑", m: "制作台", q: [
                     { name: "分拣器", n: 2 },
                     { name: "电动机", n: 1 }
-                ], t: 1
+                ], t: 1, noExtra: true
             },
 
             {
                 s: [{ name: "极速分拣器", n: 2 }], group: "建筑", m: "制作台", q: [
                     { name: "高速分拣器", n: 2 },
                     { name: "电磁涡轮", n: 1 }
-                ], t: 1
+                ], t: 1, noExtra: true
             },
             {
                 s: [{ name: "采矿机", n: 1 }], group: "建筑", m: "制作台", q: [
@@ -722,14 +722,14 @@
                     { name: "制作台Mk.Ⅰ", n: 1 },
                     { name: "石墨烯", n: 8 },
                     { name: "处理器", n: 4 }
-                ], t: 3
+                ], t: 3, noExtra: true
             },
             {
                 s: [{ name: "制作台Mk.Ⅲ", n: 1 }], group: "建筑", m: "制作台", q: [
                     { name: "制作台Mk.Ⅱ", n: 1 },
                     { name: "粒子带宽", n: 8 },
                     { name: "量子芯片", n: 2 }
-                ], t: 4
+                ], t: 4, noExtra: true
             },
             {
                 s: [{ name: "制作台Mk.Ⅲ", n: 1 }], group: "建筑", m: "制作台", q: [
@@ -752,7 +752,7 @@
 			        { name: "框架材料", n: 5 },
 			        { name: "位面过滤器", n: 4 },
 			        { name: "单极磁石", n: 15 }
-			    ], t: 5
+			    ], t: 5, noExtra: true
 			},
             {
                 s: [{ name: "分馏塔", n: 1 }], group: "建筑", m: "制作台", q: [
@@ -808,7 +808,7 @@
                     { name: "行星内物流运输站", n: 1 },
                     { name: "钛合金", n: 40 },
                     { name: "粒子容器", n: 20 }
-                ], t: 30
+                ], t: 30, noExtra: true
             },
             {
                 s: [{ name: "加力推进器", n: 1 }], group: "组件", m: "制作台", q: [
@@ -822,7 +822,7 @@
                     { name: "超级磁场环", n: 50 },
                     { name: "加力推进器", n: 20 },
                     { name: "蓄电池满", n: 20 }
-                ], t: 30
+                ], t: 30, noExtra: true
             },
             {
                 s: [{ name: "推进器", n: 1 }], group: "组件", m: "制作台", q: [
@@ -835,14 +835,14 @@
                     { name: "铁块", n: 5 },
                     { name: "处理器", n: 2 },
                     { name: "推进器", n: 2 }
-                ], t: 4
+                ], t: 4, noExtra: true
             },
             {
                 s: [{ name: "星际物流运输机", n: 1 }], group: "组件", m: "制作台", q: [
                     { name: "钛合金", n: 10 },
                     { name: "处理器", n: 10 },
                     { name: "加力推进器", n: 2 }
-                ], t: 6
+                ], t: 6, noExtra: true
             },
 
 
@@ -868,7 +868,7 @@
                     { name: "氢", n: 12 },
                     { name: "湮灭约束球", n: 1 },
                     { name: "钛合金", n: 1 }
-                ], t: 24
+                ], t: 24, noExtra: true
             },
 
 
@@ -922,7 +922,7 @@
                 s: [{ name: "氢", n: 3 }, { name: "高级石墨", n: 1 }], group: "组件", m: "原油精炼机", q: [
                     { name: "氢", n: 2 },
                     { name: "精炼油", n: 1 }
-                ], t: 4
+                ], t: 4, noExtra: true
             },
 
 
@@ -959,6 +959,16 @@
         energyData["能量枢纽"] = 0;
         energyData["分馏塔"] = 0.72;
 
+        var spaceData = {};
+        spaceData["研究站"] = 16;
+        spaceData["制作台Mk.Ⅰ"] = spaceData["制作台Mk.Ⅱ"] = spaceData["制作台Mk.Ⅲ"] = 9;
+        spaceData["电弧熔炉"] = spaceData["位面熔炉"] = 9;
+        spaceData["原油精炼机"] = 12;
+        spaceData["化工厂"] = 12;
+        spaceData["射线接收塔"] = 12;
+        spaceData["能量枢纽"] = 12;
+        spaceData["分馏塔"] = 12;
+
         var defaultAccType = "增产剂Mk.Ⅰ";
         var defaultAccValue = "无";
 
@@ -994,7 +1004,7 @@
                 if (item.m == "采矿机") {
                     ms = [
                         { name: "采矿机", speed: 0.5 * 6 },
-                        { name: "大型采矿机", speed: 1 * 6 },
+                        { name: "大型采矿机", speed: 1 * 20 },
                         { name: "矿脉", speed: 0.5 * 1 }
                     ];
                 }
@@ -1376,6 +1386,7 @@
                 el: '#result',
                 data: {
                     totalEnergy: 0,
+                    totalSpace: 0,
                     total: [],
                     xqs: [],
                     icons: icons,
@@ -1416,8 +1427,20 @@
                 saveSettingTime();
                 update_all();
             });
+            $('#speed1_6').change(function () {
+                $(data).each(function () {
+                    if (this.m) {
+                        for (var i = 0; i < this.m.length; i++) {
+                            if (this.m[i].name == "大型采矿机") {
+                                this.m[i].speed = 1 * 20 * 0.01 * parseFloat($("#selore").val()) * 0.01 * parseFloat($('#speed1_6').val());
+                            }
+                        }
+                    }
+                });
+                doSpeed1();
+                update_all();
+            });
             $("#selore").change(function () {
-
                 $(data).each(function () {
                     if (this.m) {
                         for (var i = 0; i < this.m.length; i++) {
@@ -1425,6 +1448,8 @@
                                 this.m[i].speed = Math.min(0.5 * 1 *0.01* parseFloat($("#selore").val()),30);
                             } if (this.m[i].name == "采矿机") {
                                 this.m[i].speed = Math.min(0.5 * 6 * 0.01 * parseFloat($("#selore").val()),30);
+                            } if (this.m[i].name == "大型采矿机") {
+                                this.m[i].speed = 1 * 20 * 0.01 * parseFloat($("#selore").val()) * 0.01 * parseFloat($('#speed1_6').val());
                             } if (this.m[i].name == "抽水机") {
                                 this.m[i].speed = Math.min(50 * 0.01 * parseFloat($("#selore").val()) / 60, 30);
                             }  
@@ -1778,6 +1803,7 @@
                         if (accType == "增产剂Mk.Ⅰ") v = 1.125, tm=12;
                         else if (accType == "增产剂Mk.Ⅱ") v = 1.2, tm=24;
                         else if (accType == "增产剂Mk.Ⅲ") v = 1.25, tm=60;
+                        if (accValue == '增产' && item.noExtra) accValue = '无';
 
                         if (accValue == '加速') {
                             accTotal += r / tm;
@@ -1944,6 +1970,8 @@
                     xh.value2 = xh.value / (1 / info.time) / 60 / (item.n || 1);
                     var accType = (settings[item.id] || {}).accType || defaultAccType;
                     var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
+                    if (accValue == '增产' && item.noExtra) accValue = '无';
+
                     if (accValue == "加速") {
                         if (accType == "增产剂Mk.Ⅰ") xh.value2 /= 1.25;
                         else if (accType == "增产剂Mk.Ⅱ") xh.value2 /= 1.5;
@@ -1993,6 +2021,7 @@
             var total = [];
             function addTotal(name, value, s) {
                 var energy = energyData[name] || 0;
+                var space = spaceData[name] || 0;
 
                 var accType = (s || {}).accType || defaultAccType;
                 var accValue = (s || {}).accValue || defaultAccValue;
@@ -2006,14 +2035,16 @@
                     var item = total[i];
 
                     if (!item.energy) item.energy = 0;
+                    if (!item.space) item.space = 0;
                     if (item.name == name) {
                         item.value += value;
                         item.energy += energy * (value || 0);
+                        item.space += space * (value || 0);
                         return;
                     }
                 }
 
-                total.push({ name: name, value: value, energy: energy * (value || 0) });
+                total.push({ name: name, value: value, energy: energy * (value || 0), space: space * (value || 0) });
             }
 
 
@@ -2079,7 +2110,7 @@
                         m.title += " 采矿机按6个矿脉计算(因所限传送带速度最高30)"
                     }
                     if (m.showName == "大型采矿机") {
-                        m.title += " 采矿机按6个矿脉计算(因所限传送带速度最高30)"
+                        m.title += " 大型采矿机按20个矿脉计算"
                     }
                     if (m.showName == "矿脉") {
                         m.title += " (速度最高30)"
@@ -2089,6 +2120,7 @@
                 }
                 var accType = (settings[item.id] || {}).accType || defaultAccType;
                 var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
+                if (accValue == '增产' && item.noExtra) accValue = '无';
 
                 ["增产剂Mk.Ⅰ", "增产剂Mk.Ⅱ", "增产剂Mk.Ⅲ"].forEach(function (one) {
                     outitem.accType.push({
@@ -2102,6 +2134,7 @@
                 });
 
                 ["无", "加速", "增产"].forEach(function (one) {
+                    if (one == '增产' && item.noExtra) return;
                     outitem.accValue.push({
                        class: one == accValue ? "m selected" : "m",
                        itemName: item.name,
@@ -2145,6 +2178,11 @@
                 energy += total[i].energy || 0;
             }
             app.totalEnergy = energy.toFixed(pointLength);
+            var space = 0;
+            for (var i = 0; i < total.length; ++i) {
+                space += total[i].space || 0;
+            }
+            app.totalSpace = space;
         }
         function selectM(id, m) {
             settings[id] = settings[id] || {};
