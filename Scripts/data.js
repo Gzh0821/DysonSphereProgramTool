@@ -960,7 +960,7 @@
         energyData["分馏塔"] = 0.72;
 
         var defaultAccType = "增产剂Mk.Ⅰ";
-       
+        var defaultAccValue = "无";
 
         var version = "081";
 
@@ -1600,8 +1600,11 @@
 			    saveSetting();
 			    update_all();
 			});
-            $('#accelerate').change(function() {
-                defaultAccType = $("#accelerate").val();
+            $('#accType').change(function() {
+                defaultAccType = $("#accType").val();
+            });
+            $('#accValue').change(function() {
+                defaultAccValue = $("#accValue").val();
             });
             $("#isMerge").change(function () {
                 update_all();
@@ -1715,6 +1718,9 @@
         //加载需求
         function loadNumber(itemName, n, deep) {
             try {
+                if ((itemName == '增产剂Mk.Ⅰ' || itemName == '增产剂Mk.Ⅱ' || itemName == '增产剂Mk.Ⅲ') && n < 0.1) {
+                    return;
+                }
                 var item = find(itemName);
                 var info = getValue(itemName);
                 var sameName = getSameNameWithSource(item, itemName);
@@ -1740,8 +1746,8 @@
                         addOut(item.s[i].name, -1 * n * (item.s[i].n || 1) / (item.n || 1));
                     }
                 }
-                var accType = (settings[item.id] || {}).accType || "增产剂Mk.Ⅰ";
-                var accValue = (settings[item.id] || {}).accValue || null;
+                var accType = (settings[item.id] || {}).accType || defaultAccType;
+                var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
                 var accTotal = 0;
                 for (var i = 0; item.q && i < item.q.length; i++) {
                     var q = item.q[i];
@@ -1754,20 +1760,18 @@
                         //addXH(itemName, -1 * n * (q.n || 1) / (item.n || 1));
                     } else {
                         var r = n * (q.n || 1) / (item.n || 1);
-                        if (itemName != "增产剂Mk.Ⅰ" && itemName != "增产剂Mk.Ⅱ" && itemName != "增产剂Mk.Ⅲ") {
-                            var v = 1, tm = 0;
-                            if (accType == "增产剂Mk.Ⅰ") v = 1.125, tm=12;
-                            else if (accType == "增产剂Mk.Ⅱ") v = 1.2, tm=24;
-                            else if (accType == "增产剂Mk.Ⅲ") v = 1.25, tm=60;
-    
-                            if (accValue == '加速') {
-                                accTotal += r / tm;
-                                loadNumber(accType, r / tm);
-                            } else if (accValue == '增产') {
-                                r /= v;
-                                accTotal += r / tm;
-                                loadNumber(accType, r / tm);
-                            }
+                        var v = 1, tm = 0;
+                        if (accType == "增产剂Mk.Ⅰ") v = 1.125, tm=12;
+                        else if (accType == "增产剂Mk.Ⅱ") v = 1.2, tm=24;
+                        else if (accType == "增产剂Mk.Ⅲ") v = 1.25, tm=60;
+
+                        if (accValue == '加速') {
+                            accTotal += r / tm;
+                            loadNumber(accType, r / tm);
+                        } else if (accValue == '增产') {
+                            r /= v;
+                            accTotal += r / tm;
+                            loadNumber(accType, r / tm);
                         }
 
                         loadNumber(q.name, r);
@@ -1924,11 +1928,17 @@
                 var info = getValue(itemName);
                 if (xh.value > 0) {
                     xh.value2 = xh.value / (1 / info.time) / 60 / (item.n || 1);
-                    if ((settings[item.id] || {}).accValue == "加速") {
-                        var accType = (settings[item.id] || {}).accType || defaultAccType;
+                    var accType = (settings[item.id] || {}).accType || defaultAccType;
+                    var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
+                    if (accValue == "加速") {
                         if (accType == "增产剂Mk.Ⅰ") xh.value2 /= 1.25;
                         else if (accType == "增产剂Mk.Ⅱ") xh.value2 /= 1.5;
                         else if (accType == "增产剂Mk.Ⅲ") xh.value2 /= 2;
+                    } else if (accValue == "增产") {
+                        var accType = (settings[item.id] || {}).accType || defaultAccType;
+                        if (accType == "增产剂Mk.Ⅰ") xh.value2 /= 1.125;
+                        else if (accType == "增产剂Mk.Ⅱ") xh.value2 /= 1.2;
+                        else if (accType == "增产剂Mk.Ⅲ") xh.value2 /= 1.25;
                     }
                 }
             } 
@@ -1967,8 +1977,16 @@
                 }
             }
             var total = [];
-            function addTotal(name, value) {
+            function addTotal(name, value, s) {
                 var energy = energyData[name] || 0;
+
+                var accType = (s || {}).accType || defaultAccType;
+                var accValue = (s || {}).accValue || defaultAccValue;
+                if (accValue != "无") {
+                    if (accType == "增产剂Mk.Ⅰ") energy *= 1.3;
+                    else if (accType == "增产剂Mk.Ⅱ") energy *= 1.7;
+                    else if (accType == "增产剂Mk.Ⅲ") energy *= 2.5;
+                }
 
                 for (var i = 0; i < total.length; i++) {
                     var item = total[i];
@@ -1980,6 +1998,7 @@
                         return;
                     }
                 }
+
                 total.push({ name: name, value: value, energy: energy * (value || 0) });
             }
 
@@ -2022,7 +2041,7 @@
                 if (xh_list[i].name == "小型运载火箭") {
                     outitem.numberOther = "(可供" + getIconShow("垂直发射井", outitem.number1 / 5) + ")";
                 }
-                addTotal(info.name, Math.ceil(outitem.number2));
+                addTotal(info.name, Math.ceil(outitem.number2), settings[item.id]);
                 var pfds = getPfs(xh_list[i].name);
 
                 for (var j = 0; j < pfds.length; j++) {
@@ -2055,7 +2074,7 @@
 
                 }
                 var accType = (settings[item.id] || {}).accType || defaultAccType;
-                var accValue = (settings[item.id] || {}).accValue || "无";
+                var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
 
                 ["增产剂Mk.Ⅰ", "增产剂Mk.Ⅱ", "增产剂Mk.Ⅲ"].forEach(function (one) {
                     outitem.accType.push({
