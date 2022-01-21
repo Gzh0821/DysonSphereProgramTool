@@ -1716,8 +1716,11 @@
         }
         var ig_names = [];//排除的物品
         //加载需求
-        function loadNumber(itemName, n, deep) {
+        function loadNumber(itemName, n) {
             try {
+                if ($.inArray(itemName, ig_names) != -1) {
+                    return;
+                }
                 if ((itemName == '增产剂Mk.Ⅰ' || itemName == '增产剂Mk.Ⅱ' || itemName == '增产剂Mk.Ⅲ') && n < 0.1) {
                     return;
                 }
