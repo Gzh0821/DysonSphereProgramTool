@@ -2227,6 +2227,7 @@
         }
         function f_reset() {
             xqs = [];
+            singleMake = [];
             update_all();
         }
         function f_reset_ig() {
