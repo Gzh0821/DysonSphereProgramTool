@@ -365,7 +365,7 @@
             {
                 s: [{ name: "重氢", n: 5 }], group: "组件", m: "粒子对撞机", q: [
                     { name: "氢", n: 10 }
-                ], t: 5, noExtra: true
+                ], t: 2.5, noExtra: true
             },
             {
                 s: [{ name: "奇异物质", n: 1 }], group: "组件", m: "粒子对撞机", q: [
