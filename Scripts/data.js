@@ -1615,6 +1615,7 @@
                         xqs = projects[i].value;
                         singleMake = projects[i].singleMake || [];
                         ig_names = projects[i].ig_names || [];
+                        settings = projects[i].settings || {};
                         update_all();
                         return;
                     }
@@ -2264,12 +2265,13 @@
             }
         }
         function f_save() {
-            let i = 0;
+            let index = 0;
+            let product_settings = {};
             var name = prompt("输入方案名");
             if (!name) return;
-            for (; i<projects.length; i++) {
+            for (index = 0; index < projects.length; index++) {
                 // 存在相同名称的方案
-                if (projects[i].name == name) {
+                if (projects[index].name == name) {
                     // 用户取消保存
                     if (!confirm(`已存在名为${name}的方案，继续保存将覆盖原方案`)) {
                         return;
@@ -2277,11 +2279,33 @@
                     break;
                 }
             }
-            projects[i] = {
+            // TODO: 优化处理方案
+            for (let item of app.items) {
+                let product_setting = {};
+                for (let accType of item.accType) {
+                    if (accType.class === "m selected") {
+                        product_setting.accType = accType.name;
+                    }
+                }
+                for (let accValue of item.accValue) {
+                    if (accValue.class === "m selected") {
+                        product_setting.accValue = accValue.name;
+                    }
+                }
+                for (let m of item.m) {
+                    if (m.class === "m selected") {
+                        product_setting.m = m.name;
+                    }
+                }
+                product_settings[find(item.name).id] = product_setting;
+            }
+            projects[index] = {
                 name: name,
                 singleMake: singleMake,
                 ig_names: ig_names || [],
-                value: xqs
+                value: xqs,
+                // 增产剂和工厂类型设置
+                settings: product_settings
             };
             saveSettingProjects();
             projectsUpdate();
