@@ -2260,14 +2260,25 @@
             }
         }
         function f_save() {
+            let i = 0;
             var name = prompt("输入方案名");
             if (!name) return;
-            projects.push({
+            for (; i<projects.length; i++) {
+                // 存在相同名称的方案
+                if (projects[i].name == name) {
+                    // 用户取消保存
+                    if (!confirm(`已存在名为${name}的方案，继续保存将覆盖原方案`)) {
+                        return;
+                    }
+                    break;
+                }
+            }
+            projects[i] = {
                 name: name,
                 singleMake: singleMake,
                 ig_names: ig_names || [],
                 value: xqs
-            });
+            };
             saveSettingProjects();
             projectsUpdate();
         }
