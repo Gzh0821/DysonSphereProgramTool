@@ -1112,10 +1112,20 @@
         }
         var projects = [];
         function saveSettingProjects() {
-            $.cookie('settings_projects' + version, JSON.stringify(projects));
+            let storage_data = JSON.stringify(projects);
+            if (window.localStorage) {
+                localStorage.setItem('settings_projects' + version, storage_data);
+            } else {
+                $.cookie('settings_projects' + version, storage_data);
+            }
         }
         function loadSettingProjects() {
-            var json = $.cookie('settings_projects' + version);
+            let storageName = 'settings_projects' + version;
+            if (window.localStorage) {
+                var json = localStorage.getItem(storageName);
+            } else {
+                var json = $.cookie(storageName);
+            }
             if (json) {
                 eval("projects = " + json);
             }
