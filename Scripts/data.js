@@ -1081,51 +1081,55 @@
         var pointLength = 1;
         var settingsLocal = {};//不存储cookie
         var settings = {};
+        function saveData(key, value) {
+            if (window.localStorage) {
+                localStorage.setItem(key, value);
+            } else {
+                $.cookie(key, value);
+            }
+        }
+        function getData(key) {
+            if (window.localStorage) {
+                return localStorage.getItem(key);
+            } else {
+                return $.cookie(key);
+            }
+        }
         function saveSetting() {
-            $.cookie('machine_settings' + version, JSON.stringify(settings));
+            saveData('machine_settings' + version, JSON.stringify(settings));
         }
         function loadSetting() {
-            var json = $.cookie('machine_settings' + version);
+            var json = getData('machine_settings' + version);
             if (json) {
                 eval("settings = " + json);
             }
         }
         var settings_time = {};
         function saveSettingTime() {
-            $.cookie('machine_settings_time' + version, JSON.stringify(settings_time));
+            saveData('machine_settings_time' + version, JSON.stringify(settings_time))
         }
         function loadSettingTime() {
-            var json = $.cookie('machine_settings_time' + version);
+            var json = getData('machine_settings_time' + version);
             if (json) {
                 eval("settings_time = " + json);
             }
         }
         var settings_pf = {};
         function saveSettingPf() {
-            $.cookie('machine_settings_pf' + version, JSON.stringify(settings_pf));
+            saveData('machine_settings_pf' + version, JSON.stringify(settings_pf));
         }
         function loadSettingPf() {
-            var json = $.cookie('machine_settings_pf' + version);
+            var json = getData('machine_settings_pf' + version);
             if (json) {
                 eval("settings_pf = " + json);
             }
         }
         var projects = [];
         function saveSettingProjects() {
-            let storage_data = JSON.stringify(projects);
-            if (window.localStorage) {
-                localStorage.setItem('settings_projects' + version, storage_data);
-            } else {
-                $.cookie('settings_projects' + version, storage_data);
-            }
+            saveData('settings_projects' + version, JSON.stringify(projects));
         }
         function loadSettingProjects() {
-            let storageName = 'settings_projects' + version;
-            if (window.localStorage) {
-                var json = localStorage.getItem(storageName);
-            } else {
-                var json = $.cookie(storageName);
-            }
+            var json = getData('settings_projects' + version);
             if (json) {
                 eval("projects = " + json);
             }
