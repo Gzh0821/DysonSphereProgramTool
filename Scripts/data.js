@@ -1141,34 +1141,62 @@
             var machine = (settings[item.id] || {}).m || null;
             if (machine != null) return machine;
 
-            machine = settingsLocal[item.id] || null;
+            machine = (settingsLocal[item.id] || {}).m || null;
             if (machine != null) return machine;
 
             return item.m[0].name;
+        }
+        // 获取配方默认的增产剂等级
+        function getAccType(arg) {
+            var item = typeof (arg) == "string" ? find(arg) : arg;
+            if (!item) return null;
+            var accType = (settings[item.id] || {}).accType || null;
+            if (accType != null) return accType;
+
+            accType = (settingsLocal[item.id] || {}).accType || null;
+            if (accType != null) return accType;
+
+            return null;
+        }
+        // 获取配方默认的增产剂效果
+        function getAccValue(arg) {
+            var item = typeof (arg) == "string" ? find(arg) : arg;
+            if (!item) return null;
+            var accValue = (settings[item.id] || {}).accValue || null;
+            if (accValue != null) return accValue;
+
+            accValue = (settingsLocal[item.id] || {}).accValue || null;
+            if (accValue != null) return accValue;
+
+            return null;
         }
         //获取时间  参数
         function getValue(arg) {
             var item = typeof (arg) == "string" ? find(arg) : arg;
             if (!item) return null;
             var machine = getMachine(item);
+            var accType = getAccType(item), accValue = getAccValue(item);
             var speed = settings_time[machine];
 
             if (speed) {
                 return {
-                    name: machine, t: item.t, speed: speed, time: item.t / speed, isChange: true
+                    name: machine, t: item.t, speed: speed, time: item.t / speed, isChange: true,
+                    accType: accType, accValue: accValue
                 }
             }
             for (var i = 0; i < item.m.length; i++) {
                 var m = item.m[i];
                 if (m.name == machine) {
                     return {
-                        name: m.name, t: item.t, speed: m.speed, time: item.t / m.speed
+                        name: m.name, t: item.t, speed: m.speed, time: item.t / m.speed,
+                        accType: accType, accValue: accValue
                     }
                 }
             }
             m = item.m[0];
             return {
-                name: m.name, t: item.t, speed: m.speed, time: item.t / m.speed
+                name: m.name, t: item.t, speed: m.speed, time: item.t / m.speed,
+                accType: accType, accValue: accValue
             }
         }
 
@@ -1301,14 +1329,25 @@
 
             return title.join("");
         }
+        // 获取加了加速剂后的实际速度
+        function getAccSpeed(type, value) {
+            if (["增产", "加速"].indexOf(value) === -1) {return 1;}
+            // 增产剂每种等级以及工作类型的增产效率，inc: 增产/acc: 加速
+            const accSpeed = {inc: [1.125, 1.2, 1.25], acc: [1.25, 1.5, 2]};
+            var type_index = ['增产剂Mk.Ⅰ', '增产剂Mk.Ⅱ', '增产剂Mk.Ⅲ'].indexOf(type);
+            // 默认是Mk.Ⅰ（也是界面上默认的）
+            type_index = type_index >= 0 ? type_index : 0;
+            return value == "增产" ? accSpeed.inc[type_index] : accSpeed.acc[type_index];
+        }
         function getPfTitle(item,info) {
             var title = [];
             var speed1_5 = parseFloat($("#speed1_5").val());
+
             for (var j = 0; j < item.q.length; j++) {
                 title.push(getIconShow(item.q[j].name, item.q[j].n || 1));
 
                 if (info && $("#showMaxOneBelt").get(0).checked) {
-                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.q[j].n || 1)) * speed1_5;
+                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.q[j].n || 1)) * speed1_5 / getAccSpeed(info.accType, info.accValue);
 					console.log(1+' '+speed1_5);
                     title.push("<sub class='maxOneBelt'>" + number.toFixed(pointLength));
                     title.push("</sub>");
@@ -1321,9 +1360,8 @@
             for (var j = 0; j < item.s.length; j++) {
                 title.push(getIconShow(item.s[j].name, item.s[j].n || 1));
 
-
                 if (info && $("#showMaxOneBelt").get(0).checked) {
-                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.s[j].n || 1)) * speed1_5;
+                    var number = 1800 / (60 / (item.t || 1) * info.speed * (item.s[j].n || 1)) * speed1_5 / getAccSpeed(info.accType, info.accValue);
 					console.log(2+' '+speed1_5);
                     title.push("<sub class='maxOneBelt'>" + number.toFixed(pointLength));
                     title.push("</sub>");
@@ -1625,7 +1663,9 @@
                 var value = $("#selmodein").val();
                 $(data).each(function () {
                     if (this.mName == "制作台") {
-                        settingsLocal[this.id] = value;
+                        // TODO: 下面的初始化代码还能优化一下
+                        settingsLocal[this.id] = settingsLocal[this.id] || {};
+                        settingsLocal[this.id].m = value;
                     }
                 });
 
@@ -1636,7 +1676,9 @@
 			    var value = $("#furnace").val();
 			    $(data).each(function () {
 			        if (this.mName == "冶炼设备") {
-			            settingsLocal[this.id] = value;
+                        // TODO: 下面的初始化代码还能优化一下
+                        settingsLocal[this.id] = settingsLocal[this.id] || {};
+			            settingsLocal[this.id].m = value;
 			        }
 			    });
 			
@@ -1645,9 +1687,15 @@
 			});
             $('#accType').change(function() {
                 defaultAccType = $("#accType").val();
+                // 不知道为啥要写这个for
                 for (var i in settings) {
                     delete settings[i].accType;
                 }
+                $(data).each(function () {
+                    // TODO: 下面的初始化代码还能优化一下
+                    settingsLocal[this.id] = settingsLocal[this.id] || {};
+                    settingsLocal[this.id].accType = defaultAccType;
+			    });
                 saveSetting();
                 update_all();
             });
@@ -1656,6 +1704,11 @@
                 for (var i in settings) {
                     delete settings[i].accValue;
                 }
+                $(data).each(function () {
+                    // TODO: 下面的初始化代码还能优化一下
+                    settingsLocal[this.id] = settingsLocal[this.id] || {};
+                    settingsLocal[this.id].accValue = defaultAccValue;
+			    });
                 saveSetting();
                 update_all();
             });
