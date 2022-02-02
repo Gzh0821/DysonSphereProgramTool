@@ -2158,6 +2158,11 @@
                     outitem.numberOther = "(可供" + getIconShow("垂直发射井", outitem.number1 / 5) + ")";
                 }
                 addTotal(info.name, Math.ceil(outitem.number2), settings[item.id]);
+                // 增产剂总和
+                if (info.accValue != "无") {
+                    // TODO: 这里调用Math.ceil未必合理，增产剂一般放在总线起始处，所以应该在最终算出的总和处调用Math.ceil
+                    addTotal("增产剂喷涂量", Math.ceil(outitem.accTotal));
+                }
                 var pfds = getPfs(xh_list[i].name);
 
                 for (var j = 0; j < pfds.length; j++) {
