@@ -47,7 +47,7 @@
 				重置配方
 			</button>
 			<!--<input type="checkbox" id="isMerge" checked />合并同配方多产物-->
-			<input type="checkbox" id="hideSource" />隐藏原料
+			<input type="checkbox" id="hideSource" /><label for="hideSource">隐藏原料</label>
 			<select id="selmodein">
 				<option value="制作台Mk.Ⅰ">制作台Mk.Ⅰ</option>
 				<option value="制作台Mk.Ⅱ">
@@ -68,10 +68,10 @@
 				<option value="增产剂Mk.Ⅲ">增产剂Mk.Ⅲ</option>
 			</select>
 			<select id="accValue"><option value="无">无</option><option value="加速">加速</option><option value="增产">增产</option></select>
-			<input type="checkbox" id="includeAcc" checked/>自动量化增产剂
-			采矿作业速度：
+			<input type="checkbox" id="includeAcc" checked/><label for="includeAcc">自动量化增产剂</label>
+			<label for="selore">采矿作业速度：</label>
 			<input type="text" class="textbox" id="selore" value="100" style="width:40px;" />%
-			<input type="checkbox" id="showMaxOneBelt" />1条传送带最高支持设备数量
+			<input type="checkbox" id="showMaxOneBelt" /><label for="showMaxOneBelt">1条传送带最高支持设备数量</label>
 
 			<span id="projectdiv" style="display:none;">
 				<select id="selprojects"></select>
@@ -110,11 +110,20 @@
 		</div>
 		<div id="result">
 			<div class="list">
-				<span v-for="x in xqs">
+				<span v-for="(x,index) in xqs">
 					<img v-bind:src="'data:image/png;base64,' + icons[x.item.name]" style="width:40px;height:40px;"
 						v-if="icons[x.item.name]" v-bind:title="x.item.name" />
 					<span class="name" v-else=v-else>{{x.item.name}}</span>
-					* {{x.number}}
+					* 
+					<span class="item_number" @click="onClickNumber(index)">
+						<span>{{x.number}}</span>
+						<div v-if="number_editor_index === index" class="number_editor_container">
+							<input ref="input" class="number_editor" type="number" 
+								v-model.number="number_editor_number" @blur="submitEditorNumber()"
+								@focus="event.target.select()"
+								@keydown="if (event.key === 'Enter') submitEditorNumber(); else if (event.key === 'Escape') cancelEditorNumber();"/>
+						</div>
+					</span>
 				</span>
 				<span v-if="xqs && xqs.length">
 					<button onclick="f_reset()">
