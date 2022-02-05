@@ -1,4 +1,4 @@
-﻿        .sicon {
+        .sicon {
             width: 24px;
             height: 24px;
         }
@@ -228,6 +228,7 @@
             position: absolute;
             left: 50px;
             top: 50px;
+            z-index: 1000;
         }
 
         #Split {
@@ -273,3 +274,35 @@
         .maxOneBelt{
             color:#000;
         }
+
+        .item_number{
+            display: inline-block;
+            border: 1px solid rgba(0,0,0,0);
+            border-radius: 4px;
+            padding: 0 10px;
+            position: relative;
+        }
+
+        .item_number:hover
+        {
+            border: 1px solid black;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        .number_editor_container{
+            position:absolute;
+            left: 0;
+            top: 0;
+            /* width: 30px; */
+            right: 0;
+        }
+
+        .number_editor{
+            border: 1px solid blue;
+            border-radius: 4px;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+            width: 100%;
+            font-size: 16px;
+        }
+

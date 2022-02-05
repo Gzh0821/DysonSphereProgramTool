@@ -1448,7 +1448,9 @@
                     items: [],
                     items2: [],
                     items0: [],
-                    ig_names: []
+                    ig_names: [],
+                    number_editor_index: -1,
+                    number_editor_number: 0
                 },
                 methods: {
 
@@ -1457,6 +1459,39 @@
                         settings_time[item.machineName] = parseFloat(item.speed);
                         saveSettingTime();
                         update_all();
+                    },
+
+                    onClickNumber: function(index){
+                        if (this.xqs && this.xqs[index])
+                        {
+                            this.number_editor_index = index;
+                            this.number_editor_number = this.xqs[index].number;
+                            Vue.nextTick(()=>{
+                                if (this.$refs.input &&
+                                    this.$refs.input[0])
+                                {
+                                    let input = this.$refs.input[0];
+                                    input.focus();
+                                }
+                            });
+                        }
+                    },
+
+                    submitEditorNumber: function(){
+                        if (this.xqs && this.xqs[this.number_editor_index])
+                        {
+                            if (Number.isInteger(this.number_editor_number) &&
+                                this.number_editor_number > 0)
+                            {
+                                this.xqs[this.number_editor_index].number = this.number_editor_number;
+                                update_all();
+                            }
+                            this.number_editor_index = -1;
+                        }
+                    },
+
+                    cancelEditorNumber: function(){
+                        this.number_editor_index = -1;
                     }
                 }
             });
@@ -2302,6 +2337,7 @@
         function f_reset() {
             xqs = [];
             singleMake = [];
+            app.number_editor_index = -1;
             update_all();
         }
         function f_reset_ig() {
