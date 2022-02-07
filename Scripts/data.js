@@ -962,7 +962,7 @@
 
 
         var spaceData = {};//占用格子
-        spaceData["研究站"] = 36;
+        spaceData["研究站"] = 36 / 15; // 可叠加
         spaceData["制作台Mk.Ⅰ"] = spaceData["制作台Mk.Ⅱ"] = spaceData["制作台Mk.Ⅲ"] = 16;
         spaceData["电弧熔炉"] = spaceData["位面熔炉"] = 16;
         spaceData["原油精炼机"] = 28;
@@ -1333,7 +1333,7 @@
         function getAccSpeed(type, value) {
             if (["增产", "加速"].indexOf(value) === -1) {return 1;}
             // 增产剂每种等级以及工作类型的增产效率，inc: 增产/acc: 加速
-            const accSpeed = {inc: [1.125, 1.2, 1.25], acc: [1.25, 1.5, 2]};
+            var accSpeed = {inc: [1.125, 1.2, 1.25], acc: [1.25, 1.5, 2]};
             var type_index = ['增产剂Mk.Ⅰ', '增产剂Mk.Ⅱ', '增产剂Mk.Ⅲ'].indexOf(type);
             // 默认是Mk.Ⅰ（也是界面上默认的）
             type_index = type_index >= 0 ? type_index : 0;
@@ -1348,7 +1348,7 @@
 
                 if (info && $("#showMaxOneBelt").get(0).checked) {
                     var number = 1800 / (60 / (item.t || 1) * info.speed * (item.q[j].n || 1)) * speed1_5 / getAccSpeed(info.accType, info.accValue);
-					console.log(1+' '+speed1_5);
+					// console.log(1+' '+speed1_5);
                     title.push("<sub class='maxOneBelt'>" + number.toFixed(pointLength));
                     title.push("</sub>");
                 }
@@ -1362,7 +1362,7 @@
 
                 if (info && $("#showMaxOneBelt").get(0).checked) {
                     var number = 1800 / (60 / (item.t || 1) * info.speed * (item.s[j].n || 1)) * speed1_5 / getAccSpeed(info.accType, info.accValue);
-					console.log(2+' '+speed1_5);
+					// console.log(2+' '+speed1_5);
                     title.push("<sub class='maxOneBelt'>" + number.toFixed(pointLength));
                     title.push("</sub>");
                 }
@@ -1405,18 +1405,23 @@
         }
 
 
-        function f_add3() {
-
-            var value = $("#seldata").val();
-            currentItem = find(value);
+        function f_add3(name) {
+            currentItem = find(name);
             var number = parseInt($("#txtnumber").val());
             var v = $("#selmaince").val();
             if (v) {
+                // 设备数量支持增产剂计算
+                var accType = (settings[currentItem.id] || {}).accType || defaultAccType;
+                var accValue = (settings[currentItem.id] || {}).accValue || defaultAccValue;
+                if (accValue == '增产' && currentItem.noExtra) accValue = '无';
+                if (currentItem.q.length == 0) accValue = '无'; 
+
                 var info = getValue(currentItem);
                 for (var i = 0; i < currentItem.s.length; i++) {
-                    if (currentItem.s[i].name == value) {
+                    if (currentItem.s[i].name == name) {
                         number = parseInt(v) * 60 / (currentItem.t || 1) * info.speed * (currentItem.s[i].n || 1);
                     }
+                    number *= getAccSpeed(accType, accValue);
                 }
             }
 
@@ -1431,8 +1436,10 @@
 
             update_all();
         }
-
-
+        function removeItem(itemId) {
+            xqs = xqs.filter(function (one) { return one.item.id != itemId; });
+            update_all();
+        }
 
         var app = null;
         function f_init() {
@@ -1442,6 +1449,7 @@
                 data: {
                     totalEnergy: 0,
                     totalSpace: 0,
+                    totalAcc: 0,
                     total: [],
                     xqs: [],
                     icons: icons,
@@ -1505,7 +1513,9 @@
             loadSettingProjects();
 
             projectsUpdate();
-            $("#btnAdd3").click(f_add3); 
+            $("#btnAdd3").click(function () {
+                f_add3($("#seldata").val());
+            }); 
             $("#btnReset2").click(function () {
                 settings = {};
                 saveSetting();
@@ -1753,7 +1763,7 @@
             $("#hideSource").change(function () {
                 update_all();
             });
-            $("#includeAcc").change(update_all);
+            $("#selfAcc").change(update_all);
             $(document).click(function (e) {
                 var jname = null;
                 if ($(e.target).is(".cell-name")) {
@@ -1863,7 +1873,7 @@
                 if ($.inArray(itemName, ig_names) != -1) {
                     return;
                 }
-                if ((itemName == '增产剂Mk.Ⅰ' || itemName == '增产剂Mk.Ⅱ' || itemName == '增产剂Mk.Ⅲ') && (n < 0.1 || !$('#includeAcc')[0].checked)) {
+                if ((itemName == '增产剂Mk.Ⅰ' || itemName == '增产剂Mk.Ⅱ' || itemName == '增产剂Mk.Ⅲ') && n < 0.1) {
                     return;
                 }
                 var item = find(itemName);
@@ -1909,7 +1919,10 @@
                         if (accType == "增产剂Mk.Ⅰ") v = 1.125, tm=12;
                         else if (accType == "增产剂Mk.Ⅱ") v = 1.2, tm=24;
                         else if (accType == "增产剂Mk.Ⅲ") v = 1.25, tm=60;
+                        // 自喷涂
+                        if ($('#selfAcc')[0].checked) tm = tm * v - 1;
                         if (accValue == '增产' && item.noExtra) accValue = '无';
+                        if (item.q.length == 0) accValue = '无';
 
                         if (accValue == '加速') {
                             accTotal += r / tm;
@@ -2077,17 +2090,9 @@
                     var accType = (settings[item.id] || {}).accType || defaultAccType;
                     var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
                     if (accValue == '增产' && item.noExtra) accValue = '无';
+                    if (item.q.length == 0) accValue = '无'; 
 
-                    if (accValue == "加速") {
-                        if (accType == "增产剂Mk.Ⅰ") xh.value2 /= 1.25;
-                        else if (accType == "增产剂Mk.Ⅱ") xh.value2 /= 1.5;
-                        else if (accType == "增产剂Mk.Ⅲ") xh.value2 /= 2;
-                    } else if (accValue == "增产") {
-                        var accType = (settings[item.id] || {}).accType || defaultAccType;
-                        if (accType == "增产剂Mk.Ⅰ") xh.value2 /= 1.125;
-                        else if (accType == "增产剂Mk.Ⅱ") xh.value2 /= 1.2;
-                        else if (accType == "增产剂Mk.Ⅲ") xh.value2 /= 1.25;
-                    }
+                    xh.value2 /= getAccSpeed(accType, accValue);
                 }
             } 
             //mergeMul();//处理合并 多个产出使用了同一个配方 ,暂时弃用，checkResult会处理这种情况
@@ -2125,6 +2130,7 @@
                 }
             }
             var total = [];
+            var totalAcc = 0;
             function addTotal(name, value, s) {
                 var energy = energyData[name] || 0;
                 var space = spaceData[name] || 0;
@@ -2196,7 +2202,7 @@
                 // 增产剂总和
                 if (info.accValue != "无") {
                     // TODO: 这里调用Math.ceil未必合理，增产剂一般放在总线起始处，所以应该在最终算出的总和处调用Math.ceil
-                    addTotal("增产剂喷涂量", Math.ceil(outitem.accTotal));
+                    totalAcc += xh_list[i].accTotal || 0;
                 }
                 var pfds = getPfs(xh_list[i].name);
 
@@ -2232,6 +2238,7 @@
                 var accType = (settings[item.id] || {}).accType || defaultAccType;
                 var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
                 if (accValue == '增产' && item.noExtra) accValue = '无';
+                if (item.q.length == 0) accValue = '无';
 
                 ["增产剂Mk.Ⅰ", "增产剂Mk.Ⅱ", "增产剂Mk.Ⅲ"].forEach(function (one) {
                     outitem.accType.push({
@@ -2245,6 +2252,7 @@
                 });
 
                 ["无", "加速", "增产"].forEach(function (one) {
+                    if (one != '无' && item.q.length == 0) return;
                     if (one == '增产' && item.noExtra) return;
                     outitem.accValue.push({
                        class: one == accValue ? "m selected" : "m",
@@ -2294,6 +2302,7 @@
                 space += total[i].space || 0;
             }
             app.totalSpace = space;
+            app.totalAcc = totalAcc.toFixed(2);
         }
         function selectM(id, m) {
             settings[id] = settings[id] || {};
@@ -2334,6 +2343,12 @@
 
             update_all();
         }
+        function f_ig_acc() {
+            ["增产剂Mk.Ⅰ", "增产剂Mk.Ⅱ", "增产剂Mk.Ⅲ"].forEach(function (one) {
+                if (ig_names.indexOf(one) < 0) ig_names.push(one);
+            });
+            update_all();
+        }
         function f_reset() {
             xqs = [];
             singleMake = [];
@@ -2343,6 +2358,10 @@
         function f_reset_ig() {
             ig_names = [];
 
+            update_all();
+        }
+        function f_remove_ig(name) {
+            ig_names = ig_names.filter(function (one) { return one != name; })
             update_all();
         }
         function projectsUpdate() {
@@ -2537,24 +2556,7 @@
                         jicon.click(function () {
                             var name = $(this).attr("data-name");
                             if (!name) return;
-                            if (name == "电弧熔炉") name = "电弧熔炉";
-                            if (name == "位面熔炉") name = "位面熔炉";
-							
-                            currentItem = find(name);
-
-                            var number = parseInt($("#txtnumber").val());
-                            var v = $("#selmaince").val();
-                            if (v) {
-                                var info = getValue(currentItem);
-                                for (var i = 0; i < currentItem.s.length; i++) {
-                                    if (currentItem.s[i].name == name) {
-                                        number = parseInt(v) * 60 / (currentItem.t || 1) * info.speed * (currentItem.s[i].n || 1);
-                                    }
-                                }
-                            }
-                            addItem(currentItem, number);
-
-
+                            f_add3(name);
                             $("#UIselector").hide();
                         })
                     }

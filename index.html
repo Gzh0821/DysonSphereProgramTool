@@ -68,7 +68,7 @@
 				<option value="增产剂Mk.Ⅲ">增产剂Mk.Ⅲ</option>
 			</select>
 			<select id="accValue"><option value="无">无</option><option value="加速">加速</option><option value="增产">增产</option></select>
-			<input type="checkbox" id="includeAcc" checked/><label for="includeAcc">自动量化增产剂</label>
+			<input type="checkbox" id="selfAcc" checked/><label for="selfAcc">自喷涂增产剂</label>
 			<label for="selore">采矿作业速度：</label>
 			<input type="text" class="textbox" id="selore" value="100" style="width:40px;" />%
 			<input type="checkbox" id="showMaxOneBelt" /><label for="showMaxOneBelt">1条传送带最高支持设备数量</label>
@@ -112,7 +112,7 @@
 			<div class="list">
 				<span v-for="(x,index) in xqs">
 					<img v-bind:src="'data:image/png;base64,' + icons[x.item.name]" style="width:40px;height:40px;"
-						v-if="icons[x.item.name]" v-bind:title="x.item.name" />
+						v-if="icons[x.item.name]" v-bind:title="x.item.name" v-bind:oncontextmenu="'removeItem(' + x.item.id + '); return false'"/>
 					<span class="name" v-else=v-else>{{x.item.name}}</span>
 					* 
 					<span class="item_number" @click="onClickNumber(index)">
@@ -130,16 +130,18 @@
 						重置
 					</button>
 					<button onclick="f_save()">保存方案</button>
+					<br/><small>(右键可取消单项需求；单击数字可编辑数量)</small>
 				</span>
 			</div>
 			<div class="list" v-if="ig_names && ig_names.length">
 				排除计算：
 				<span v-for="name in ig_names">
 					<img v-bind:src="'data:image/png;base64,' + icons[name]" style="width:40px;height:40px;"
-						v-if="icons[name]" v-bind:title="name" onclick="f_remove_ig(this)"/>
+						v-if="icons[name]" v-bind:title="name" v-bind:oncontextmenu="'f_remove_ig(\'' + name + '\'); return false'"/>
 					<span class="name" v-else=v-else>{{name}}</span>
 				</span>
 				<button onclick="f_reset_ig()">重置</button>
+				<br/><small>(右键可取消单项排除)</small>
 			</div>
 			<div class="list">
 				<table border="0" cellspacing="0" cellpadding="0">
@@ -259,6 +261,7 @@
 							<td colspan="5">
 								<span v-for="item in total"> {{item.name}}*{{item.value}} </span>
 								<br />
+								<span>总喷涂增产剂数量：{{totalAcc}}</span> <a href="javascript:f_ig_acc()">排除增产剂产线</a><br/>
 								<span>占地格子数：{{totalSpace}}</span><br/>
 								<span>
 									耗能估算：{{totalEnergy}}M
