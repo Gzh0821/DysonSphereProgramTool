@@ -1436,10 +1436,10 @@
 
             update_all();
         }
-        function removeItem(itemId) {
-            xqs = xqs.filter(function (one) { return one.item.id != itemId; });
-            update_all();
-        }
+        // function removeItem(itemId) {
+        //     xqs = xqs.filter(function (one) { return one.item.id != itemId; });
+        //     update_all();
+        // }
 
         var app = null;
         function f_init() {
@@ -1500,6 +1500,13 @@
 
                     cancelEditorNumber: function(){
                         this.number_editor_index = -1;
+                    },
+
+                    removeItem: function(index){
+                        if (this.xqs && this.xqs[index]){
+                            this.xqs.splice(index, 1);
+                            update_all();
+                        }
                     }
                 }
             });
