@@ -238,6 +238,7 @@
             color: white;
             background: #5d6e88;
             padding: 20px;
+			z-index: 1000;
         }
 
         .split-pf {
