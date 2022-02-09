@@ -112,7 +112,9 @@
 			<div class="list">
 				<span v-for="(x,index) in xqs">
 					<img v-bind:src="'data:image/png;base64,' + icons[x.item.name]" style="width:40px;height:40px;"
-						v-if="icons[x.item.name]" v-bind:title="x.item.name" v-bind:oncontextmenu="'removeItem(' + x.item.id + '); return false'"/>
+						v-if="icons[x.item.name]" v-bind:title="x.item.name" 
+						@contextmenu="removeItem(index);event.preventDefault();"
+						/>
 					<span class="name" v-else=v-else>{{x.item.name}}</span>
 					* 
 					<span class="item_number" @click="onClickNumber(index)">
