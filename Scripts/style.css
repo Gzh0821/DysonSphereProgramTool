@@ -100,6 +100,7 @@
             text-decoration: none;
             background: #878787;
             max-width: 320px;
+            white-space: nowrap;
         }
 
         .pf2 {
@@ -109,6 +110,16 @@
         .m {
             text-decoration: underline;
             max-width: 90px;
+            white-space: nowrap;
+            display: flex;
+            align-items: flex-end;
+            flex-wrap: nowrap;
+        }
+
+        .m img {
+            width: 20px;
+            height: 20px;
+            vertical-align: bottom;
         }
 
         .selected {
@@ -171,6 +182,7 @@
 
         td.opcell a {
             font-size: 12px;
+            white-space: nowrap;
         }
 
         table {

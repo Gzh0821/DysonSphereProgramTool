@@ -2185,7 +2185,7 @@
                     name: xh_list[i].name,
                     number1: xh_list[i].value.toFixed(0),
                     number2: (xh_list[i].value2 ? xh_list[i].value2.toFixed(pointLength) : ""),
-                    number2full : (xh_list[i].value2 ? xh_list[i].value2.toFixed(pointLength) : "") + img,
+                    number2full : img + (xh_list[i].value2 ? xh_list[i].value2.toFixed(pointLength) : ""),
                     time: info.time.toFixed(pointLength),
                     t: info.t.toFixed(pointLength),
                     speed: info.speed.toFixed(pointLength),
