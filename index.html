@@ -26,7 +26,7 @@
 			<option value="">选择设备数量</option>
 		</select>
 		<a href="javascript:f_add()" style="margin-left:10px;margin-right:10px;"><img
-				src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAADYElEQVRYR8VXS3LaQBB9rYDJLoIT4KqIbcgJgk9gfIIkS6NUGZ/A9gmMqwJeBp8g+ATGJzDZIlcZXwDJu/DJdGpGCEYSSIKkyuyAmenXrz+vm7DFx/zuHBoGagxUwWwSUVVeZ+YBiDwCBkKg732zbrM+S2kHzcsn09ibXTKoTgQz7bwPCB6Be2KaP/VO972kO4kAStfOGQs0sxqOGlJADLTGx9bFJhBrAUivaW92F1CsX2bwL2LqCfAIBo3Uf4LLBqjMxHUCfYgD4QFP8wfr2IgBMNvDKoHudK8ZeCFGS0xzrTRK/ZDNm0xoEvAuACPZYPCBZ1cGOsAQAN/z+VOYcr4Rk3wzzXDU68VbXSIchkBMc/v6WyEAxfbwIUQ742JsW+dZEm/TmVLbOQfhbAWCB65d+Rh8XwKIHsR/MB4YSXpbATCvn8ok5g8r6vlm3Kh8SfJc5Qrh56LsjqKxjd4ttp1eEA6VD4tQKAClzrAL0Gf1GPDCk1w5LeYhrzKwpXKiMB+tEtN3cgHA4SXiDI8p0Hpsd7gjWXBtq0hm57FugBWVqqQnuWKa97sCUCVamLtLW6AjKrUfWyA+WdB/7zasWpas34UB+W6x4/QJ+KRsMF1R+IfsZbcrAP0eA/ek174gHHjHVl9nQGa7YdCymWhNpUaAYouBPhFC91Q4Bd9Gq0MPuVRRKnVWCbgOQLHtuDuLEXjkNir7IYeunZrBuFs2olQAHUfq/LKnZ8kPjaVn17bKiQCKneEgULCNIQDVo4aZIEOgkknFkteEANxLDIFU1ldPwlAZMm5d24p5u472XasgVoav3oh8LXiFVgy8uA3LjIuRplRJGb9tCOLDjiZGMaVi7o7tytckAL4cUx/+qFVPk+NSe/gDREridcXdOJAI4NRrWK1t6n7T2dSBJLio9wTVSpmbnl25+hcQcrQHYznWyanabVTUQiM/8aE0NDSoLaObZcGIggwWmoB2RT3jmae56sahVB4KYhsdqeWCIX7nrtJmBWX47fwkutAo42tyZfNiUpj11y4ZC+UTfzCAAX/tEjCNN6gyq/Ycmyck7TzJ1zItJjqVMnmiC8Y2+RAsNEmjfbbltDBrqeU0oyoqw3I5zbDQpAIISamcHxk1JlZZrKuh+s40EIS+13jfy8rUX7PLSzEQ0meQAAAAAElFTkSuQmCC" /></a>
+				src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAZVJREFUWEftl89VwkAQh3+DBRjTgHpYrtKBdCB0gEfDRSsQK5AL8YgdiB1gB3gll1CAMRTgjm9XCZslIf7Je8khe0y+N5m3mfl2h1Dxooq/jyQB5yHothhPAJx0UhxKRj8ethfquTNZdlqkODqxko8loR9fibnmdDyeFnFJAq4fxAAOs3aEgJc3T3TVO9cPQgDHOTsXR544KuY4jLz2qeLMBHjf74g8oVnXD0rlmgRqtQO5xcWM5/eh6H3XgOqGs5x6WUWe0N1RUKwJt23DybJzQDRm4NwMrj7O4JHZhgQaEeHC5FSnfDBfm1xWPJurj4iqMmLqF+QYbiGZL9MmpCmATrExizmzC8oowsaE+K2yayWiUg+Znx5aZRfhOvKEvk/8yYQtokdbs1mGy+IAvErmgdWuO/FsrjFhyoREdE+AvnptFgMzZr5LHUZEtwTo09FYO8bMiTdn5ptNvJKLcHvXc/1gz7Hd3AmRGLMxYdmDyT9M+DWaKXPZU89KMvcsw80yuLUk9JLRTI9wlMWtJGGw4RoTfgKyI5kwSL6MMgAAAABJRU5ErkJggg==" /></a>
 		<select id="seldata"></select>
 
 
@@ -36,6 +36,7 @@
 		<button id="btnSetting">
 			参数设置
 		</button>
+
 		<div style="margin-top:5px;">
 			<button id="btnReset2">
 				重置设备
@@ -300,55 +301,25 @@
 						<tr class="">
 							<td colspan="1" align="right">更新说明 </td>
 							<td colspan="7">
-								使用【CTRL】+【F5】即可刷新缓存看到当前页面最新版本！<br />
-								更新时间：2022年6月11日01:20:00<br />
-								你也可以使用其他版本:
-								<select id="furnace" onchange="actions(this)" style="height:20px">
-									<option value="">—当前版本:最新版[0.9.26.12891]—</option>
-									<option value="https://www.svlik.com/t/dsq/0.9.24.11240">0.9.24.11240</option>
-									<option value="https://www.svlik.com/t/dsq/0.9.24.11182">0.9.24.11182</option>
-									<option value="https://www.svlik.com/t/dsq/0.8.23.9989">0.8.23.9989</option>
-									<option value="https://www.svlik.com/t/dsq/0.8.22.8915">0.8.22.8915</option>
-									<option value="https://www.svlik.com/t/dsq/0.7.18.6931">0.7.18.6931</option>
-								</select>
-								<a target="_blank" href="https://store.steampowered.com/news/app/1366540/view/3337744192478386623">当前版本更新详情</a>
+								<!-- 更新说明开始 -->
+								    <div data-include="updata"></div>
+								<!-- 更新说明结束 -->
 							</td>
 						</tr>
 						<tr class="">
 							<td colspan="1" align="right">使用说明 </td>
 							<td colspan="7">
-								点击物品图标可显示 物品作为原料和产品的详细配方 <br />
-								参考数据：传送带360/min 高速传送带720/min 极速传送带1800/min <br />
-								如果【增加】后没反应可以试一下重置配方/设备<br />
-								物品左边可以进行操作：<br />
-								1，标注:可以对某个物品进行(改颜色)比如已经完成生产线的物品<br />
-								2，多配方:可以对某个物品进行同时多个配方的计算<br />
-								3，排除:可以对某个物品进行排除计算<br />
-								采矿机默认按6个矿脉，大型采矿机默认按20个<br />
-								喷涂机的加速与增产剂同样，所以可以直接使用增产剂来进行设置。<br />
-								临界光子、原油效率、分馏塔、轨道采集、运输站集装物流、大型采矿机 可从【参数配置】中配置<br />
-								增产剂暂时只支持喷涂总量统计，不支持增产剂使用数量统计<br />
-								———————————————————————————<br />
-								原作者已提桶跑路，已获得原作者后续维护的权限，本站将继续为大家更新！<br />
-								如有问题可以QQ艾特我(@122474363)，也可去gitee增加功能。<br />
+						        <!-- 使用说明开始 -->
+						            <div data-include="explanation"></div>
+						        <!-- 使用说明结束 -->
 							</td>
 						</tr>
 						<!-- 广告开始 -->
 						<tr class="">
 							<td colspan="8">
-						<!-- 广告内容开始 -->
-<!--script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8764893239422253"
-     crossorigin="anonymous"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-8764893239422253"
-     data-ad-slot="5984966025"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-						<!-- 广告内容结束 -->
+						        <!-- 广告内容开始 -->
+						            <div data-include="advertise"></div>
+						        <!-- 广告内容结束 -->
 							</td>
 						</tr>
 						<!-- 广告结束 -->
@@ -357,11 +328,20 @@
 			</div>
 		</div>
 		<div style="text-align:center;">
-			<p><a href="https://www.svlik.com/" target="_blank">Svlik's Blog</a> |
-				<!-- <a href="./index1.html" target="_blank">镜像</a> | -->
-				<a href="https://gitee.com/svlik/DysonSphereProgramTool" target="_blank">源代码</a> |
-				<script charset="UTF-8" id="LA_COLLECT" src="//sdk.51.la/js-sdk-pro.min.js"></script><script>LA.init({id: "JhZJOw4SXkYdrNrB",ck: "JhZJOw4SXkYdrNrB",autoTrack:true})</script><a href="https://v6.51.la/s/mxZ3hcb6pXsWbgp" target="_blank">网站统计</a>
+			<p>
+				<!-- 底部内容开始 -->
+				    <div data-include="footer"></div>
+				<!-- 底部内容结束 -->
 			</p>
 			<div>
+			<script>
+ 			   $(function(){
+ 			     var includes = $('[data-include]');
+ 			     jQuery.each(includes, function(){
+  			      var file = 'quote/' + $(this).data('include') + '.html';
+  			      $(this).load(file);
+ 			     });
+ 			   });
+			</script>
 	</body>
 </html>

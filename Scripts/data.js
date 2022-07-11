@@ -186,6 +186,14 @@
                     { name: "原油", n: 2 }
                 ], t: 4
             },
+			
+            {
+                s: [ { name: "精炼油", n: 3 }], group: "组件", m: "原油精炼机", q: [
+                    { name: "精炼油", n: 2 },
+                    { name: "氢", n: 1 },
+                    { name: "煤矿", n: 1 }
+                ], t: 4
+            },
 
             {
                 s: [{ name: "氢", n: 1 }, { name: "石墨烯", n: 2 }], group: "组件", m: "化工设备", q: [
@@ -2556,7 +2564,7 @@
             function addIcons(jicons, icons) {
                 jicons.width(w - 80).height(h - 220);
 
-                for (var i = 0; i < 7; i++) {
+                for (var i = 0; i < 8; i++) {
                     var jrow = $("<div class='iconrow'></div>").appendTo(jicons);
                     for (var j = 0; j < 12; j++) {
                         var jicon = $("<div class='icon'><div class='s'></div></div>").appendTo(jrow);
