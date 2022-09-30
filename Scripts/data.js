@@ -1071,7 +1071,8 @@
                 }
                 if (item.m == "化工设备") {
                     ms = [
-                        { name: "化工厂", speed: 1 }
+                        { name: "化工厂", speed: 1 },
+                        { name: "量子化工厂", speed: 2 }
                     ];
                 }
                 if (item.m == "粒子对撞机") {
@@ -1760,6 +1761,19 @@
 			    var value = $("#furnace").val();
 			    $(data).each(function () {
 			        if (this.mName == "冶炼设备") {
+                        // TODO: 下面的初始化代码还能优化一下
+                        settingsLocal[this.id] = settingsLocal[this.id] || {};
+			            settingsLocal[this.id].m = value;
+			        }
+			    });
+			
+			    saveSetting();
+			    update_all();
+			});
+			$("#chemical").change(function () {
+			    var value = $("#chemical").val();
+			    $(data).each(function () {
+			        if (this.mName == "化工设备") {
                         // TODO: 下面的初始化代码还能优化一下
                         settingsLocal[this.id] = settingsLocal[this.id] || {};
 			            settingsLocal[this.id].m = value;
