@@ -145,7 +145,7 @@ const buildingType = {
 }
 const buildingMap = {
     arcSmelter: {remark: '电弧熔炉', name: 'arcSmelter', itemId: 2302, modelIndex: 62, productionSpeed: 1, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.smelter, slotMaxIndex: 7},
-    assemblingMachineMk1: { remark: '制造台Mk.I', name: 'assemblingMachineMk1', itemId: 2303, modelIndex: 65, productionSpeed: 0.75, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
+    assemblingMachineMk1: {remark: '制造台Mk.I', name: 'assemblingMachineMk1', itemId: 2303, modelIndex: 65, productionSpeed: 0.75, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
     assemblingMachineMk2: {remark: '制造台MkⅡ', name: 'assemblingMachineMk2', itemId: 2304, modelIndex: 66, productionSpeed: 1, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
     assemblingMachineMk3: { remark: '制造台Mk.III', name: 'assemblingMachineMk3', itemId: 2305, modelIndex: 67, productionSpeed: 1.5, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
     chemicalPlant: { remark: '化工厂', name: 'chemicalPlant', itemId: 2309, modelIndex: 64, productionSpeed: 1, type: buildingType.production, category: productionCategory.plant, slotMaxIndex: 6},
@@ -157,7 +157,7 @@ const buildingMap = {
     conveyorBeltMk1: {name: 'conveyorBeltMk1', itemId: 2001, modelIndex: 35, transportSpeed: 6, size: {x: 1, y: 1}, type: buildingType.conveyor, remark: '传送带MK.I'},
     // conveyorBeltMK2: { remark: '高速传送带', name: 'conveyorBeltMK2', itemId: 2002, modelIndex: 36 },
     conveyorBeltMK3: {name: 'conveyorBeltMK3', itemId: 2003, modelIndex: 37, transportSpeed: 30, size: {x: 1, y: 1}, type: buildingType.conveyor, remark: '传送带MK.Ⅲ'},
-
+    miniatureParticleCollider: {name: 'miniatureParticleCollider', itemId: 2310, modelIndex: 69, productionSpeed: 1, type: buildingType.production, category: productionCategory.collider, slotMaxIndex: 8},
     // piler: { remark: '自动集装机', name: 'piler', itemId: 2040, modelIndex: 257 },
     // monitor: { remark: '流速监测器', name: 'monitor', itemId: 2030, modelIndex: 208 },
     // spray_coater: { remark: '喷涂机', name: 'spray_coater', itemId: 2313, modelIndex: 120 },
@@ -167,15 +167,6 @@ const buildingMap = {
 
     templateBuilding: {name: 'templateBuilding', itemId: 0, modelIndex: 0, size: {x: 1, y: 1}, remark: '模板'},
 }
-
-// const recipeMapList = [
-//     [107, `${itemMap.proliferatorMk1.name}+${itemMap.diamond.name}=${itemMap.proliferatorMk2.name}`],  // 增产剂Mk2
-//     [106, `${itemMap.coal.name}=${itemMap.proliferatorMk1.name}`],  // 增产剂1
-//     [60, `${itemMap.energeticGraphite.name}=${itemMap.diamond.name}`],  // 金刚石
-//     [17, `${itemMap.coal.name}=${itemMap.energeticGraphite.name}`],  // 高能石墨
-//     [24, `${itemMap.refinedOil.name}+${itemMap.stone.name}+${itemMap.water.name}=${itemMap.sulfuricAcid.name}`],  // 硫酸
-//     [16, `${itemMap.oil.name}=${itemMap.hydrogen.name}+${itemMap.refinedOil.name}`],  // 精炼油
-// ]
 
 const recipeMap = {
     'refinedOil+stone+water=sulfuricAcid': 24,
@@ -293,9 +284,9 @@ const recipeMap = {
     // 'diamond+titaniumCrystal=structureMatrix': ,  // 黄矩阵
     // 'processor+particleBroadband=informationMatrix': ,  // 紫矩阵
     // 'quantumChip+gravitonLens=gravityMatrix': ,  // 绿矩阵
-    // 'hydrogen=deuterium': ,  // 重氢
-    // 'particleContainer+ironIngot+deuterium=strangeMatter': ,  // 奇异物质
-    // 'criticalPhoton=antimatter+hydrogen': ,  // 反物质 氢
+    'hydrogen=deuterium': 40,  // 重氢
+    'particleContainer+ironIngot+deuterium=strangeMatter': 104,  // 奇异物质
+    'criticalPhoton=antimatter+hydrogen': 74,  // 反物质 氢
     // 'particleContainer+processor=annihilationConstraintSphere': ,  // 湮灭约束球
     // 'antimatter+hydrogen+annihilationConstraintSphere+titaniumAlloy=antimatterFuelRod': ,  // 反物质燃烧棒
     // 'titaniumAlloy+frameMaterial+annihilationConstraintSphere+quantumChip=artificialStar': ,  // 人造恒星
@@ -322,6 +313,31 @@ class BluePrint {
         //      "coal": [{index: 1, rate: 1.5, ownerIndex: 0}]
         // }
         this.sorters = {}
+    }
+
+    blueprintTemplate = {
+        header: {
+            layout: 10,
+            icons: [0, 0, 0, 0, 0],
+            time: '2022-11-11T14:24:17.987Z',
+            gameVersion: '0.9.26.13026',
+            shortDesc: 'New Blueprint',
+            desc: ''
+        },
+        version: 1,
+        cursorOffset: {x: 0, y: 0},
+        cursorTargetArea: 0,
+        dragBoxSize: {x: 1, y: 1},
+        primaryAreaIdx: 0,
+        areas: [{
+            index: 0,
+            parentIndex: -1,
+            tropicAnchor: 0,
+            areaSegments: 200,
+            anchorLocalOffset: {x: 0, y: 0},
+            size: {x: 1, y: 1}
+        }],
+        buildings: []
     }
 
     mapRecipeID() {
@@ -384,7 +400,7 @@ class BluePrint {
         if (conveyor.type !== buildingType.conveyor) {
             throw `newConveyor error: error conveyor - ${conveyor}`
         }
-        let buildingX, buildingY, buildingZ
+        let buildingX = 0, buildingY = 0, buildingZ = 0
         // const direction = length/Math.abs(length)
         // let length = Math.abs(length)
         for (let i=0; i<inputData.length; i++) {
@@ -592,7 +608,7 @@ class BluePrint {
             case productionCategory.refinery:
                 return {area: 28, x: 7, y: 4, centerPoint: [1, 2, 2, 4], yaw: [90, 90]}
             case productionCategory.collider:
-                break
+                return {area: 66, x: 11, y: 6, centerPoint: [3, 5, 2, 5], yaw: [0, 0]}
             default:
                 console.log(`unknown production build type - ${buildingMap[subRecipe.building.name].type}`)
                 return {}
@@ -612,7 +628,7 @@ class BluePrint {
         // let x = Math.ceil(Math.sqrt(totalArea))
         this.blueprintSize = {
             x: Math.ceil(this.config.x_y_ratio * y),
-            y: y  // 暂定正方形尺寸
+            y: y
         }
         this.occupiedArea = [{x1: -1, y1: -1, x2: this.blueprintSize.x, y2: -1}]
     }
@@ -626,44 +642,26 @@ class BluePrint {
             switch (slotIndex) {
                 case 8:
                     data.offset = [{x: buildingOffset.x-1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-1, y: buildingOffset.y-2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 7:
                     data.offset = [{x: buildingOffset.x, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x, y: buildingOffset.y-2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 6:
                     data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+1, y: buildingOffset.y-2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 5:
                     data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y-1, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(90+rotate*180)%360, (90+rotate*180)%360]
                     break
                 case 4:
                     data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(90+rotate*180)%360, (90+rotate*180)%360]
                     break
                 case 3:
                     data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y+1, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(90+rotate*180)%360, (90+rotate*180)%360]
                     break
                 default:
@@ -673,88 +671,88 @@ class BluePrint {
             switch (slotIndex) {
                 case 6:
                     data.offset = [{x: buildingOffset.x-1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-1, y: buildingOffset.y-2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 5:
                     data.offset = [{x: buildingOffset.x, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x, y: buildingOffset.y-2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 4:
                     data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+1, y: buildingOffset.y-2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 3:
                     data.offset = [{x: buildingOffset.x+2, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y-2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 default:
-                    throw `unsupported: plant slot > 6`
+                    throw `unsupported: plant slot < 3`
 
             }
         }else if (type === productionCategory.refinery) {
             switch (slotIndex) {
                 case 8:
                     data.offset = [{x: buildingOffset.x-3, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-4, y: buildingOffset.y-1, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(270+rotate*180)%360, (270+rotate*180)%360]
                     break
                 case 7:
                     data.offset = [{x: buildingOffset.x-3, y: buildingOffset.y, z: 0}, {x: buildingOffset.x-4, y: buildingOffset.y, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(270+rotate*180)%360, (270+rotate*180)%360]
                     break
                 case 6:
                     data.offset = [{x: buildingOffset.x-3, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x-4, y: buildingOffset.y+1, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [(270+rotate*180)%360, (270+rotate*180)%360]
                     break
                 case 5:
                     data.offset = [{x: buildingOffset.x-1, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x-1, y: buildingOffset.y+2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [rotate*180%360, rotate*180%360]
                     break
                 case 4:
                     data.offset = [{x: buildingOffset.x, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x, y: buildingOffset.y+2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [rotate*180%360, rotate*180%360]
                     break
                 case 3:
                     data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x+1, y: buildingOffset.y+2, z: 0}]
-                    if (rotate === 1) {
-                        data.offset.reverse()
-                    }
                     data.yaw = [rotate*180%360, rotate*180%360]
                     break
                 default:
-                    throw `unsupported: refinery slot > 6`
+                    throw `unsupported: refinery slot < 3`
             }
 
         }else if (type === productionCategory.collider) {
-
+            switch (slotIndex) {
+                case 8:
+                    data.offset = [{x: buildingOffset.x-0.8, y: buildingOffset.y-2, z: 0}, {x: buildingOffset.x-0.8, y: buildingOffset.y-3, z: 0}]
+                    data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
+                    break
+                case 7:
+                    data.offset = [{x: buildingOffset.x-1.8, y: buildingOffset.y-2, z: 0}, {x: buildingOffset.x-1.8, y: buildingOffset.y-3, z: 0}]
+                    data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
+                    break
+                case 6:
+                    data.offset = [{x: buildingOffset.x-2.5, y: buildingOffset.y-2, z: 0}, {x: buildingOffset.x-2.5, y: buildingOffset.y-3, z: 0}]
+                    data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
+                    break
+                case 5:
+                    data.offset = [{x: buildingOffset.x-4, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-5, y: buildingOffset.y-1, z: 0}]
+                    data.yaw = [270 + rotate*180%360, 270 + rotate*270%360]
+                    break
+                case 4:
+                    data.offset = [{x: buildingOffset.x-4, y: buildingOffset.y, z: 0}, {x: buildingOffset.x-5, y: buildingOffset.y, z: 0}]
+                    data.yaw = [270 + rotate*180%360, 270 + rotate*270%360]
+                    break
+                case 3:
+                    data.offset = [{x: buildingOffset.x-4, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x-5, y: buildingOffset.y+1, z: 0}]
+                    data.yaw = [270 + rotate*180%360, 270 + rotate*270%360]
+                    break
+                default:
+                    throw `unsupported: collider slot < 3`
+            }
         }else {
             throw `calculateSorterLocalOffset error: unsupported production category - ${type}`
+        }
+        if (rotate === 1) {
+            data.offset.reverse()
         }
         return data
     }
@@ -829,10 +827,13 @@ class BluePrint {
             // 添加分拣器
             const nowBuildingIndex = this.buildingIndex
             let slotIndex = buildingMap[subRecipe.building.name].slotMaxIndex
+            let productionSpeed = buildingMap[subRecipe.building.name].productionSpeed
             let sorterList = []
+            let actual_building_num = Math.min(1, subRecipe.building.num - i)  // 建筑不是整数的时候，最后一个建筑分拣器实际rate会更低
             for (let outputItem of subRecipe.output){
+                let actual_rate = outputItem.rate * productionSpeed * actual_building_num
                 let sorter = buildingMap.sorterMk1
-                if (outputItem.rate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
+                if (actual_rate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
                     sorter = buildingMap.sorterMk3
                 }
                 let newSorter = this.getBuildingTemplate()
@@ -854,7 +855,7 @@ class BluePrint {
                     if (this.sorters[outputItem.name].output) {
                         this.sorters[outputItem.name].output.push({
                             index: newSorter.index,
-                            rate: outputItem.rate,
+                            rate: actual_rate,
                             ownerObjIdx: nowBuildingIndex,  // 分拣器附属生产建筑的index
                             ownerName: subRecipe.building.name,
                             ownerOffset: {x:buildingX, y:buildingY, z: buildingZ}
@@ -862,7 +863,7 @@ class BluePrint {
                     }else {
                         this.sorters[outputItem.name].output = [{
                             index: newSorter.index,
-                            rate: outputItem.rate,
+                            rate: actual_rate,
                             ownerObjIdx: nowBuildingIndex,
                             ownerName: subRecipe.building.name,
                             ownerOffset: {x:buildingX, y:buildingY, z: buildingZ}
@@ -872,7 +873,7 @@ class BluePrint {
                     this.sorters[outputItem.name] = {
                         output: [{
                             index: newSorter.index,
-                            rate: outputItem.rate,
+                            rate: actual_rate,
                             ownerObjIdx: nowBuildingIndex,
                             ownerName: subRecipe.building.name,
                             ownerOffset: {x:buildingX, y:buildingY, z: buildingZ}
@@ -882,8 +883,9 @@ class BluePrint {
                 slotIndex --
             }
             for (let inputItem of subRecipe.input) {
+                let actual_rate = inputItem.rate * productionSpeed * actual_building_num
                 let sorter = buildingMap.sorterMk1
-                if (inputItem.rate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
+                if (actual_rate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
                     sorter = buildingMap.sorterMk3
                 }
                 let newSorter = this.getBuildingTemplate()
@@ -905,7 +907,7 @@ class BluePrint {
                     if (this.sorters[inputItem.name].input) {
                         this.sorters[inputItem.name].input.push({
                             index: newSorter.index,
-                            rate: inputItem.rate,
+                            rate: actual_rate,
                             ownerObjIdx: nowBuildingIndex,  // 分拣器附属生产建筑的index
                             ownerName: subRecipe.building.name,
                             ownerOffset: {x:buildingX, y:buildingY, z: buildingZ}
@@ -913,7 +915,7 @@ class BluePrint {
                     }else {
                         this.sorters[inputItem.name].input = [{
                             index: newSorter.index,
-                            rate: inputItem.rate,
+                            rate: actual_rate,
                             ownerObjIdx: nowBuildingIndex,
                             ownerName: subRecipe.building.name,
                             ownerOffset: {x:buildingX, y:buildingY, z: buildingZ}
@@ -923,7 +925,7 @@ class BluePrint {
                     this.sorters[inputItem.name] = {
                         input: [{
                             index: newSorter.index,
-                            rate: inputItem.rate,
+                            rate: actual_rate,
                             ownerObjIdx: nowBuildingIndex,
                             ownerName: subRecipe.building.name,
                             ownerOffset: {x:buildingX, y:buildingY, z: buildingZ}
@@ -941,32 +943,6 @@ class BluePrint {
                 this.buildingArray[this.buildingArray.length-1].push({index: this.buildingIndex, sorterList: sorterList})
             }
         }
-    }
-
-
-    blueprintTemplate = {
-        header: {
-            layout: 10,
-            icons: [0, 0, 0, 0, 0],
-            time: '2022-11-11T14:24:17.987Z',
-            gameVersion: '0.9.26.13026',
-            shortDesc: 'New Blueprint',
-            desc: ''
-        },
-        version: 1,
-        cursorOffset: {x: 0, y: 0},
-        cursorTargetArea: 0,
-        dragBoxSize: {x: 1, y: 1},
-        primaryAreaIdx: 0,
-        areas: [{
-            index: 0,
-            parentIndex: -1,
-            tropicAnchor: 0,
-            areaSegments: 200,
-            anchorLocalOffset: {x: 0, y: 0},
-            size: {x: 1, y: 1}
-        }],
-        buildings: []
     }
 
     init() {
@@ -1004,7 +980,7 @@ class BluePrint {
             for (let inputItem of subRecipe.input) {
                 if (itemSummary[inputItem.name]) {
                     itemSummary[inputItem.name].toBuildingNum += subRecipe.building.num
-                    itemSummary[inputItem.name].inputRate += buildingMap[subRecipe.building.name].productionSpeed * subRecipe.building.num
+                    itemSummary[inputItem.name].inputRate += inputItem.rate * buildingMap[subRecipe.building.name].productionSpeed * subRecipe.building.num
                 }else {
                     itemSummary[inputItem.name] = {
                         rate: 0,
@@ -1024,7 +1000,6 @@ class BluePrint {
 
         console.log(itemSummary)
         // console.log(JSON.stringify(this.sorters))
-        // return
         // 生成传送带并连接到分拣器
         for (let item in itemSummary){
             const itemName = item
@@ -1049,8 +1024,9 @@ class BluePrint {
                 let doneSorterNum = 0
                 if (item.fromBuildingNum !== 0){
                     for (let i=this.sorters[itemName].output.length-1; i>=0; i--){
-                        if (inputRate < this.sorters[itemName].output[i].rate) {
+                        if (this.sorters[itemName].output[i].rate - inputRate > 0.000000000001) {
                             // 当前带接受运力不能满足分拣器，则该分拣器连接下一个带上的节点
+                            // rate时每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.000000000001为判断标准足够了。
                             break
                         }
                         if (doneSorterNum % this.config.maxSorterNumOneBelt === 0) {
@@ -1185,7 +1161,7 @@ class BluePrint {
 }
 // TODO 建筑物类型排序？
 // TODO 生成传送带前判断下是否需要新一行
-// TODO 1800的硫酸有一个化工厂输出分拣器未连接传送带、60/min的量子芯片蓝图中有机晶体和塑料的化工厂也有输出口未连接的问题
+// TODO 生产设施速度不为1时有问题，比如使用1级制造台的蓝图 会出现许多分拣器连接异常
 // TODO 原油精炼塔、化工厂和其他建筑的碰撞问题 以及 高纬度的碰撞问题
 // TODO 一个物品既是中间产物又是原料输入时 蓝图会有问题，比如量子芯片中的氢
 // TODO 1/min的粒子对撞机蓝图 钢材输入分拣器失效、框架材料硅石输入异常
@@ -1246,9 +1222,15 @@ class BluePrint {
 // const outputRecipe = {
 //     output: itemMap.titaniumIngot,
 //     rate: 60,
-//     subRecipes: [{"building":{"name":"chemicalPlant","num":9},"output":[{"name":"sulfuricAcid","rate":0.6666666666666666}],"input":[{"name":"refinedOil","rate":1},{"name":"stone","rate":1.3333333333333333},{"name":"water","rate":0.6666666666666666}],"acceleratorMode":0},{"building":{"name":"oilRefinery","num":18},"output":[{"name":"hydrogen","rate":0.25},{"name":"refinedOil","rate":0.5}],"input":[{"name":"oil","rate":0.5}],"acceleratorMode":0},{"building":null,"output":[{"name":"oil","rate":9}],"input":null,"acceleratorMode":0},{"building":null,"output":[{"name":"stone","rate":12}],"input":null,"acceleratorMode":0},{"building":null,"output":[{"name":"water","rate":6}],"input":null,"acceleratorMode":0}]
+//     subRecipes: [
+//         {
+//             "building": {"name": buildingMap.miniatureParticleCollider.name, "num": 3},
+//             "output": [],
+//             "input": [{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666}, {"name": itemMap.hydrogen.name, "rate": 0.6666666666666666},{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666},{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666},{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666},{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666}],
+//             "acceleratorMode": 0
+//         }]
 // }
-//
+// //
 // b1 = new BluePrint('test', outputRecipe)
 // b1.init()
 // b1.generateBuildings()

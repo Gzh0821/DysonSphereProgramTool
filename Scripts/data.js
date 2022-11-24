@@ -2657,7 +2657,8 @@
 
                 let building = {
                     name: nodeList[3].getElementsByTagName('img')[0].getAttribute('title'),
-                    num: Math.ceil(parseFloat(nodeList[3].getElementsByTagName('span')[0].innerText))
+                    // num: Math.ceil(parseFloat(nodeList[3].getElementsByTagName('span')[0].innerText))
+                    num: parseFloat(nodeList[3].getElementsByTagName('span')[0].innerText)
                 }
                 let success = false
                 for (let item of itemNameList) {
