@@ -9,16 +9,19 @@
 		<script src="./Scripts/jquery.cookie.min.1.4.1.js"></script>
 		<script src="./Scripts/vue.min.2.5.16.js"></script>
 		<script src="./Scripts/jquery.tips.js"></script>
+		<script src="./Scripts/lib/cocoMessage.js"></script>
 		<script src="./Scripts/data.js"></script>
+		<script src="./Scripts/lib/pako.js"></script>
+		<script src="./Scripts/blueprint.js"></script>
 		<link rel="stylesheet" type="text/css" href="./Scripts/style.css">
-		
+
 <!-- 		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/jquery.min.2.1.4.js"></script>
 		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/jquery.cookie.min.1.4.1.js"></script>
 		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/vue.min.2.5.16.js"></script>
 		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/jquery.tips.js"></script>
 		<script src="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/data.js"></script>
 		<link rel="stylesheet" type="text/css" href="https://svlik.gitee.io/dysonsphereprogramtool/Scripts/style.css"> -->
-		
+
 	</head>
 	<body style="padding:5px;">
 		每分钟数量：<input type="text" id="txtnumber" value="60" />
@@ -117,15 +120,15 @@
 			<div class="list">
 				<span v-for="(x,index) in xqs">
 					<img v-bind:src="'data:image/png;base64,' + icons[x.item.name]" style="width:40px;height:40px;"
-						v-if="icons[x.item.name]" v-bind:title="x.item.name" 
+						v-if="icons[x.item.name]" v-bind:title="x.item.name"
 						@contextmenu="removeItem(index);event.preventDefault();"
 						/>
 					<span class="name" v-else=v-else>{{x.item.name}}</span>
-					* 
+					*
 					<span class="item_number" @click="onClickNumber(index)">
 						<span>{{x.number}}</span>
 						<div v-if="number_editor_index === index" class="number_editor_container">
-							<input ref="input" class="number_editor" type="number" 
+							<input ref="input" class="number_editor" type="number"
 								v-model.number="number_editor_number" @blur="submitEditorNumber()"
 								@focus="event.target.select()"
 								@keydown="if (event.key === 'Enter') submitEditorNumber(); else if (event.key === 'Escape') cancelEditorNumber();"/>
@@ -137,6 +140,21 @@
 						重置
 					</button>
 					<button onclick="f_save()">保存方案</button>
+					<button
+							onclick="let configSpan = document.getElementById('blueprintConfig'); if(configSpan.style.display === 'none'){configSpan.style.display='block'}else {configSpan.style.display='none'}"
+					>蓝图配置</button>
+					<button onclick="generateBlueprint()">生成蓝图</button>
+					<br/>
+					<span id="blueprintConfig" style="display: none">蓝图配置：
+						<div style="margin-left: 2%">
+						<input type="checkbox" id="compactLayout"><label for="compactLayout">紧凑布局（高纬度可能出现碰撞）</label>
+<!--						<input type="checkbox" id="upgradeConveyorBelt"><label for="upgradeConveyorBelt">临界运力传送带自升级</label>-->
+						<input type="checkbox" id="onlyConveyorBeltMk3"><label for="onlyConveyorBeltMk3">只使用三级传送带</label>
+						<br/>
+						<label for="conveyorBeltStackLayer">传送带物品堆叠层数</label><input type="number" id="conveyorBeltStackLayer" min="1" max="4" value="4">
+						<label for="x_y_ratio">蓝图长宽比</label><input type="number" id="x_y_ratio" min="1" step="0.1" value="2">
+						</div>
+					</span>
 					<br/><small>(右键可取消单项需求；单击数字可编辑数量)</small>
 				</span>
 			</div>
@@ -176,7 +194,7 @@
 								增产剂效果
 								<br /><span style="font-size:12px">(可选)</span>
 							</td>
-							
+
 							<td>
 								制作于
 								<br /><span style="font-size:12px">(可选)</span>

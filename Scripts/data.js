@@ -167,26 +167,26 @@
             {
                 s: [{ name: "重氢" }], group: "组件", m: "轨道采集器2", q: [
 
-                ], t: 1  
+                ], t: 1
             },
             {
                 s: [{ name: "氢" }], group: "组件", m: "轨道采集器", q: [
 
                 ], t: 1
             },
-            
-             
+
+
             {
                 s: [{ name: "氢" }], group: "组件", m: "轨道采集器2", q: [
 
                 ], t: 1
-            }, 
+            },
             {
                 s: [{ name: "氢" }, { name: "精炼油", n: 2 }], group: "组件", m: "原油精炼机", q: [
                     { name: "原油", n: 2 }
                 ], t: 4
             },
-			
+
             {
                 s: [ { name: "精炼油", n: 3 }], group: "组件", m: "原油精炼机", q: [
                     { name: "精炼油", n: 2 },
@@ -202,7 +202,7 @@
 
                 ], t: 2
             },
-             
+
             {
                 s: [{ name: "可燃冰" }], group: "组件", m: "轨道采集器", q: [
 
@@ -948,7 +948,7 @@
                     { name: "微晶元件", n: 2 }
                 ], t: 3
             },
-			
+
             {
                 s: [{ name: "氢", n: 3 }, { name: "高级石墨", n: 1 }], group: "组件", m: "原油精炼机", q: [
                     { name: "氢", n: 2 },
@@ -1011,7 +1011,7 @@
 
         function f_initData() {
 
-  
+
 
             $(data).each(function (i, item) {
                 item.id = i;//配方的id，用index设置，data改变时应该重置配方
@@ -1081,13 +1081,13 @@
                     ];
                 }
                 if (item.m == "轨道采集器") {
-                    ms = [ 
+                    ms = [
                         { name: "轨道采集器(巨冰)", speed: 1 }
                     ];
                 }
                 if (item.m == "轨道采集器2") {
                     ms = [
-                        { name: "轨道采集器(气态)", speed: 1 } 
+                        { name: "轨道采集器(气态)", speed: 1 }
                     ];
                 }
 
@@ -1347,7 +1347,7 @@
             if (name == "射线接收塔") name = "射线接收站";
             if (name == "轨道采集器(气态)") name = "轨道采集器";
             if (name == "轨道采集器(巨冰)") name = "轨道采集器";
-            
+
             if (icons[name]) {
                 title.push("<img class='sicon' src='data:image/png;base64," + icons[name] + "' title='" + name + "' />");
             } else {
@@ -1447,7 +1447,7 @@
                 var accType = (settings[currentItem.id] || {}).accType || defaultAccType;
                 var accValue = (settings[currentItem.id] || {}).accValue || defaultAccValue;
                 if (accValue == '增产' && currentItem.noExtra) accValue = '无';
-                if (currentItem.q.length == 0) accValue = '无'; 
+                if (currentItem.q.length == 0) accValue = '无';
 
                 var info = getValue(currentItem);
                 for (var i = 0; i < currentItem.s.length; i++) {
@@ -1555,7 +1555,7 @@
             projectsUpdate();
             $("#btnAdd3").click(function () {
                 f_add3($("#seldata").val());
-            }); 
+            });
             $("#btnReset2").click(function () {
                 settings = {};
                 saveSetting();
@@ -1592,7 +1592,7 @@
                                 this.m[i].speed = 1 * 20 * 0.01 * parseFloat($("#selore").val()) * 0.01 * parseFloat($('#speed1_6').val());
                             } if (this.m[i].name == "抽水机") {
                                 this.m[i].speed = Math.min(50 * 0.01 * parseFloat($("#selore").val()) / 60, 30);
-                            }  
+                            }
                         }
                     }
 
@@ -1620,7 +1620,7 @@
                                 this.m[i].speed = parseFloat($("#fractionatorSpeed").val()) / (0.01 * 60);
                             }
                         }
-                    } 
+                    }
                 });
                 update_all();
             });
@@ -1632,7 +1632,7 @@
                                 this.m[i].speed = parseFloat($("#oilSpeed").val());
                             }
                         }
-                    } 
+                    }
                 });
                 update_all();
             });
@@ -1649,7 +1649,7 @@
                     }
                 });
                 update_all();
-            }); 
+            });
 
                             /*产量：可燃冰 0.65/s 氢0.25/s
 每分钟采集物=60*产量*采矿作业速度*8（这是大佬量化表的现状）
@@ -1667,7 +1667,7 @@
 氢气=132-87.9=44.1*/
 
             function doSpeed1() {
-                 
+
                 var speed1_1 = parseFloat($("#speed1_1").val());
                 var speed1_2 = parseFloat($("#speed1_2").val());
                 var speed1_3 = parseFloat($("#speed1_3").val());
@@ -1676,11 +1676,11 @@
 
                 function getSum(value1, value2, p1, p2) {
                     var sum = 0;
-                     
+
                     sum = 60 * value1 * 0.01 * ore * 8;
                     var per = value1 * p1 / (value1 * p1 + value2 * p2);
                     sum -= 60 * 30 * per / p1;
-                     
+
                     return sum;
                 }
                 $(data).each(function () {
@@ -1690,11 +1690,11 @@
                         if (this.m) {
                             for (var i = 0; i < this.m.length; i++) {
                                 if (this.m[i].name == "轨道采集器(气态)") {
-                                     
-                                    if (this.s[0].name == "氢") { 
+
+                                    if (this.s[0].name == "氢") {
                                         this.t = 1 / (getSum(speed1_1, speed1_2, 8, 8) / 60);
                                         // console.log("T1:" + this.t);
-                                    } else if (this.s[0].name == "重氢") { 
+                                    } else if (this.s[0].name == "重氢") {
                                         this.t = 1 / (getSum(speed1_2, speed1_1, 8, 8) / 60);
                                         // console.log("T2:" + this.t);
                                     }
@@ -1703,7 +1703,7 @@
                                     if (this.s[0].name == "氢") {
                                         this.t = 1 / (getSum(speed1_4, speed1_3, 8, 4.8) / 60);
                                         // console.log("T3:" + this.t);
-                                    } else if (this.s[0].name == "可燃冰") { 
+                                    } else if (this.s[0].name == "可燃冰") {
                                         this.t = 1 / (getSum(speed1_3, speed1_4, 4.8, 8) / 60);
                                         // console.log("T4:" + this.t);
                                     }
@@ -1766,7 +1766,7 @@
 			            settingsLocal[this.id].m = value;
 			        }
 			    });
-			
+
 			    saveSetting();
 			    update_all();
 			});
@@ -1779,7 +1779,7 @@
 			            settingsLocal[this.id].m = value;
 			        }
 			    });
-			
+
 			    saveSetting();
 			    update_all();
 			});
@@ -2014,7 +2014,7 @@
             for (var i = 0; i < xhs.length; i++) {
                 if (xhs[i].value2 > max) maxValue2Index = i;
             }
-            
+
             for (var i = 0; i < xhs.length; i++) {
                 if (i != maxValue2Index && xhs[i].value2 > 0) {
                     var number = xhs[i].value;
@@ -2026,7 +2026,7 @@
                 }
             }
 
-            
+
         }
         function mergeMul() {
             var gs = [];
@@ -2057,7 +2057,7 @@
                 for (var j = 0; j < item.s.length; j++) {
                     var x = findOut(item.s[j].name);
                     if (x == null) return false;
-                    var mn = nn * 60 / item.t * info.speed * (item.s[j].n || 1); //1分钟1个设备产量 
+                    var mn = nn * 60 / item.t * info.speed * (item.s[j].n || 1); //1分钟1个设备产量
                     if (x > -1 * mn) return false;
                 }
                 return true;
@@ -2066,20 +2066,20 @@
             for (var i = 0; i < xh_list.length; i++) {
                 var number = xh_list[i].value;
                 var item = find(xh_list[i].name);
-                var info = getValue(item); 
+                var info = getValue(item);
                 var nn = 1;
                 if (xh_list[i].value2 < 1) {
                     nn = xh_list[i].value2;
                 }
 
                 while (isOverflow(item, info,nn) && xh_list[i].value2 > 0) { //直到满足条件
-                      
+
                     if (xh_list[i].value2 < 1) {
                         nn = xh_list[i].value2;
                     }
                     xh_list[i].value2 = xh_list[i].value2 - nn;//调整数量
                     for (var j = 0; j < item.s.length; j++) {
-                        var mn = nn * 60 / item.t * info.speed * (item.s[j].n || 1); //1分钟1个设备产量 
+                        var mn = nn * 60 / item.t * info.speed * (item.s[j].n || 1); //1分钟1个设备产量
                         addOut(item.s[j].name, mn);
                     }
                     if (xh_list[i].value2 < 1) {
@@ -2120,13 +2120,13 @@
                 var currentItem = xqs[m].item;
                 loadNumber(currentItem.name, xqs[m].number);
             }
-             
+
             function isXqs(name) {
                 for (var m = 0; m < xqs.length; m++) {
                     if (xqs[m].item.name == name) return true;
                 }
                 return false;
-            } 
+            }
             var items0 = [];
             var items = [];
             var items2 = [];
@@ -2143,14 +2143,14 @@
                     var accType = (settings[item.id] || {}).accType || defaultAccType;
                     var accValue = (settings[item.id] || {}).accValue || defaultAccValue;
                     if (accValue == '增产' && item.noExtra) accValue = '无';
-                    if (item.q.length == 0) accValue = '无'; 
+                    if (item.q.length == 0) accValue = '无';
 
                     xh.value2 /= getAccSpeed(accType, accValue);
                 }
-            } 
+            }
             //mergeMul();//处理合并 多个产出使用了同一个配方 ,暂时弃用，checkResult会处理这种情况
             checkResult();//优化当前结果，遍历配方，如果 出现几个产出都多余，比如氢-120 精炼油-120，那么应该把设备调整到合适数量
-            
+
             for (var i = 0; i < single_list.length; i++) {
                 if (!single_list[i].value) continue;
                 var item = data[single_list[i].id];
@@ -2632,4 +2632,164 @@
                     }
                 }
             }
+        }
+
+        function getRecipe() {
+            let recipeList = []
+            const itemNameList = [['配送运输机', 'logisticsBot'], ['水', 'water'], ['铁矿', 'ironOre'], ['铜矿', 'copperOre'], ['硅石', 'siliconOre'], ['钛石', 'titaniumOre'], ['煤矿', 'coal'], ['铁块', 'ironIngot'], ['钛块', 'titaniumIngot'], ['高级石墨', 'energeticGraphite'], ['金刚石', 'diamond'], ['增产剂Mk.Ⅰ', 'proliferatorMk1'], ['增产剂Mk.Ⅱ', 'proliferatorMk2'], ['增产剂Mk.Ⅲ', 'proliferatorMk3'], ['齿轮', 'gear'], ['石矿', 'stone'], ['原油', 'oil'], ['精炼油', 'refinedOil'], ['硫酸', 'sulfuricAcid'], ['氢', 'hydrogen'], ['可燃冰', 'fireIce'], ['木材', 'wood'], ['植物燃料', 'plant_fuel'], ['金伯利矿石', 'kimberliteOre'], ['分形硅石', 'fractalSilicon'], ['光栅石', 'opticalGratingCrystal'], ['刺笋结晶', 'spiniformStalagmiteCrystal'], ['单极磁石', 'unipolarMagnet'], ['铜块', 'copperIngot'], ['高纯硅块', 'highPuritySilicon'], ['石材', 'stoneBrick'], ['钢材', 'steel'], ['钛合金', 'titaniumAlloy'], ['玻璃', 'glass'], ['钛化玻璃', 'titaniumGlass'], ['棱镜', 'prism'], ['晶格硅', 'crystalSilicon'], ['磁铁', 'magnet'], ['磁线圈', 'magneticCoil'], ['电动机', 'electricMotor'], ['电磁涡轮', 'electromagneticTurbine'], ['超级磁场环', 'superMagneticRing'], ['粒子容器', 'particleContainer'], ['奇异物质', 'strangeMatter'], ['电路板', 'circuitBoard'], ['处理器', 'processor'], ['量子芯片', 'quantumChip'], ['微晶元件', 'microcrystallineComponent'], ['位面过滤器', 'planeFilter'], ['粒子带宽', 'particleBroadband'], ['电浆激发器', 'plasmaExciter'], ['光子合并器', 'photonCombiner'], ['太阳帆', 'solarSail'], ['重氢', 'deuterium'], ['反物质', 'antimatter'], ['临界光子', 'criticalPhoton'], ['液氢燃料棒', 'hydrogenFuelRod'], ['氘核燃料棒', 'deuteriumFuelRod'], ['反物质燃烧棒', 'antimatterFuelRod'], ['塑料', 'plastic'], ['石墨烯', 'graphene'], ['碳纳米管', 'carbonNanotube'], ['有机晶体', 'organicCrystal'], ['钛晶石', 'titaniumCrystal'], ['卡西米尔晶片', 'casimirCrystal'], ['引力透镜', 'gravitonLens'], ['空间翘曲器', 'spaceWarper'], ['湮灭约束球', 'annihilationConstraintSphere'], ['推进器', 'thruster'], ['加力推进器', 'reinforcedThruster'], ['物流运输机', 'logisticDrone'], ['星际物流运输机', 'logisticVessel'], ['框架材料', 'frameMaterial'], ['戴森球组件', 'dysonSphereComponent'], ['小型运载火箭', 'smallCarrierRocket'], ['地基', 'foundation'], ['传送带', 'conveyorBeltMk1'], ['高速传送带', 'conveyorBeltMk2'], ['极速传送带', 'conveyorBeltMk3'], ['分拣器', 'sorterMk1'], ['高速分拣器', 'sorterMk2'], ['极速分拣器', 'sorterMk3'], ['四向分流器', 'splitter'], ['自动集装机', 'autoPiler'], ['流速监测器', 'trafficMonitor'], ['喷涂机', 'sprayCoater'], ['小型储物仓', 'storageMk1'], ['大型储物仓', 'storageMk2'], ['储液灌', 'storageTank'], ['制作台Mk.Ⅰ', 'assemblingMachineMk1'], ['制作台Mk.Ⅱ', 'assemblingMachineMk2'], ['制作台Mk.Ⅲ', 'assemblingMachineMk3'], ['电力感应塔', 'teslaTower'], ['无线输电塔', 'wirelessPowerTower'], ['卫星配电站', 'satelliteSubstation'], ['风力涡轮机', 'windTurbine'], ['火力发电机', 'thermalPowerPlant'], ['微型聚变发电站', 'miniFusionPowerPlant'], ['地热发电站', 'geothermalPowerStation'], ['采矿机', 'miningMachine'], ['大型采矿机', 'advancedMiningMachine'], ['抽水机', 'waterPump'], ['电弧熔炉', 'arcSmelter'], ['位面熔炉', 'planeSmelter'], ['原油萃取站', 'oilExtractor'], ['原油精炼厂', 'oilRefinery'], ['化工厂', 'chemicalPlant'], ['分馏塔', 'fractionator'], ['量子化工厂', 'quantumChemicalPlant'], ['太阳能板', 'solarPanel'], ['蓄电池', 'accumulator'], ['蓄电池满', 'accumulatorFull'], ['电磁轨道弹射器', 'emRailEjector'], ['射线接收站', 'rayReceiver'], ['垂直发射井', 'verticalLaunchingSilo'], ['能量枢纽', 'energyExchanger'], ['微型粒子对撞机', 'miniatureParticleCollider'], ['人造恒星', 'artificialStar'], ['物流配送器', 'logisticsDistributor'], ['行星内物流运输站', 'planetaryLogisticStation'], ['星际物流运输站', 'interstellarLogisticStation'], ['轨道采集器', 'orbitalCollector'], ['矩阵研究站', 'matrixLab'], ['蓝矩阵', 'electromagneticMatrix'], ['红矩阵', 'energyMatrix'], ['黄矩阵', 'structureMatrix'], ['紫矩阵', 'informationMatrix'], ['绿矩阵', 'gravityMatrix'], ['宇宙矩阵', 'universeMatrix'], ['None', 'None']]
+            let outputHasHydrogen = false
+            let inputHasHydrogen = false
+            for (let tr of document.getElementsByTagName('tbody')[0].childNodes) {
+                if (tr.className==='header') {
+                    continue
+                }
+                if (tr.className==='total') {
+                    break
+                }
+                if (tr.childNodes.length === 0) {
+                    continue
+                }
+                let nodeList = []
+                for (let node of tr.childNodes) {
+                    if (!node.tagName) {
+                        continue
+                    }
+                    nodeList.push(node)
+                }
+
+                let buildingName = nodeList[3].getElementsByTagName('img')[0]
+                if (!buildingName) {
+                    buildingName = 'None'
+                } else {
+                    buildingName = buildingName.getAttribute('title')
+                }
+                let building = {
+                    name: buildingName,
+                    // num: Math.ceil(parseFloat(nodeList[3].getElementsByTagName('span')[0].innerText))
+                    num: parseFloat(nodeList[3].getElementsByTagName('span')[0].innerText)
+                }
+                let success = false
+                for (let item of itemNameList) {
+                    if (item[0] !== building.name) {
+                        continue
+                    }
+                    building.name = item[1]
+                    success = true
+                    break
+                }
+                if (!success) {
+                    alert(`item map error: ${building.name}`)
+                    return
+                }
+
+                const recipeHtml = nodeList[4].getElementsByTagName('div')[0].getElementsByClassName('pf selected')[0]
+                let input = []
+                let output = []
+                let recipeId = 0
+                let isInput = true
+                const t = parseFloat(recipeHtml.innerText.split('(')[1].split('s')[0])
+                for (let node of recipeHtml.childNodes){
+                    if (!node.tagName) {
+                        continue
+                    }
+                    if (node.tagName === 'IMG') {
+                        if (node.className === 'to') {
+                            isInput = false
+                            continue
+                        }
+                        let cnTitle = node.getAttribute('title')
+                        let title = ''
+                        for (let item of itemNameList) {
+                            if (item[0] !== cnTitle) {
+                                continue
+                            }
+                            title = item[1]
+                            success = true
+                            break
+                        }
+                        if (!success) {
+                            // alert(`item map error: ${cnTitle}`)
+                            let msg = `item map error: ${cnTitle}`
+                            cocoMessage.error(msg)
+                            throw msg
+                        }
+                        if (isInput) {
+                            input.push({name: title})
+                        }else {
+                            output.push({name: title})
+                            if (title === 'hydrogen') {
+                                outputHasHydrogen = true
+                            }
+                        }
+                    }else if (node.tagName === 'SUB') {
+                        if (isInput) {
+                            input[input.length-1].rate = parseFloat(node.innerText)/t
+                        }
+                        else {
+                            output[output.length-1].rate = parseFloat(node.innerText)/t
+                        }
+                    }
+                }
+                const acceleratorModeName = nodeList[6].getElementsByClassName('m selected')[0].getAttribute('data-modein')
+                let acceleratorMode = 0
+                if (acceleratorModeName === '加速') {
+                    acceleratorMode = 1
+                }
+                if (isInput) {
+                    // 还是input就说明这个是原矿，蓝图不需要考虑原矿的生产建筑，且原矿的rate（每秒需求量）需重新计算
+                    output = input
+                    output[0].rate = parseFloat(nodeList[2].getElementsByTagName('span')[0].innerText)/60
+                    building = null
+                    input = null
+                    if (output[0].name === 'hydrogen') {
+                        inputHasHydrogen = true
+                    }
+                }
+                if (inputHasHydrogen && outputHasHydrogen) {
+                    // alert(`氢同时作为产物和原料时不支持自动生成蓝图，请排除产生氢的配方物品`)
+                    cocoMessage.warning('氢同时作为产物和原料时不支持自动生成蓝图，请排除产生氢的配方物品', 4000);
+                    throw `unsupported recipe list`
+                }
+                const recipe = {
+                    building: building,
+                    output: output,
+                    input: input,
+                    acceleratorMode: acceleratorMode,
+                    recipeID: recipeId
+                }
+
+                recipeList.push(recipe)
+                // console.log(recipe)
+            }
+            // navigator.clipboard.writeText(JSON.stringify(recipeList))
+            return recipeList
+            // alert("已复制到粘贴板")
+        }
+
+        function generateBlueprint(){
+            const outputRecipe = {
+                // output: 'test',
+                // rate: 0,
+                subRecipes: getRecipe()
+            }
+            // console.log(JSON.stringify(outputRecipe))
+            //{"subRecipes":[{"building":{"name":"assemblingMachineMk1","num":0.7},"output":[{"name":"magneticCoil","rate":2}],"input":[{"name":"magnet","rate":2},{"name":"copperIngot","rate":1}],"acceleratorMode":0,"recipeID":0},{"building":{"name":"arcSmelter","num":1.5},"output":[{"name":"magnet","rate":0.6666666666666666}],"input":[{"name":"ironOre","rate":0.6666666666666666}],"acceleratorMode":0,"recipeID":0},{"building":null,"output":[{"name":"ironOre","rate":1}],"input":null,"acceleratorMode":0,"recipeID":0},{"building":{"name":"arcSmelter","num":0.5},"output":[{"name":"copperIngot","rate":1}],"input":[{"name":"copperOre","rate":1}],"acceleratorMode":0,"recipeID":0},{"building":null,"output":[{"name":"copperOre","rate":0.5}],"input":null,"acceleratorMode":0,"recipeID":0}]}
+            if (!outputRecipe.subRecipes) {
+                return
+            }
+            let config = {
+                maxSorterNumOneBelt: 8,  // 一个传送带节点连接的最大分拣器数量
+                conveyorBeltStackLayer: parseInt(document.getElementById('conveyorBeltStackLayer').value),  // 传送带物品最大堆叠层数
+                x_y_ratio: parseFloat(document.getElementById('x_y_ratio').value),  // 长宽比
+                compactLayout: document.getElementById('compactLayout').checked,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
+                upgradeConveyorBelt: false,  // 360/min的运力时使用3级传送带（无带流情况下，原料的需求和供应都是集中处理，1级传送带满运力情况下可能会有运送不及时问题导致产量低于预期
+                onlyConveyorBeltMk3: document.getElementById('onlyConveyorBeltMk3').checked,  // 是否只使用三级传送带
+            }
+            // console.log(config)
+            let b1 = new BluePrint('NewBlueprint', outputRecipe, config)
+            b1.init()
+            b1.generateBuildings()
+            b1.generateConveyorBelts()
+            b1.blueprintTemplate.buildings = b1.buildings
+            navigator.clipboard.writeText(b1.toStr()).then(r => cocoMessage.success("已复制到粘贴板", 1000))
         }
