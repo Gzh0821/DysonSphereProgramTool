@@ -145,6 +145,7 @@ const buildingType = {
 }
 const buildingMap = {
     arcSmelter: {remark: '电弧熔炉', name: 'arcSmelter', itemId: 2302, modelIndex: 62, productionSpeed: 1, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.smelter, slotMaxIndex: 7},
+    planeSmelter: { remark: '位面熔炉', name: 'planeSmelter', itemId: 2315, modelIndex: 194, productionSpeed: 2, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.smelter, slotMaxIndex: 7},
     assemblingMachineMk1: {remark: '制造台Mk.I', name: 'assemblingMachineMk1', itemId: 2303, modelIndex: 65, productionSpeed: 0.75, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
     assemblingMachineMk2: {remark: '制造台MkⅡ', name: 'assemblingMachineMk2', itemId: 2304, modelIndex: 66, productionSpeed: 1, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
     assemblingMachineMk3: { remark: '制造台Mk.III', name: 'assemblingMachineMk3', itemId: 2305, modelIndex: 67, productionSpeed: 1.5, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
@@ -161,7 +162,7 @@ const buildingMap = {
     // piler: { remark: '自动集装机', name: 'piler', itemId: 2040, modelIndex: 257 },
     // monitor: { remark: '流速监测器', name: 'monitor', itemId: 2030, modelIndex: 208 },
     // spray_coater: { remark: '喷涂机', name: 'spray_coater', itemId: 2313, modelIndex: 120 },
-    // planeSmelter: { remark: '位面熔炉', name: 'planeSmelter', itemId: 2315, modelIndex: 194 },
+
     // hadron_collider: { remark: '微型粒子对撞机', name: 'hadron_collider', itemId: 2310, modelIndex: 69 },
     // lab: { remark: '矩阵研究站', name: 'lab', itemId: 2901, modelIndex: 70 },
 
@@ -308,6 +309,8 @@ class BluePrint {
             conveyorBeltStackLayer: 4,  // 传送带物品最大堆叠层数
             x_y_ratio: 2,  // 长宽比
             compactLayout: false,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
+            upgradeConveyorBelt: true,  // 360/min的运力时使用3级传送带（无带流情况下，原料的需求和供应都是集中处理，1级传送带满运力情况下可能会有运送不及时问题导致产量低于预期
+            onlyConveyorBeltMk3: false,  // 是否只使用三级传送带
         }
         this.buildingArray = []
         this.sorters = {}
@@ -1003,12 +1006,21 @@ class BluePrint {
         console.log(itemSummary)
         // console.log(JSON.stringify(this.sorters))
         // 生成传送带并连接到分拣器
+        const zero = 0.00000000001  // rate是每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.00000000001为判断标准足够了。
         for (let item in itemSummary){
             const itemName = item
+            // console.log(itemName)
             item = itemSummary[item]
+
             let conveyorBelt = buildingMap.conveyorBeltMk1
-            if (item.rate > conveyorBelt.transportSpeed) {
-                conveyorBelt = buildingMap.conveyorBeltMK3  // 直接使用三级传送带，跳过二级
+            if (this.config.onlyConveyorBeltMk3) {
+                conveyorBelt = buildingMap.conveyorBeltMK3
+            }else if (item.rate >= conveyorBelt.transportSpeed) {
+                if (item.rate === conveyorBelt.transportSpeed && this.config.upgradeConveyorBelt){
+                    conveyorBelt = buildingMap.conveyorBeltMK3  // 直接使用三级传送带，跳过二级
+                }else if (item.rate > conveyorBelt.transportSpeed) {
+                    conveyorBelt = buildingMap.conveyorBeltMK3
+                }
             }
 
             let maxTransportSpeed = buildingMap.conveyorBeltMK3.transportSpeed
@@ -1016,32 +1028,30 @@ class BluePrint {
                 maxTransportSpeed = buildingMap.conveyorBeltMK3.transportSpeed * this.config.conveyorBeltStackLayer
             }
 
-            let totalDoneRate = 0
-            for (let i=0; i<Math.ceil(item.rate/maxTransportSpeed); i++){
+            // let totalDoneRate = 0
+            for (let totalDoneRate=0; item.rate - totalDoneRate > zero;){
                 let doneRate = 0
                 let parameters = null
-                const rate = Math.min(maxTransportSpeed, item.rate-i*maxTransportSpeed)
-                let inputRate = rate
+                // const rate = Math.min(maxTransportSpeed, item.rate-i*maxTransportSpeed)
+                let inputRate = Math.min(maxTransportSpeed, item.rate - totalDoneRate)
                 let inputData = []
                 let outputData = []
                 let doneSorterNum = 0
                 if (item.fromBuildingNum !== 0){
                     for (let j=this.sorters[itemName].output.length-1; j>=0; j--){
-                        if (this.sorters[itemName].output[j].rate - inputRate > 0.000000000001) { // rate时每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.000000000001为判断标准足够了。
-                            if ((j>0)&&(i+1 >= Math.ceil(item.rate/maxTransportSpeed))){
-                                // 有分拣器还未连接 并且 不会再生成新的传送带了
-                                // 这种情况就是建筑非整数时计算误差导致的，继续处理未连接的分拣器就可以了
-                            }else {
+                        if (this.sorters[itemName].output[j].rate - inputRate > zero) {
+                            // if ((j>0)&&(i+1 >= Math.ceil(item.rate/maxTransportSpeed))){
+                            //     // 有分拣器还未连接 并且 不会再生成新的传送带了
+                            //     // 这种情况就是建筑非整数时计算误差导致的，继续处理未连接的分拣器就可以了
+                            //
                                 // 当前带接受运力不能满足分拣器，则该分拣器连接下一个带上的节点
-                                break
-                            }
+                            break
                         }
                         if (doneSorterNum % this.config.maxSorterNumOneBelt === 0) {
                             inputData.push([this.sorters[itemName].output[j].index])
                         }else {
                             inputData[inputData.length-1].push(this.sorters[itemName].output[j].index)
                         }
-
                         inputRate -= this.sorters[itemName].output[j].rate
                         doneRate += this.sorters[itemName].output[j].rate
                         this.sorters[itemName].output.pop()
@@ -1051,12 +1061,13 @@ class BluePrint {
                     inputData.push([])
                     parameters = {
                         iconId: itemMap[itemName].iconId,
-                        count: rate * 60
+                        count: (inputRate * 60).toFixed(0)
                     }
-                    inputRate = 0
+                    doneRate += inputRate
+                    // inputRate = 0
                 }
-
-                let outputRate = rate - inputRate  // 当前传送带实际运力
+                totalDoneRate += doneRate
+                let outputRate = doneRate  // 当前传送带实际运力
                 doneSorterNum = 0
                 if (item.toBuildingNum !== 0) {
                     for (let j=this.sorters[itemName].input.length-1; j>=0; j--){
@@ -1134,7 +1145,7 @@ class BluePrint {
                         this.sorters[itemName].input.pop()
                         doneSorterNum ++
                         if (outputRate <= 0) {
-                            if ((j>0)&&(i+1 >= Math.ceil(item.rate/maxTransportSpeed))){
+                            if ((j>0)&&(totalDoneRate >= item.rate)){
                                 // 有分拣器还未连接 并且 不会再生成新的传送带了
                                 // 这种情况就是建筑非整数时计算误差导致的，继续处理未连接的分拣器就可以了
                                 continue
@@ -1147,16 +1158,16 @@ class BluePrint {
                     outputData.push([])
                     parameters = {
                         iconId: itemMap[itemName].iconId,
-                        count: outputRate * 60
+                        count: (outputRate * 60).toFixed(0)
                     }
                 }
 
 
-                let direction = 1
+                let direction = 1  // 表示传送带方向沿y轴正方向，用于终产物和中间产物
                 if (item.fromBuildingNum === 0) {
-                    direction = -1
+                    direction = -1  // y轴负方向，用于原料
                 }
-                console.log(itemName, inputData, outputData, direction)
+                // console.log(itemName, inputData, outputData, direction)
                 this.newConveyor(conveyorBelt, direction, inputData, outputData, parameters)
             }
         }
@@ -1820,8 +1831,6 @@ class BluePrint {
 // TODO 生产设施速度不为1时有问题，比如使用1级制造台的蓝图 会出现许多分拣器连接异常
 // TODO 原油精炼塔、化工厂和其他建筑的碰撞问题 以及 高纬度的碰撞问题
 // TODO 一个物品既是中间产物又是原料输入时 蓝图会有问题，比如量子芯片中的氢
-// TODO 1/min的粒子对撞机蓝图 钢材输入分拣器失效、框架材料硅石输入异常
-// TODO 2540/min的磁铁蓝图 有一个输出口未连接
 // TODO 调整对撞机和炼油塔的分拣器
 // const tmpRecipe = [
 //     {
