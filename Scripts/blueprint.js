@@ -298,21 +298,22 @@ const recipeMap = {
 }
 
 class BluePrint {
-    constructor(name, recipe) {
+    constructor(name, recipe, config) {
         this.name = name
         this.recipe = recipe
         this.buildingIndex = -1
         this.blueprintSize = {x: 0, y: 0}
         this.occupiedArea = []
         this.buildings = []
-        this.config = {
-            maxSorterNumOneBelt: 8,  // 一个传送带节点连接的最大分拣器数量
-            conveyorBeltStackLayer: 4,  // 传送带物品最大堆叠层数
-            x_y_ratio: 2,  // 长宽比
-            compactLayout: false,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
-            upgradeConveyorBelt: true,  // 360/min的运力时使用3级传送带（无带流情况下，原料的需求和供应都是集中处理，1级传送带满运力情况下可能会有运送不及时问题导致产量低于预期
-            onlyConveyorBeltMk3: false,  // 是否只使用三级传送带
-        }
+        // this.config = {
+        //     maxSorterNumOneBelt: 8,  // 一个传送带节点连接的最大分拣器数量
+        //     conveyorBeltStackLayer: 4,  // 传送带物品最大堆叠层数
+        //     x_y_ratio: 2,  // 长宽比
+        //     compactLayout: false,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
+        //     upgradeConveyorBelt: false,  // 360/min的运力时使用3级传送带（无带流情况下，原料的需求和供应都是集中处理，1级传送带满运力情况下可能会有运送不及时问题导致产量低于预期
+        //     onlyConveyorBeltMk3: false,  // 是否只使用三级传送带
+        // }
+        this.config = config
         this.buildingArray = []
         this.sorters = {}
         this.blueprintTemplate = {
@@ -424,7 +425,7 @@ class BluePrint {
             }
             if (!(direction < 0 && i === 0 )) {
                 outputObjIdx = this.buildingIndex + direction
-                console.log(`conveyor ${this.buildingIndex} outputObjIdx ${outputObjIdx}`)
+                // console.log(`conveyor ${this.buildingIndex} outputObjIdx ${outputObjIdx}`)
             }
             let nodeParameters = null
             if (direction < 0 && i === 0) {
@@ -619,8 +620,7 @@ class BluePrint {
                 }
                 return {area: 77, x: 11, y: 7, centerPoint: [3, 5, 3, 5], yaw: [0, 0]}
             default:
-                console.log(`unknown production build type - ${buildingMap[subRecipe.building.name].type}`)
-                return {}
+                throw `unknown production build type - ${buildingMap[subRecipe.building.name].type}`
         }
     }
 
@@ -936,7 +936,7 @@ class BluePrint {
                 newSorter.outputObjIdx = nowBuildingIndex
                 newSorter.outputToSlot = slotIndex
                 newSorter.inputToSlot = 1
-                console.log(inputItem.name)
+                // console.log(inputItem.name)
                 newSorter.filterId = itemMap[inputItem.name].iconId
                 newSorter.parameters = {length:1}
                 const offsetInfo = this.calculateSorterLocalOffsetAndYaw({x:buildingX, y:buildingY, z: buildingZ}, buildingMap[subRecipe.building.name].category, slotIndex, 1)
@@ -996,6 +996,7 @@ class BluePrint {
         this.mapRecipeID()
         this.calculateBlueprintArea()
         this.blueprintTemplate.areas[0].size = this.blueprintSize
+        // console.log(this.config)
     }
 
     generateConveyorBelts() {
@@ -1046,7 +1047,7 @@ class BluePrint {
             }
         }
 
-        console.log(itemSummary)
+        // console.log(itemSummary)
         // 生成传送带并连接到分拣器
         const zero = 0.00000000001  // rate是每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.00000000001为判断标准足够了。
         for (let item in itemSummary){
@@ -1782,3 +1783,6 @@ class BluePrint {
 
 // TODO recipeMap中值为-1的表示对应的配方暂不支持，目前仅支持熔炉、制造台、精炼厂、对撞机为生产设备的配方，【X射线裂解】和【重整精炼】两个配方由于程序设计问题，暂无法支持（因为这俩配方的原料和产出有相同物品）；
 // TODO 一个物品既是中间产物又是原料输入时 生成蓝图时会死循环（目前只有氢会有这个情况）；临时解决措施：存在这种情况时，提示 排除产生氢的配方
+// TODO 支持喷涂增产剂
+// TODO 支持排布矩阵研究站
+// TODO 配置项开放到前端

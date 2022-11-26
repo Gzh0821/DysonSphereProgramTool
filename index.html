@@ -140,7 +140,21 @@
 						重置
 					</button>
 					<button onclick="f_save()">保存方案</button>
+					<button
+							onclick="let configSpan = document.getElementById('blueprintConfig'); if(configSpan.style.display === 'none'){configSpan.style.display='block'}else {configSpan.style.display='none'}"
+					>蓝图配置</button>
 					<button onclick="generateBlueprint()">生成蓝图</button>
+					<br/>
+					<span id="blueprintConfig" style="display: none">蓝图配置：
+						<div style="margin-left: 2%">
+						<input type="checkbox" id="compactLayout"><label for="compactLayout">紧凑布局（高纬度可能出现碰撞）</label>
+<!--						<input type="checkbox" id="upgradeConveyorBelt"><label for="upgradeConveyorBelt">临界运力传送带自升级</label>-->
+						<input type="checkbox" id="onlyConveyorBeltMk3"><label for="onlyConveyorBeltMk3">只使用三级传送带</label>
+						<br/>
+						<label for="conveyorBeltStackLayer">传送带物品堆叠层数</label><input type="number" id="conveyorBeltStackLayer" min="1" max="4" value="4">
+						<label for="x_y_ratio">蓝图长宽比</label><input type="number" id="x_y_ratio" min="1" step="0.1" value="2">
+						</div>
+					</span>
 					<br/><small>(右键可取消单项需求；单击数字可编辑数量)</small>
 				</span>
 			</div>

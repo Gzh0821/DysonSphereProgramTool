@@ -2759,7 +2759,7 @@
                 }
 
                 recipeList.push(recipe)
-                console.log(recipe)
+                // console.log(recipe)
             }
             // navigator.clipboard.writeText(JSON.stringify(recipeList))
             return recipeList
@@ -2772,11 +2772,21 @@
                 // rate: 0,
                 subRecipes: getRecipe()
             }
-            console.log(outputRecipe)
+            // console.log(JSON.stringify(outputRecipe))
+            //{"subRecipes":[{"building":{"name":"assemblingMachineMk1","num":0.7},"output":[{"name":"magneticCoil","rate":2}],"input":[{"name":"magnet","rate":2},{"name":"copperIngot","rate":1}],"acceleratorMode":0,"recipeID":0},{"building":{"name":"arcSmelter","num":1.5},"output":[{"name":"magnet","rate":0.6666666666666666}],"input":[{"name":"ironOre","rate":0.6666666666666666}],"acceleratorMode":0,"recipeID":0},{"building":null,"output":[{"name":"ironOre","rate":1}],"input":null,"acceleratorMode":0,"recipeID":0},{"building":{"name":"arcSmelter","num":0.5},"output":[{"name":"copperIngot","rate":1}],"input":[{"name":"copperOre","rate":1}],"acceleratorMode":0,"recipeID":0},{"building":null,"output":[{"name":"copperOre","rate":0.5}],"input":null,"acceleratorMode":0,"recipeID":0}]}
             if (!outputRecipe.subRecipes) {
                 return
             }
-            let b1 = new BluePrint('test', outputRecipe)
+            let config = {
+                maxSorterNumOneBelt: 8,  // 一个传送带节点连接的最大分拣器数量
+                conveyorBeltStackLayer: parseInt(document.getElementById('conveyorBeltStackLayer').value),  // 传送带物品最大堆叠层数
+                x_y_ratio: parseFloat(document.getElementById('x_y_ratio').value),  // 长宽比
+                compactLayout: document.getElementById('compactLayout').checked,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
+                upgradeConveyorBelt: false,  // 360/min的运力时使用3级传送带（无带流情况下，原料的需求和供应都是集中处理，1级传送带满运力情况下可能会有运送不及时问题导致产量低于预期
+                onlyConveyorBeltMk3: document.getElementById('onlyConveyorBeltMk3').checked,  // 是否只使用三级传送带
+            }
+            // console.log(config)
+            let b1 = new BluePrint('NewBlueprint', outputRecipe, config)
             b1.init()
             b1.generateBuildings()
             b1.generateConveyorBelts()
