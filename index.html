@@ -144,7 +144,8 @@
 							onclick="let configSpan = document.getElementById('blueprintConfig'); if(configSpan.style.display === 'none'){configSpan.style.display='block'}else {configSpan.style.display='none'}"
 					>蓝图配置</button>
 					<button onclick="generateBlueprint()">生成蓝图</button>
-					<br/>
+					<small>（注：目前只支持通过(位面)熔炉、制造台、精炼厂、对撞机、（量子）化工厂五类生产设施进行制造的物品，其他物品会提示"包含不支持的配方配方"）</small>
+<!--					<br/>-->
 					<span id="blueprintConfig" style="display: none">蓝图配置：
 						<div style="margin-left: 2%">
 						<input type="checkbox" id="compactLayout"><label for="compactLayout">紧凑布局（高纬度可能出现碰撞）</label>

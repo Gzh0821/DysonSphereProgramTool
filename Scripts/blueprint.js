@@ -368,7 +368,7 @@ class BluePrint {
                 }
             }
             if (!recipeMap[recipeStr] || recipeMap[recipeStr] === -1) {
-                cocoMessage.warning(`包含不支持的配方: ${recipeStr.replace('=', '->')}，请排除对应物品`, 5000)
+                cocoMessage.warning(`包含不支持的配方: ${recipeStr.replace('=', '->')}，<br/>请排除对应物品（目前只支持通过(位面)熔炉、制造台、精炼厂、对撞机、（量子）化工厂五类生产设施进行制造的物品）`, 5000)
                 throw `unknown recipe - ${recipeStr} ${subRecipe}`
             }
             subRecipe.recipeID = recipeMap[recipeStr]
@@ -1785,4 +1785,3 @@ class BluePrint {
 // TODO 一个物品既是中间产物又是原料输入时 生成蓝图时会死循环（目前只有氢会有这个情况）；临时解决措施：存在这种情况时，提示 排除产生氢的配方
 // TODO 支持喷涂增产剂
 // TODO 支持排布矩阵研究站
-// TODO 配置项开放到前端
