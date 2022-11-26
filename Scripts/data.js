@@ -2760,6 +2760,5 @@
             b1.generateBuildings()
             b1.generateConveyorBelts()
             b1.blueprintTemplate.buildings = b1.buildings
-            navigator.clipboard.writeText(JSON.stringify(b1.blueprintTemplate))
-            alert("已复制到粘贴板")
+            navigator.clipboard.writeText(b1.toStr()).then(r => alert("已复制到粘贴板"))
         }

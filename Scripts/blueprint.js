@@ -169,8 +169,8 @@ const buildingMap = {
 }
 
 const recipeMap = {
-    'refinedOil+stone+water=sulfuricAcid': 24,
-    'oil=hydrogen+refinedOil': 16,
+    'refinedOil+stone+water=sulfuricAcid': 24,  // 硫酸
+    'oil=hydrogen+refinedOil': 16,  // 精炼油
     'gravityMatrix=spaceWarper': 79,  // 空间翘曲器
     'gravitonLens=spaceWarper': 78,  // 空间翘曲器
     'titaniumAlloy+deuterium+superMagneticRing=deuteriumFuelRod': 41,  // 氘核燃料棒
@@ -304,40 +304,38 @@ class BluePrint {
         this.occupiedArea = []
         this.buildings = []
         this.config = {
-            maxSorterNumOneBelt: 8,
-            conveyorBeltStackLayer: 4,
+            maxSorterNumOneBelt: 8,  // 一个传送带节点连接的最大分拣器数量
+            conveyorBeltStackLayer: 4,  // 传送带物品最大堆叠层数
             x_y_ratio: 2,  // 长宽比
+            compactLayout: false,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
         }
         this.buildingArray = []
-        // {
-        //      "coal": [{index: 1, rate: 1.5, ownerIndex: 0}]
-        // }
         this.sorters = {}
-    }
-
-    blueprintTemplate = {
-        header: {
-            layout: 10,
-            icons: [0, 0, 0, 0, 0],
-            time: '2022-11-11T14:24:17.987Z',
-            gameVersion: '0.9.26.13026',
-            shortDesc: 'New Blueprint',
-            desc: ''
-        },
-        version: 1,
-        cursorOffset: {x: 0, y: 0},
-        cursorTargetArea: 0,
-        dragBoxSize: {x: 1, y: 1},
-        primaryAreaIdx: 0,
-        areas: [{
-            index: 0,
-            parentIndex: -1,
-            tropicAnchor: 0,
-            areaSegments: 200,
-            anchorLocalOffset: {x: 0, y: 0},
-            size: {x: 1, y: 1}
-        }],
-        buildings: []
+        this.blueprintTemplate = {
+            header: {
+                layout: 10,
+                icons: [0, 0, 0, 0, 0],
+                time: new Date(),
+                gameVersion: '0.9.26.13026',
+                shortDesc: 'New Blueprint',
+                desc: ''
+            },
+            version: 1,
+            cursorOffset: {x: 0, y: 0},
+            cursorTargetArea: 0,
+            dragBoxSize: {x: 1, y: 1},
+            primaryAreaIdx: 0,
+            areas: [{
+                index: 0,
+                parentIndex: -1,
+                tropicAnchor: 0,
+                areaSegments: 200,
+                anchorLocalOffset: {x: 0, y: 0},
+                size: {x: 1, y: 1}
+                // size: this.blueprintSize
+            }],
+            buildings: []
+        }
     }
 
     mapRecipeID() {
@@ -604,9 +602,9 @@ class BluePrint {
             case productionCategory.assembling:
                 return {area: 16, x: 4, y: 4, centerPoint: [2, 2, 1, 1], yaw: [0, 0]}
             case productionCategory.plant:
-                return {area: 35, x: 7, y: 5, centerPoint: [2, 3, 2, 3], yaw: [0, 0]}
+                return {area: 40, x: 8, y: 5, centerPoint: [2, 4, 2, 3], yaw: [0, 0]}
             case productionCategory.refinery:
-                return {area: 28, x: 7, y: 4, centerPoint: [1, 2, 2, 4], yaw: [90, 90]}
+                return {area: 32, x: 8, y: 4, centerPoint: [1, 3, 2, 4], yaw: [90, 90]}
             case productionCategory.collider:
                 return {area: 66, x: 11, y: 6, centerPoint: [3, 5, 2, 5], yaw: [0, 0]}
             default:
@@ -621,7 +619,7 @@ class BluePrint {
             if (!subRecipe.building) {
                 continue
             }
-            totalArea += this.calculateBuildingArea(subRecipe).area * subRecipe.building.num
+            totalArea += this.calculateBuildingArea(subRecipe).area * Math.ceil(subRecipe.building.num)
         }
         // console.log(`total area ${totalArea}`)
         let y = Math.ceil(Math.sqrt(totalArea/this.config.x_y_ratio))
@@ -641,7 +639,7 @@ class BluePrint {
         if (type === productionCategory.smelter || type === productionCategory.assembling) {
             switch (slotIndex) {
                 case 8:
-                    data.offset = [{x: buildingOffset.x-1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-1, y: buildingOffset.y-2, z: 0}]
+                    data.offset = [{x: buildingOffset.x-0.9, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-0.9, y: buildingOffset.y-2, z: 0}]
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 7:
@@ -649,11 +647,11 @@ class BluePrint {
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 6:
-                    data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+1, y: buildingOffset.y-2, z: 0}]
+                    data.offset = [{x: buildingOffset.x+0.9, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+0.9, y: buildingOffset.y-2, z: 0}]
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 5:
-                    data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y-1, z: 0}]
+                    data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y-0.8, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y-0.8, z: 0}]
                     data.yaw = [(90+rotate*180)%360, (90+rotate*180)%360]
                     break
                 case 4:
@@ -661,16 +659,17 @@ class BluePrint {
                     data.yaw = [(90+rotate*180)%360, (90+rotate*180)%360]
                     break
                 case 3:
-                    data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y+1, z: 0}]
+                    data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y+0.8, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y+0.8, z: 0}]
                     data.yaw = [(90+rotate*180)%360, (90+rotate*180)%360]
                     break
                 default:
-                    throw `calculateSorterLocalOffset error: unsupported slotIndex for smelter - ${slotIndex}`
+                    throw `calculateSorterLocalOffset error: unsupported slotIndex for smelter or assembling - ${slotIndex}`
             }
         }else if (type === productionCategory.plant) {
             switch (slotIndex) {
                 case 6:
-                    data.offset = [{x: buildingOffset.x-1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-1, y: buildingOffset.y-2, z: 0}]
+                    // data.offset = [{x: buildingOffset.x-1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-1, y: buildingOffset.y-2, z: 0}]
+                    data.offset = [{x: buildingOffset.x-0.8, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-0.8, y: buildingOffset.y-2, z: 0}]
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 5:
@@ -678,11 +677,13 @@ class BluePrint {
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 4:
-                    data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+1, y: buildingOffset.y-2, z: 0}]
+                    // data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+1, y: buildingOffset.y-2, z: 0}]
+                    data.offset = [{x: buildingOffset.x+0.8, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+0.8, y: buildingOffset.y-2, z: 0}]
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 case 3:
-                    data.offset = [{x: buildingOffset.x+2, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y-2, z: 0}]
+                    // data.offset = [{x: buildingOffset.x+2, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+2, y: buildingOffset.y-2, z: 0}]
+                    data.offset = [{x: buildingOffset.x+1.6, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+1.6, y: buildingOffset.y-2, z: 0}]
                     data.yaw = [(180+rotate*180)%360, (180+rotate*180)%360]
                     break
                 default:
@@ -726,11 +727,11 @@ class BluePrint {
                     data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
                     break
                 case 7:
-                    data.offset = [{x: buildingOffset.x-1.8, y: buildingOffset.y-2, z: 0}, {x: buildingOffset.x-1.8, y: buildingOffset.y-3, z: 0}]
+                    data.offset = [{x: buildingOffset.x-1.6, y: buildingOffset.y-2, z: 0}, {x: buildingOffset.x-1.6, y: buildingOffset.y-3, z: 0}]
                     data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
                     break
                 case 6:
-                    data.offset = [{x: buildingOffset.x-2.5, y: buildingOffset.y-2, z: 0}, {x: buildingOffset.x-2.5, y: buildingOffset.y-3, z: 0}]
+                    data.offset = [{x: buildingOffset.x-2.4, y: buildingOffset.y-2, z: 0}, {x: buildingOffset.x-2.4, y: buildingOffset.y-3, z: 0}]
                     data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
                     break
                 case 5:
@@ -823,7 +824,7 @@ class BluePrint {
                     acceleratorMode: subRecipe.acceleratorMode
                 }
             })
-            // continue
+
             // 添加分拣器
             const nowBuildingIndex = this.buildingIndex
             let slotIndex = buildingMap[subRecipe.building.name].slotMaxIndex
@@ -947,6 +948,7 @@ class BluePrint {
 
     init() {
         this.calculateBlueprintArea()
+        this.blueprintTemplate.areas[0].size = this.blueprintSize
         this.mapRecipeID()
     }
 
@@ -1013,9 +1015,10 @@ class BluePrint {
             if (item.fromBuildingNum === 0) {  // 只有原料可以堆叠，中间产物不支持堆叠
                 maxTransportSpeed = buildingMap.conveyorBeltMK3.transportSpeed * this.config.conveyorBeltStackLayer
             }
-            // this.sortersBackup = this.sorters
-            let doneRate = 0
+
+            let totalDoneRate = 0
             for (let i=0; i<Math.ceil(item.rate/maxTransportSpeed); i++){
+                let doneRate = 0
                 let parameters = null
                 const rate = Math.min(maxTransportSpeed, item.rate-i*maxTransportSpeed)
                 let inputRate = rate
@@ -1023,20 +1026,24 @@ class BluePrint {
                 let outputData = []
                 let doneSorterNum = 0
                 if (item.fromBuildingNum !== 0){
-                    for (let i=this.sorters[itemName].output.length-1; i>=0; i--){
-                        if (this.sorters[itemName].output[i].rate - inputRate > 0.000000000001) {
-                            // 当前带接受运力不能满足分拣器，则该分拣器连接下一个带上的节点
-                            // rate时每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.000000000001为判断标准足够了。
-                            break
+                    for (let j=this.sorters[itemName].output.length-1; j>=0; j--){
+                        if (this.sorters[itemName].output[j].rate - inputRate > 0.000000000001) { // rate时每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.000000000001为判断标准足够了。
+                            if ((j>0)&&(i+1 >= Math.ceil(item.rate/maxTransportSpeed))){
+                                // 有分拣器还未连接 并且 不会再生成新的传送带了
+                                // 这种情况就是建筑非整数时计算误差导致的，继续处理未连接的分拣器就可以了
+                            }else {
+                                // 当前带接受运力不能满足分拣器，则该分拣器连接下一个带上的节点
+                                break
+                            }
                         }
                         if (doneSorterNum % this.config.maxSorterNumOneBelt === 0) {
-                            inputData.push([this.sorters[itemName].output[i].index])
+                            inputData.push([this.sorters[itemName].output[j].index])
                         }else {
-                            inputData[inputData.length-1].push(this.sorters[itemName].output[i].index)
+                            inputData[inputData.length-1].push(this.sorters[itemName].output[j].index)
                         }
 
-                        inputRate -= this.sorters[itemName].output[i].rate
-                        doneRate += this.sorters[itemName].output[i].rate
+                        inputRate -= this.sorters[itemName].output[j].rate
+                        doneRate += this.sorters[itemName].output[j].rate
                         this.sorters[itemName].output.pop()
                         doneSorterNum ++
                     }
@@ -1052,7 +1059,7 @@ class BluePrint {
                 let outputRate = rate - inputRate  // 当前传送带实际运力
                 doneSorterNum = 0
                 if (item.toBuildingNum !== 0) {
-                    for (let i=this.sorters[itemName].input.length-1; i>=0; i--){
+                    for (let j=this.sorters[itemName].input.length-1; j>=0; j--){
                         // if(
                         //     !([buildingMap.chemicalPlant, buildingMap.quantumChemicalPlant].includes(this.sorters[itemName].input[i].ownerName))
                         //     && outputRate < this.sorters[itemName].input[i].rate
@@ -1119,14 +1126,19 @@ class BluePrint {
                         // }
 
                         if (doneSorterNum % this.config.maxSorterNumOneBelt === 0) {
-                            outputData.push([this.sorters[itemName].input[i].index])
+                            outputData.push([this.sorters[itemName].input[j].index])
                         }else {
-                            outputData[outputData.length-1].push(this.sorters[itemName].input[i].index)
+                            outputData[outputData.length-1].push(this.sorters[itemName].input[j].index)
                         }
-                        outputRate -= this.sorters[itemName].input[i].rate
+                        outputRate -= this.sorters[itemName].input[j].rate
                         this.sorters[itemName].input.pop()
                         doneSorterNum ++
                         if (outputRate <= 0) {
+                            if ((j>0)&&(i+1 >= Math.ceil(item.rate/maxTransportSpeed))){
+                                // 有分拣器还未连接 并且 不会再生成新的传送带了
+                                // 这种情况就是建筑非整数时计算误差导致的，继续处理未连接的分拣器就可以了
+                                continue
+                            }
                             // 这里output < 0时说明刚连接的这个分拣器可能运力不够用，会导致最终产量略低于预期产量
                             break
                         }
@@ -1135,7 +1147,7 @@ class BluePrint {
                     outputData.push([])
                     parameters = {
                         iconId: itemMap[itemName].iconId,
-                        count: item.rate * 60
+                        count: outputRate * 60
                     }
                 }
 
@@ -1158,13 +1170,659 @@ class BluePrint {
             this.newProductionBuilding(subRecipe)
         }
     }
+
+    toStr() {
+        // convert blueprint from json format to string
+        // original author https://github.com/huww98/dsp_blueprint_editor
+        let allAssemblers = new Set([
+            2303,
+            2304,
+            2305,
+            2302,
+            2315,
+            2308,
+            2309,
+            2310,
+        ]);
+        const K = Int32Array.of(0xd76aa478, 0xe8d7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 0xa8304623, 0xfd469501, 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be, 0x6b9f1122, 0xfd987193, 0xa679438e, 0x39b40821, 0xf61e2562, 0xc040b340, 0x265e5a51, 0xc9b6c7aa, 0xd62f105d, 0x02443453, 0xd8a1e681, 0xe7d3fbc8, 0x21f1cde6, 0xc33707d6, 0xf4d50d87, 0x475a14ed, 0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a, 0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c, 0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70, 0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05, 0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665, 0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039, 0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1, 0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1, 0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391);
+        const S = Uint8Array.of(7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21);
+        const INIT_MD5F = new DataView(Uint8Array.of(0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xdc, 0xef, 0xfe, 0xdc, 0xba, 0x98, 0x46, 0x57, 0x32, 0x10).buffer);
+        const MASK32 = -1;
+        function rotateLeft(x, s) {
+            return ((x << s) | (x >>> (32 - s))) & MASK32;
+        }
+        function updateBlock(s, buf) {
+            let a = s[0];
+            let b = s[1];
+            let c = s[2];
+            let d = s[3];
+            for (let i = 0; i < 64; i++) {
+                let f, g;
+                if (i < 16) {
+                    f = (b & c) | (~b & d);
+                    g = i;
+                }
+                else if (i < 32) {
+                    f = (d & b) | (~d & c);
+                    g = (5 * i + 1) % 16;
+                }
+                else if (i < 48) {
+                    f = b ^ c ^ d;
+                    g = (3 * i + 5) % 16;
+                }
+                else {
+                    f = c ^ (b | ~d);
+                    g = (7 * i) % 16;
+                }
+                f = (f + a + K[i] + buf.getInt32(g * Int32Array.BYTES_PER_ELEMENT, true)) & MASK32;
+                a = d;
+                d = c;
+                c = b;
+                b = b + rotateLeft(f, S[i]);
+            }
+            s[0] = (s[0] + a) & MASK32;
+            s[1] = (s[1] + b) & MASK32;
+            s[2] = (s[2] + c) & MASK32;
+            s[3] = (s[3] + d) & MASK32;
+        }
+        const BLOCK_SIZE = 64;
+        function digest(data) {
+            const s = Int32Array.of(INIT_MD5F.getInt32(0, true), INIT_MD5F.getInt32(Int32Array.BYTES_PER_ELEMENT, true), INIT_MD5F.getInt32(2 * Int32Array.BYTES_PER_ELEMENT, true), INIT_MD5F.getInt32(3 * Int32Array.BYTES_PER_ELEMENT, true));
+            let i = 0;
+            for (; i <= data.byteLength - BLOCK_SIZE; i += BLOCK_SIZE) {
+                updateBlock(s, new DataView(data, i, BLOCK_SIZE));
+            }
+            const last = new ArrayBuffer(Math.ceil((data.byteLength - i + 9) / BLOCK_SIZE) * BLOCK_SIZE);
+            const dataView = new Uint8Array(data);
+            const lastView = new DataView(last);
+            let j = 0;
+            for (; i + j < data.byteLength; j++) {
+                lastView.setUint8(j, dataView[i + j]);
+            }
+            lastView.setUint8(j, 0x80);
+            lastView.setUint32(last.byteLength - 8, data.byteLength * 8, true);
+            for (i = 0; i <= last.byteLength - BLOCK_SIZE; i += BLOCK_SIZE) {
+                updateBlock(s, new DataView(last, i, BLOCK_SIZE));
+            }
+            const result = new ArrayBuffer(16);
+            const resultView = new DataView(result);
+            for (let i = 0; i < s.length; i++) {
+                resultView.setInt32(i * Int32Array.BYTES_PER_ELEMENT, s[i], true);
+            }
+            return result;
+        }
+        // digest = digest;
+        class BufferIO {
+            constructor(view) {
+                this.view = view;
+                this.pos = 0;
+            }
+            getView(length) {
+                const r = new DataView(this.view.buffer, this.view.byteOffset + this.pos, length);
+                this.pos += length;
+                return r;
+            }
+        }
+        // class BufferReader extends BufferIO {
+        //     getUint8() { const v = this.view.getUint8(this.pos); this.pos += 1; return v; }
+        //     getInt8() { const v = this.view.getInt8(this.pos); this.pos += 1; return v; }
+        //     getInt16() { const v = this.view.getInt16(this.pos, true); this.pos += 2; return v; }
+        //     getInt32() { const v = this.view.getInt32(this.pos, true); this.pos += 4; return v; }
+        //     getFloat32() { const v = this.view.getFloat32(this.pos, true); this.pos += 4; return v; }
+        // }
+        class BufferWriter extends BufferIO {
+            setUint8(value) { this.view.setUint8(this.pos, value); this.pos += 1; }
+            setInt8(value) { this.view.setInt8(this.pos, value); this.pos += 1; }
+            setInt16(value) { this.view.setInt16(this.pos, value, true); this.pos += 2; }
+            setInt32(value) { this.view.setInt32(this.pos, value, true); this.pos += 4; }
+            setFloat32(value) { this.view.setFloat32(this.pos, value, true); this.pos += 4; }
+        }
+        function btoUint8Array(b) {
+            const arr = new Uint8Array(b.length);
+            for (let i = 0; i < b.length; i++) {
+                arr[i] = b.charCodeAt(i);
+            }
+            return arr;
+        }
+        function Uint8ArrayTob(a) {
+            let out = '';
+            for (let i = 0; i < a.length; i++) {
+                out += String.fromCharCode(a[i]);
+            }
+            return out;
+        }
+        const uint8ToHex = new Array(0x100);
+        for (let i = 0; i < uint8ToHex.length; i++) {
+            uint8ToHex[i] = i.toString(16).toUpperCase().padStart(2, '0');
+        }
+        function hex(buffer) {
+            const view = new Uint8Array(buffer);
+            const hexBytes = new Array(view.length);
+            for (let i = 0; i < view.length; i++) {
+                hexBytes[i] = uint8ToHex[view[i]];
+            }
+            return hexBytes.join('');
+        }
+        // function importArea(r) {
+        //     return {
+        //         index: r.getInt8(),
+        //         parentIndex: r.getInt8(),
+        //         tropicAnchor: r.getInt16(),
+        //         areaSegments: r.getInt16(),
+        //         anchorLocalOffset: {
+        //             x: r.getInt16(),
+        //             y: r.getInt16(),
+        //         },
+        //         size: {
+        //             x: r.getInt16(),
+        //             y: r.getInt16(),
+        //         },
+        //     };
+        // }
+        function exportArea(w, area) {
+            w.setInt8(area.index);
+            w.setInt8(area.parentIndex);
+            w.setInt16(area.tropicAnchor);
+            w.setInt16(area.areaSegments);
+            w.setInt16(area.anchorLocalOffset.x);
+            w.setInt16(area.anchorLocalOffset.y);
+            w.setInt16(area.size.x);
+            w.setInt16(area.size.y);
+        }
+        function getParam(v, pos, defaultValue) {
+            const p = pos * Int32Array.BYTES_PER_ELEMENT;
+            if (p >= v.byteLength) {
+                if (defaultValue === undefined) {
+                    throw new Error('参数解析错误：数据段太短');
+                }
+                else {
+                    return defaultValue;
+                }
+            }
+            return v.getInt32(p, true);
+        }
+        function setParam(v, pos, value) {
+            v.setInt32(pos * Int32Array.BYTES_PER_ELEMENT, value, true);
+        }
+        const stationDesc = {
+            maxItemKind: 3,
+            numSlots: 12,
+        };
+        const interstellarStationDesc = {
+            maxItemKind: 5,
+            numSlots: 12,
+        };
+        const AdvancedMiningMachineDesc = {
+            maxItemKind: 1,
+            numSlots: 9,
+        };
+        // let IODir;
+        // (function (IODir) {
+        //     IODir[IODir["None"] = 0] = "None";
+        //     IODir[IODir["Output"] = 1] = "Output";
+        //     IODir[IODir["Input"] = 2] = "Input";
+        // })(IODir = IODir || (IODir = {}));
+        // let LogisticRole;
+        // (function (LogisticRole) {
+        //     LogisticRole[LogisticRole["None"] = 0] = "None";
+        //     LogisticRole[LogisticRole["Supply"] = 1] = "Supply";
+        //     LogisticRole[LogisticRole["Demand"] = 2] = "Demand";
+        // })(LogisticRole = LogisticRole || (LogisticRole = {}));
+        const stationParamsMeta = {
+            base: 320,
+            storage: { base: 0, stride: 6 },
+            slots: { base: 192, stride: 4 },
+        };
+        function stationParamsParser(desc) {
+            return {
+                encodedSize() { return 2048; },
+                encode(p, a) {
+                    const base = stationParamsMeta.base;
+                    setParam(a, base, p.workEnergyPerTick);
+                    setParam(a, base + 1, p.tripRangeOfDrones * 100000000.0);
+                    setParam(a, base + 2, p.tripRangeOfShips / 100.0);
+                    setParam(a, base + 3, p.includeOrbitCollector ? 1 : -1);
+                    setParam(a, base + 4, p.warpEnableDistance);
+                    setParam(a, base + 5, p.warperNecessary ? 1 : -1);
+                    setParam(a, base + 6, p.deliveryAmountOfDrones);
+                    setParam(a, base + 7, p.deliveryAmountOfShips);
+                    setParam(a, base + 8, p.pilerCount);
+                    {
+                        const { base, stride } = stationParamsMeta.storage;
+                        for (let i = 0; i < desc.maxItemKind; i++) {
+                            const s = p.storage[i];
+                            setParam(a, base + i * stride, s.itemId);
+                            setParam(a, base + i * stride + 1, s.localRole);
+                            setParam(a, base + i * stride + 2, s.remoteRole);
+                            setParam(a, base + i * stride + 3, s.max);
+                        }
+                    }
+                    {
+                        const { base, stride } = stationParamsMeta.slots;
+                        for (let i = 0; i < 12; i++) {
+                            const s = p.slots[i];
+                            setParam(a, base + i * stride, s.dir);
+                            setParam(a, base + i * stride + 1, s.storageIdx);
+                        }
+                    }
+                },
+                decode(a) {
+                    const base = stationParamsMeta.base;
+                    const result = {
+                        storage: [],
+                        slots: [],
+                        workEnergyPerTick: getParam(a, base),
+                        tripRangeOfDrones: getParam(a, base + 1) / 100000000.0,
+                        tripRangeOfShips: getParam(a, base + 2) * 100.0,
+                        includeOrbitCollector: getParam(a, base + 3) > 0,
+                        warpEnableDistance: getParam(a, base + 4),
+                        warperNecessary: getParam(a, base + 5) > 0,
+                        deliveryAmountOfDrones: getParam(a, base + 6),
+                        deliveryAmountOfShips: getParam(a, base + 7),
+                        pilerCount: getParam(a, base + 8),
+                    };
+                    {
+                        const { base, stride } = stationParamsMeta.storage;
+                        for (let i = 0; i < desc.maxItemKind; i++) {
+                            result.storage.push({
+                                itemId: getParam(a, base + i * stride),
+                                localRole: getParam(a, base + i * stride + 1),
+                                remoteRole: getParam(a, base + i * stride + 2),
+                                max: getParam(a, base + i * stride + 3),
+                            });
+                        }
+                    }
+                    {
+                        const { base, stride } = stationParamsMeta.slots;
+                        for (let i = 0; i < 12; i++) {
+                            result.slots.push({
+                                dir: getParam(a, base + i * stride),
+                                storageIdx: getParam(a, base + i * stride + 1),
+                            });
+                        }
+                    }
+                    return result;
+                }
+            };
+        }
+        function advancedMiningMachineParamParser() {
+            const stationParser = stationParamsParser(AdvancedMiningMachineDesc);
+            return {
+                encodedSize: stationParser.encodedSize,
+                encode(p, a) {
+                    stationParser.encode(p, a);
+                    const base = stationParamsMeta.base;
+                    setParam(a, base + 9, p.miningSpeed);
+                },
+                decode(a) {
+                    const p = stationParser.decode(a);
+                    const base = stationParamsMeta.base;
+                    return Object.assign(p, {
+                        miningSpeed: getParam(a, base + 9),
+                    });
+                }
+            };
+        }
+        const splitterParamParser = {
+            encodedSize() { return 4; },
+            encode(p, a) {
+                for (let i = 0; i < 4; i++) {
+                    setParam(a, i, p.priority[i] ? 1 : 0);
+                }
+            },
+            decode(a) {
+                const result = {
+                    priority: [],
+                };
+                for (let i = 0; i < 4; i++) {
+                    result.priority[i] = getParam(a, i) > 0;
+                }
+                return result;
+            }
+        };
+        // let AcceleratorMode;
+        // (function (AcceleratorMode) {
+        //     AcceleratorMode[AcceleratorMode["ExtraOutput"] = 0] = "ExtraOutput";
+        //     AcceleratorMode[AcceleratorMode["Accelerate"] = 1] = "Accelerate";
+        // })(AcceleratorMode = AcceleratorMode || (AcceleratorMode = {}));
+        // let ResearchMode;
+        // (function (ResearchMode) {
+        //     ResearchMode[ResearchMode["None"] = 0] = "None";
+        //     ResearchMode[ResearchMode["Compose"] = 1] = "Compose";
+        //     ResearchMode[ResearchMode["Research"] = 2] = "Research";
+        // })(ResearchMode = ResearchMode || (ResearchMode = {}));
+        const labParamParser = {
+            encodedSize() { return 2; },
+            encode(p, a) {
+                setParam(a, 0, p.researchMode);
+                setParam(a, 1, p.acceleratorMode);
+            },
+            decode(a) {
+                return {
+                    researchMode: getParam(a, 0),
+                    acceleratorMode: getParam(a, 1),
+                };
+            }
+        };
+        const assembleParamParser = {
+            encodedSize() { return 1; },
+            encode(p, a) {
+                setParam(a, 0, p.acceleratorMode);
+            },
+            decode(a) {
+                return {
+                    acceleratorMode: getParam(a, 0),
+                };
+            },
+        };
+        const beltParamParser = {
+            encodedSize() { return 2; },
+            encode(p, a) {
+                setParam(a, 0, p.iconId);
+                setParam(a, 1, p.count);
+            },
+            decode(a) {
+                return {
+                    iconId: getParam(a, 0),
+                    count: getParam(a, 1, 0),
+                };
+            },
+        };
+        const inserterParamParser = {
+            encodedSize() { return 1; },
+            encode(p, a) {
+                setParam(a, 0, p.length);
+            },
+            decode(a) {
+                return {
+                    length: getParam(a, 0),
+                };
+            },
+        };
+        const tankParamParser = {
+            encodedSize() { return 2; },
+            encode(p, a) {
+                setParam(a, 0, p.output ? 1 : -1);
+                setParam(a, 1, p.input ? 1 : -1);
+            },
+            decode(a) {
+                return {
+                    output: getParam(a, 0) > 0,
+                    input: getParam(a, 1) > 0,
+                };
+            },
+        };
+        const storageParamParser = {
+            encodedSize() { return 1; },
+            encode(p, a) {
+                setParam(a, 0, p.automationLimit);
+            },
+            decode(a) {
+                return {
+                    automationLimit: getParam(a, 0),
+                };
+            },
+        };
+        const ejectorParamParser = {
+            encodedSize() { return 1; },
+            encode(p, a) {
+                setParam(a, 0, p.orbitId);
+            },
+            decode(a) {
+                return {
+                    orbitId: getParam(a, 0),
+                };
+            },
+        };
+        const powerGeneratorParamParser = {
+            encodedSize() { return 1; },
+            encode(p, a) {
+                setParam(a, 0, p.productId);
+            },
+            decode(a) {
+                return {
+                    productId: getParam(a, 0),
+                };
+            },
+        };
+        // let EnergyExchangerMode;
+        // (function (EnergyExchangerMode) {
+        //     EnergyExchangerMode[EnergyExchangerMode["Discharge"] = -1] = "Discharge";
+        //     EnergyExchangerMode[EnergyExchangerMode["StandBy"] = 0] = "StandBy";
+        //     EnergyExchangerMode[EnergyExchangerMode["Charge"] = 1] = "Charge";
+        // })(EnergyExchangerMode = EnergyExchangerMode || (EnergyExchangerMode = {}));
+        const energyExchangerParamParser = {
+            encodedSize() { return 1; },
+            encode(p, a) {
+                setParam(a, 0, p.mode);
+            },
+            decode(a) {
+                return {
+                    mode: getParam(a, 0),
+                };
+            },
+        };
+        const MonitorParamParser = {
+            encodedSize() { return 128; },
+            encode(p, a) {
+                setParam(a, 0, p.targetBeltId);
+                setParam(a, 1, p.offset);
+                setParam(a, 2, p.targetCargoAmount);
+                setParam(a, 3, p.periodTicksCount);
+                setParam(a, 4, p.passOperator);
+                setParam(a, 5, p.passColorId);
+                setParam(a, 6, p.failColorId);
+                setParam(a, 14, p.cargoFilter);
+                setParam(a, 7, p.tone);
+                setParam(a, 8, p.volume);
+                setParam(a, 9, p.pitch);
+                setParam(a, 11, p.repeat ? 1 : 0);
+                setParam(a, 13, p.length * 10000);
+                setParam(a, 18, p.falloffRadius[0] * 10);
+                setParam(a, 19, p.falloffRadius[1] * 10);
+                setParam(a, 10, p.systemWarningMode);
+                setParam(a, 17, p.systemWarningIconId);
+                setParam(a, 12, p.alarmMode);
+            },
+            decode(a) {
+                return {
+                    targetBeltId: getParam(a, 0),
+                    offset: getParam(a, 1),
+                    targetCargoAmount: getParam(a, 2),
+                    periodTicksCount: getParam(a, 3),
+                    passOperator: getParam(a, 4),
+                    passColorId: getParam(a, 5),
+                    failColorId: getParam(a, 6),
+                    cargoFilter: getParam(a, 14),
+                    tone: getParam(a, 7),
+                    volume: getParam(a, 8),
+                    pitch: getParam(a, 9),
+                    repeat: getParam(a, 11) > 0,
+                    length: getParam(a, 13) / 10000,
+                    falloffRadius: [getParam(a, 18) / 10, getParam(a, 19) / 10],
+                    systemWarningMode: getParam(a, 10),
+                    systemWarningIconId: getParam(a, 17),
+                    alarmMode: getParam(a, 12),
+                };
+            }
+        };
+        const unknownParamParser = {
+            encodedSize(p) { return p.parameters.length; },
+            encode(p, a) {
+                for (let i = 0; i < p.parameters.length; i++)
+                    setParam(a, i, p.parameters[i]);
+            },
+            decode(a) {
+                const p = {
+                    parameters: new Int32Array(a.byteLength / Int32Array.BYTES_PER_ELEMENT),
+                };
+                for (let i = 0; i < p.parameters.length; i++)
+                    p.parameters[i] = getParam(a, i);
+                return p;
+            },
+        };
+        const parameterParsers = new Map([
+            [2103, stationParamsParser(stationDesc)],
+            [2104, stationParamsParser(interstellarStationDesc)],
+            [2316, advancedMiningMachineParamParser()],
+            [2020, splitterParamParser],
+            [2901, labParamParser],
+            [2001, beltParamParser],
+            [2002, beltParamParser],
+            [2003, beltParamParser],
+            [2011, inserterParamParser],
+            [2012, inserterParamParser],
+            [2013, inserterParamParser],
+            [2101, storageParamParser],
+            [2102, storageParamParser],
+            [2106, tankParamParser],
+            [2311, ejectorParamParser],
+            [2208, powerGeneratorParamParser],
+            [2209, energyExchangerParamParser],
+            [2030, MonitorParamParser],
+        ]);
+        for (const id of allAssemblers) {
+            parameterParsers.set(id, assembleParamParser);
+        }
+        function parserFor(itemId) {
+            const parser = parameterParsers.get(itemId);
+            if (parser !== undefined)
+                return parser;
+            return unknownParamParser;
+        }
+        // function importBuilding(r) {
+        //     function readXYZ() {
+        //         return {
+        //             x: r.getFloat32(),
+        //             y: r.getFloat32(),
+        //             z: r.getFloat32(),
+        //         };
+        //     }
+        //     const b = {
+        //         index: r.getInt32(),
+        //         areaIndex: r.getInt8(),
+        //         localOffset: [readXYZ(), readXYZ()],
+        //         yaw: [r.getFloat32(), r.getFloat32()],
+        //         itemId: r.getInt16(),
+        //         modelIndex: r.getInt16(),
+        //         outputObjIdx: r.getInt32(),
+        //         inputObjIdx: r.getInt32(),
+        //         outputToSlot: r.getInt8(),
+        //         inputFromSlot: r.getInt8(),
+        //         outputFromSlot: r.getInt8(),
+        //         inputToSlot: r.getInt8(),
+        //         outputOffset: r.getInt8(),
+        //         inputOffset: r.getInt8(),
+        //         recipeId: r.getInt16(),
+        //         filterId: r.getInt16(),
+        //         parameters: null,
+        //     };
+        //     const length = r.getInt16();
+        //     if (length > 0) {
+        //         const p = r.getView(length * Int32Array.BYTES_PER_ELEMENT);
+        //         b.parameters = parserFor(b.itemId).decode(p);
+        //     }
+        //     return b;
+        // }
+        function exportBuilding(w, b) {
+            function writeXYZ(v) {
+                w.setFloat32(v.x);
+                w.setFloat32(v.y);
+                w.setFloat32(v.z);
+            }
+            w.setInt32(b.index);
+            w.setInt8(b.areaIndex);
+            writeXYZ(b.localOffset[0]);
+            writeXYZ(b.localOffset[1]);
+            w.setFloat32(b.yaw[0]);
+            w.setFloat32(b.yaw[1]);
+            w.setInt16(b.itemId);
+            w.setInt16(b.modelIndex);
+            w.setInt32(b.outputObjIdx);
+            w.setInt32(b.inputObjIdx);
+            w.setInt8(b.outputToSlot);
+            w.setInt8(b.inputFromSlot);
+            w.setInt8(b.outputFromSlot);
+            w.setInt8(b.inputToSlot);
+            w.setInt8(b.outputOffset);
+            w.setInt8(b.inputOffset);
+            w.setInt16(b.recipeId);
+            w.setInt16(b.filterId);
+            if (b.parameters !== null) {
+                const parser = parserFor(b.itemId);
+                const length = parser.encodedSize(b.parameters);
+                w.setInt16(length);
+                parser.encode(b.parameters, w.getView(length * Int32Array.BYTES_PER_ELEMENT));
+            }
+            else {
+                w.setInt16(0);
+            }
+        }
+        function encodedSize(bp) {
+            let result = 28 // meta
+                + 1 // numAreas
+                + 14 * bp.areas.length
+                + 4 // numBuildings
+                + 61 * bp.buildings.length;
+            for (const b of bp.buildings) {
+                if (b.parameters === null)
+                    continue;
+                const parser = parserFor(b.itemId);
+                result += parser.encodedSize(b.parameters) * Int32Array.BYTES_PER_ELEMENT;
+            }
+            return result;
+        }
+
+        let bp = this.blueprintTemplate
+        let result = 'BLUEPRINT:';
+        const TIME_BASE = new Date(0).setUTCFullYear(1);
+        result += '0,';
+        result += bp.header.layout;
+        result += ',';
+        for (const i of bp.header.icons) {
+            result += i;
+            result += ',';
+        }
+        result += '0,';
+        result += (bp.header.time.getTime() - TIME_BASE) * 10000;
+        result += ',';
+        result += bp.header.gameVersion;
+        result += ',';
+        result += encodeURIComponent(bp.header.shortDesc);
+        result += ',';
+        result += encodeURIComponent(bp.header.desc);
+        result += '"';
+        const decoded = new Uint8Array(encodedSize(bp));
+        const writer = new BufferWriter(new DataView(decoded.buffer));
+        writer.setInt32(bp.version);
+        writer.setInt32(bp.cursorOffset.x);
+        writer.setInt32(bp.cursorOffset.y);
+        writer.setInt32(bp.cursorTargetArea);
+        writer.setInt32(bp.dragBoxSize.x);
+        writer.setInt32(bp.dragBoxSize.y);
+        writer.setInt32(bp.primaryAreaIdx);
+        writer.setUint8(bp.areas.length);
+        for (const a of bp.areas)
+            exportArea(writer, a);
+        writer.setInt32(bp.buildings.length);
+        for (const b of bp.buildings)
+            exportBuilding(writer, b);
+        result += btoa(Uint8ArrayTob(pako.default.gzip(decoded)));
+        const d = hex(digest(btoUint8Array(result).buffer));
+        result += '"';
+        result += d;
+        return result;
+    }
 }
+
 // TODO 建筑物类型排序？
 // TODO 生成传送带前判断下是否需要新一行
 // TODO 生产设施速度不为1时有问题，比如使用1级制造台的蓝图 会出现许多分拣器连接异常
 // TODO 原油精炼塔、化工厂和其他建筑的碰撞问题 以及 高纬度的碰撞问题
 // TODO 一个物品既是中间产物又是原料输入时 蓝图会有问题，比如量子芯片中的氢
 // TODO 1/min的粒子对撞机蓝图 钢材输入分拣器失效、框架材料硅石输入异常
+// TODO 2540/min的磁铁蓝图 有一个输出口未连接
+// TODO 调整对撞机和炼油塔的分拣器
 // const tmpRecipe = [
 //     {
 //         output: [{name: itemMap.proliferatorMk2.name, rate: 1}],
