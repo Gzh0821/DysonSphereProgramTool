@@ -150,15 +150,16 @@ const buildingMap = {
     assemblingMachineMk2: {remark: '制造台MkⅡ', name: 'assemblingMachineMk2', itemId: 2304, modelIndex: 66, productionSpeed: 1, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
     assemblingMachineMk3: { remark: '制造台Mk.III', name: 'assemblingMachineMk3', itemId: 2305, modelIndex: 67, productionSpeed: 1.5, size: {x: 3, y: 3}, type: buildingType.production, category: productionCategory.assembling, slotMaxIndex: 8},
     chemicalPlant: { remark: '化工厂', name: 'chemicalPlant', itemId: 2309, modelIndex: 64, productionSpeed: 1, type: buildingType.production, category: productionCategory.plant, slotMaxIndex: 6},
-    quantumChemicalPlant: { remark: '量子化工厂', name: 'quantumChemicalPlant', itemId: 2317, modelIndex: 64, productionSpeed: 2, type: buildingType.production, category: productionCategory.plant, slotMaxIndex: 6},
-    oilRefinery: { remark: '原油精炼厂', name: 'oilRefinery', itemId: 2308, modelIndex: 63, productionSpeed: 1, type: buildingType.production, category: productionCategory.refinery, slotMaxIndex: 8},
+    quantumChemicalPlant: { remark: '量子化工厂', name: 'quantumChemicalPlant', itemId: 2317, modelIndex: 376, productionSpeed: 2, type: buildingType.production, category: productionCategory.plant, slotMaxIndex: 6},
+    oilRefinery: { remark: '原油精炼厂', name: 'oilRefinery', itemId: 2308, modelIndex: 63, productionSpeed: 1, type: buildingType.production, category: productionCategory.refinery, slotMaxIndex: 5},
+    miniatureParticleCollider: {remark: '粒子对撞机', name: 'miniatureParticleCollider', itemId: 2310, modelIndex: 69, productionSpeed: 1, type: buildingType.production, category: productionCategory.collider, slotMaxIndex: 8},
     sorterMk1: {name: 'sorterMk1', itemId: 2011, modelIndex: 41, sortingSpeed: 1.5, size: {x: 1, y: 1}, type: buildingType.sorter, remark: '分拣器MK.I'},
     // sorterMk2: { remark: '高速分拣器', name: 'sorterMk2', itemId: 2012, modelIndex: 42 },
     sorterMk3: {name: 'sorterMk3', itemId: 2013, modelIndex: 43, sortingSpeed: 6, size: {x: 1, y: 1}, type: buildingType.sorter, remark: '分拣器MK.Ⅲ'},
     conveyorBeltMk1: {name: 'conveyorBeltMk1', itemId: 2001, modelIndex: 35, transportSpeed: 6, size: {x: 1, y: 1}, type: buildingType.conveyor, remark: '传送带MK.I'},
     // conveyorBeltMK2: { remark: '高速传送带', name: 'conveyorBeltMK2', itemId: 2002, modelIndex: 36 },
     conveyorBeltMK3: {name: 'conveyorBeltMK3', itemId: 2003, modelIndex: 37, transportSpeed: 30, size: {x: 1, y: 1}, type: buildingType.conveyor, remark: '传送带MK.Ⅲ'},
-    miniatureParticleCollider: {name: 'miniatureParticleCollider', itemId: 2310, modelIndex: 69, productionSpeed: 1, type: buildingType.production, category: productionCategory.collider, slotMaxIndex: 8},
+
     // piler: { remark: '自动集装机', name: 'piler', itemId: 2040, modelIndex: 257 },
     // monitor: { remark: '流速监测器', name: 'monitor', itemId: 2030, modelIndex: 208 },
     // spray_coater: { remark: '喷涂机', name: 'spray_coater', itemId: 2313, modelIndex: 120 },
@@ -171,7 +172,7 @@ const buildingMap = {
 
 const recipeMap = {
     'refinedOil+stone+water=sulfuricAcid': 24,  // 硫酸
-    'oil=hydrogen+refinedOil': 16,  // 精炼油
+    'oil=hydrogen+refinedOil': 16,  // 氢 精炼油
     'gravityMatrix=spaceWarper': 79,  // 空间翘曲器
     'gravitonLens=spaceWarper': 78,  // 空间翘曲器
     'titaniumAlloy+deuterium+superMagneticRing=deuteriumFuelRod': 41,  // 氘核燃料棒
@@ -186,7 +187,7 @@ const recipeMap = {
     'ironIngot+copperIngot=circuitBoard': 50,  // 电路板
     'ironIngot=gear': 5,  // 齿轮
     'coal=energeticGraphite': 17,  // 高级石墨
-    'refinedOil+hydrogen+coal=refinedOil': 121,  // 精炼油
+    'refinedOil+hydrogen+coal=refinedOil': -1,  // 精炼油
     'fireIce=hydrogen+graphene': 32,  // 氢 石墨烯
     'stone=glass': 57,  // 玻璃
     'glass=prism': 11,  // 棱镜
@@ -277,23 +278,23 @@ const recipeMap = {
     'steel+copperIngot+photonCombiner+superMagneticRing=geothermalPowerStation': 118,  // 地热发电站
     'steel+gear+superMagneticRing+processor=autoPiler': 120,  // 自动集装机
     'steel+plasmaExciter+circuitBoard+microcrystallineComponent=sprayCoater': 109,  // 喷涂机
-    'hydrogen+refinedOil=hydrogen+energeticGraphite': 58,  // 氢 高级石墨
-    // 'electromagneticMatrix+energyMatrix+structureMatrix+informationMatrix+gravityMatrix+antimatter=universeMatrix': ,  // 宇宙矩阵
-    // 'accumulator=accumulatorFull': ,  // 蓄电池满
-    // 'magneticCoil+circuitBoard=electromagneticMatrix': ,  // 蓝矩阵
-    // 'energeticGraphite+hydrogen=energyMatrix': ,  // 红矩阵
-    // 'diamond+titaniumCrystal=structureMatrix': ,  // 黄矩阵
-    // 'processor+particleBroadband=informationMatrix': ,  // 紫矩阵
-    // 'quantumChip+gravitonLens=gravityMatrix': ,  // 绿矩阵
+    'hydrogen+refinedOil=hydrogen+energeticGraphite': -1,  // 氢 高级石墨
+    'electromagneticMatrix+energyMatrix+structureMatrix+informationMatrix+gravityMatrix+antimatter=universeMatrix': -1,  // 宇宙矩阵  -1表示该配方暂不支持
+    'accumulator=accumulatorFull': -1,  // 蓄电池满
+    'magneticCoil+circuitBoard=electromagneticMatrix': -1,  // 蓝矩阵
+    'energeticGraphite+hydrogen=energyMatrix': -1,  // 红矩阵
+    'diamond+titaniumCrystal=structureMatrix': -1,  // 黄矩阵
+    'processor+particleBroadband=informationMatrix': -1,  // 紫矩阵
+    'quantumChip+gravitonLens=gravityMatrix': -1,  // 绿矩阵
     'hydrogen=deuterium': 40,  // 重氢
     'particleContainer+ironIngot+deuterium=strangeMatter': 104,  // 奇异物质
     'criticalPhoton=antimatter+hydrogen': 74,  // 反物质 氢
-    // 'particleContainer+processor=annihilationConstraintSphere': ,  // 湮灭约束球
-    // 'antimatter+hydrogen+annihilationConstraintSphere+titaniumAlloy=antimatterFuelRod': ,  // 反物质燃烧棒
-    // 'titaniumAlloy+frameMaterial+annihilationConstraintSphere+quantumChip=artificialStar': ,  // 人造恒星
-    // 'titaniumAlloy+frameMaterial+superMagneticRing+quantumChip+opticalGratingCrystal=advancedMiningMachine': ,  // 大型采矿机
-    // 'gravitonLens=criticalPhoton': ,  // 临界光子
-    // 'hydrogen=deuterium+hydrogen': ,  // 重氢 氢
+    'particleContainer+processor=annihilationConstraintSphere': 42,  // 湮灭约束球
+    'antimatter+hydrogen+annihilationConstraintSphere+titaniumAlloy=antimatterFuelRod': 44,  // 反物质燃烧棒
+    'titaniumAlloy+frameMaterial+annihilationConstraintSphere+quantumChip=artificialStar': 43,  // 人造恒星
+    'titaniumAlloy+frameMaterial+superMagneticRing+quantumChip+opticalGratingCrystal=advancedMiningMachine': 119,  // 大型采矿机
+    'gravitonLens=criticalPhoton': 74,  // 临界光子
+    'hydrogen=deuterium+hydrogen': -1,  // 重氢 氢
 }
 
 class BluePrint {
@@ -365,7 +366,8 @@ class BluePrint {
                     recipeStr += '+' + item.name
                 }
             }
-            if (!recipeMap[recipeStr]) {
+            if (!recipeMap[recipeStr] || recipeMap[recipeStr] === -1) {
+                cocoMessage.warning(`包含不支持的配方: ${recipeStr.replace('=', '->')}，请排除对应物品`, 5000)
                 throw `unknown recipe - ${recipeStr} ${subRecipe}`
             }
             subRecipe.recipeID = recipeMap[recipeStr]
@@ -607,9 +609,15 @@ class BluePrint {
             case productionCategory.plant:
                 return {area: 40, x: 8, y: 5, centerPoint: [2, 4, 2, 3], yaw: [0, 0]}
             case productionCategory.refinery:
-                return {area: 32, x: 8, y: 4, centerPoint: [1, 3, 2, 4], yaw: [90, 90]}
+                if (this.config.compactLayout) {
+                    return {area: 30, x: 7, y: 5, centerPoint: [2, 3, 2, 3], yaw: [90, 90]}
+                }
+                return {area: 40, x: 8, y: 5, centerPoint: [2, 3, 2, 4], yaw: [90, 90]}
             case productionCategory.collider:
-                return {area: 66, x: 11, y: 6, centerPoint: [3, 5, 2, 5], yaw: [0, 0]}
+                if (this.config.compactLayout) {
+                    return {area: 66, x: 11, y: 6, centerPoint: [3, 5, 2, 5], yaw: [0, 0]}
+                }
+                return {area: 77, x: 11, y: 7, centerPoint: [3, 5, 3, 5], yaw: [0, 0]}
             default:
                 console.log(`unknown production build type - ${buildingMap[subRecipe.building.name].type}`)
                 return {}
@@ -635,6 +643,7 @@ class BluePrint {
     }
 
     calculateSorterLocalOffsetAndYaw(buildingOffset, type, slotIndex, rotate=0){
+        // rotate = 0 表示分拣器出货， 1 表示进货
         let data = {
             offset: [],
             yaw: []
@@ -708,7 +717,7 @@ class BluePrint {
                     data.yaw = [(270+rotate*180)%360, (270+rotate*180)%360]
                     break
                 case 5:
-                    data.offset = [{x: buildingOffset.x-1, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x-1, y: buildingOffset.y+2, z: 0}]
+                    data.offset = [{x: buildingOffset.x-0.8, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x-0.8, y: buildingOffset.y+2, z: 0}]
                     data.yaw = [rotate*180%360, rotate*180%360]
                     break
                 case 4:
@@ -716,11 +725,23 @@ class BluePrint {
                     data.yaw = [rotate*180%360, rotate*180%360]
                     break
                 case 3:
-                    data.offset = [{x: buildingOffset.x+1, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x+1, y: buildingOffset.y+2, z: 0}]
+                    data.offset = [{x: buildingOffset.x+0.8, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x+0.8, y: buildingOffset.y+2, z: 0}]
                     data.yaw = [rotate*180%360, rotate*180%360]
                     break
+                case 2:
+                    data.offset = [{x: buildingOffset.x+0.8, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x+0.8, y: buildingOffset.y-2, z: 0}]
+                    data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
+                    break
+                case 1:
+                    data.offset = [{x: buildingOffset.x, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x, y: buildingOffset.y-2, z: 0}]
+                    data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
+                    break
+                case 0:
+                    data.offset = [{x: buildingOffset.x-0.8, y: buildingOffset.y-1, z: 0}, {x: buildingOffset.x-0.8, y: buildingOffset.y-2, z: 0}]
+                    data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
+                    break
                 default:
-                    throw `unsupported: refinery slot < 3`
+                    throw `unsupported: refinery slot < 0`
             }
 
         }else if (type === productionCategory.collider) {
@@ -749,8 +770,20 @@ class BluePrint {
                     data.offset = [{x: buildingOffset.x-4, y: buildingOffset.y+1, z: 0}, {x: buildingOffset.x-5, y: buildingOffset.y+1, z: 0}]
                     data.yaw = [270 + rotate*180%360, 270 + rotate*270%360]
                     break
+                case 2:
+                    data.offset = [{x: buildingOffset.x-2.4, y: buildingOffset.y+2, z: 0}, {x: buildingOffset.x-2.4, y: buildingOffset.y+3, z: 0}]
+                    data.yaw = [rotate*180%360, rotate*180%360]
+                    break
+                case 1:
+                    data.offset = [{x: buildingOffset.x-1.6, y: buildingOffset.y+2, z: 0}, {x: buildingOffset.x-1.6, y: buildingOffset.y+3, z: 0}]
+                    data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
+                    break
+                case 0:
+                    data.offset = [{x: buildingOffset.x-0.8, y: buildingOffset.y+2, z: 0}, {x: buildingOffset.x-0.8, y: buildingOffset.y+3, z: 0}]
+                    data.yaw = [180 + rotate*180%360, 180 + rotate*180%360]
+                    break
                 default:
-                    throw `unsupported: collider slot < 3`
+                    throw `unsupported: collider slot < 0`
             }
         }else {
             throw `calculateSorterLocalOffset error: unsupported production category - ${type}`
@@ -885,6 +918,11 @@ class BluePrint {
                     }
                 }
                 slotIndex --
+                if (!this.config.compactLayout){  // 非紧凑布局，调整对撞机的分拣器连接点
+                    if (buildingMap[subRecipe.building.name].category === productionCategory.collider && slotIndex === 5) {
+                        slotIndex = 2
+                    }
+                }
             }
             for (let inputItem of subRecipe.input) {
                 let actual_rate = inputItem.rate * productionSpeed * actual_building_num
@@ -937,6 +975,11 @@ class BluePrint {
                     }
                 }
                 slotIndex --
+                if (!this.config.compactLayout){  // 非紧凑布局，调整对撞机的分拣器连接点
+                    if (buildingMap[subRecipe.building.name].category === productionCategory.collider && slotIndex === 5) {
+                        slotIndex = 2
+                    }
+                }
             }
 
             if (needNewLine) {
@@ -950,9 +993,9 @@ class BluePrint {
     }
 
     init() {
+        this.mapRecipeID()
         this.calculateBlueprintArea()
         this.blueprintTemplate.areas[0].size = this.blueprintSize
-        this.mapRecipeID()
     }
 
     generateConveyorBelts() {
@@ -1004,7 +1047,6 @@ class BluePrint {
         }
 
         console.log(itemSummary)
-        // console.log(JSON.stringify(this.sorters))
         // 生成传送带并连接到分拣器
         const zero = 0.00000000001  // rate是每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.00000000001为判断标准足够了。
         for (let item in itemSummary){
@@ -1028,11 +1070,9 @@ class BluePrint {
                 maxTransportSpeed = buildingMap.conveyorBeltMK3.transportSpeed * this.config.conveyorBeltStackLayer
             }
 
-            // let totalDoneRate = 0
             for (let totalDoneRate=0; item.rate - totalDoneRate > zero;){
                 let doneRate = 0
                 let parameters = null
-                // const rate = Math.min(maxTransportSpeed, item.rate-i*maxTransportSpeed)
                 let inputRate = Math.min(maxTransportSpeed, item.rate - totalDoneRate)
                 let inputData = []
                 let outputData = []
@@ -1043,8 +1083,8 @@ class BluePrint {
                             // if ((j>0)&&(i+1 >= Math.ceil(item.rate/maxTransportSpeed))){
                             //     // 有分拣器还未连接 并且 不会再生成新的传送带了
                             //     // 这种情况就是建筑非整数时计算误差导致的，继续处理未连接的分拣器就可以了
-                            //
-                                // 当前带接受运力不能满足分拣器，则该分拣器连接下一个带上的节点
+
+                            // 当前带接受运力不能满足分拣器，则该分拣器连接下一个带上的节点
                             break
                         }
                         if (doneSorterNum % this.config.maxSorterNumOneBelt === 0) {
@@ -1162,7 +1202,6 @@ class BluePrint {
                     }
                 }
 
-
                 let direction = 1  // 表示传送带方向沿y轴正方向，用于终产物和中间产物
                 if (item.fromBuildingNum === 0) {
                     direction = -1  // y轴负方向，用于原料
@@ -1185,7 +1224,7 @@ class BluePrint {
     toStr() {
         // convert blueprint from json format to string
         // original author https://github.com/huww98/dsp_blueprint_editor
-        let allAssemblers = new Set([
+        let allAssemblers = new Set([  // 如果要追加支持新建筑，就在这里追加对应建筑的id
             2303,
             2304,
             2305,
@@ -1194,6 +1233,7 @@ class BluePrint {
             2308,
             2309,
             2310,
+            2317  // 追加量子化工厂
         ]);
         const K = Int32Array.of(0xd76aa478, 0xe8d7b756, 0x242070db, 0xc1bdceee, 0xf57c0faf, 0x4787c62a, 0xa8304623, 0xfd469501, 0x698098d8, 0x8b44f7af, 0xffff5bb1, 0x895cd7be, 0x6b9f1122, 0xfd987193, 0xa679438e, 0x39b40821, 0xf61e2562, 0xc040b340, 0x265e5a51, 0xc9b6c7aa, 0xd62f105d, 0x02443453, 0xd8a1e681, 0xe7d3fbc8, 0x21f1cde6, 0xc33707d6, 0xf4d50d87, 0x475a14ed, 0xa9e3e905, 0xfcefa3f8, 0x676f02d9, 0x8d2a4c8a, 0xfffa3942, 0x8771f681, 0x6d9d6122, 0xfde5380c, 0xa4beea44, 0x4bdecfa9, 0xf6bb4b60, 0xbebfbc70, 0x289b7ec6, 0xeaa127fa, 0xd4ef3085, 0x04881d05, 0xd9d4d039, 0xe6db99e5, 0x1fa27cf8, 0xc4ac5665, 0xf4292244, 0x432aff97, 0xab9423a7, 0xfc93a039, 0x655b59c3, 0x8f0ccc92, 0xffeff47d, 0x85845dd1, 0x6fa87e4f, 0xfe2ce6e0, 0xa3014314, 0x4e0811a1, 0xf7537e82, 0xbd3af235, 0x2ad7d2bb, 0xeb86d391);
         const S = Uint8Array.of(7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 7, 12, 17, 22, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 5, 9, 14, 20, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 4, 11, 16, 23, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21, 6, 10, 15, 21);
@@ -1274,13 +1314,6 @@ class BluePrint {
                 return r;
             }
         }
-        // class BufferReader extends BufferIO {
-        //     getUint8() { const v = this.view.getUint8(this.pos); this.pos += 1; return v; }
-        //     getInt8() { const v = this.view.getInt8(this.pos); this.pos += 1; return v; }
-        //     getInt16() { const v = this.view.getInt16(this.pos, true); this.pos += 2; return v; }
-        //     getInt32() { const v = this.view.getInt32(this.pos, true); this.pos += 4; return v; }
-        //     getFloat32() { const v = this.view.getFloat32(this.pos, true); this.pos += 4; return v; }
-        // }
         class BufferWriter extends BufferIO {
             setUint8(value) { this.view.setUint8(this.pos, value); this.pos += 1; }
             setInt8(value) { this.view.setInt8(this.pos, value); this.pos += 1; }
@@ -1314,22 +1347,6 @@ class BluePrint {
             }
             return hexBytes.join('');
         }
-        // function importArea(r) {
-        //     return {
-        //         index: r.getInt8(),
-        //         parentIndex: r.getInt8(),
-        //         tropicAnchor: r.getInt16(),
-        //         areaSegments: r.getInt16(),
-        //         anchorLocalOffset: {
-        //             x: r.getInt16(),
-        //             y: r.getInt16(),
-        //         },
-        //         size: {
-        //             x: r.getInt16(),
-        //             y: r.getInt16(),
-        //         },
-        //     };
-        // }
         function exportArea(w, area) {
             w.setInt8(area.index);
             w.setInt8(area.parentIndex);
@@ -1367,18 +1384,6 @@ class BluePrint {
             maxItemKind: 1,
             numSlots: 9,
         };
-        // let IODir;
-        // (function (IODir) {
-        //     IODir[IODir["None"] = 0] = "None";
-        //     IODir[IODir["Output"] = 1] = "Output";
-        //     IODir[IODir["Input"] = 2] = "Input";
-        // })(IODir = IODir || (IODir = {}));
-        // let LogisticRole;
-        // (function (LogisticRole) {
-        //     LogisticRole[LogisticRole["None"] = 0] = "None";
-        //     LogisticRole[LogisticRole["Supply"] = 1] = "Supply";
-        //     LogisticRole[LogisticRole["Demand"] = 2] = "Demand";
-        // })(LogisticRole = LogisticRole || (LogisticRole = {}));
         const stationParamsMeta = {
             base: 320,
             storage: { base: 0, stride: 6 },
@@ -1491,17 +1496,6 @@ class BluePrint {
                 return result;
             }
         };
-        // let AcceleratorMode;
-        // (function (AcceleratorMode) {
-        //     AcceleratorMode[AcceleratorMode["ExtraOutput"] = 0] = "ExtraOutput";
-        //     AcceleratorMode[AcceleratorMode["Accelerate"] = 1] = "Accelerate";
-        // })(AcceleratorMode = AcceleratorMode || (AcceleratorMode = {}));
-        // let ResearchMode;
-        // (function (ResearchMode) {
-        //     ResearchMode[ResearchMode["None"] = 0] = "None";
-        //     ResearchMode[ResearchMode["Compose"] = 1] = "Compose";
-        //     ResearchMode[ResearchMode["Research"] = 2] = "Research";
-        // })(ResearchMode = ResearchMode || (ResearchMode = {}));
         const labParamParser = {
             encodedSize() { return 2; },
             encode(p, a) {
@@ -1596,12 +1590,6 @@ class BluePrint {
                 };
             },
         };
-        // let EnergyExchangerMode;
-        // (function (EnergyExchangerMode) {
-        //     EnergyExchangerMode[EnergyExchangerMode["Discharge"] = -1] = "Discharge";
-        //     EnergyExchangerMode[EnergyExchangerMode["StandBy"] = 0] = "StandBy";
-        //     EnergyExchangerMode[EnergyExchangerMode["Charge"] = 1] = "Charge";
-        // })(EnergyExchangerMode = EnergyExchangerMode || (EnergyExchangerMode = {}));
         const energyExchangerParamParser = {
             encodedSize() { return 1; },
             encode(p, a) {
@@ -1701,40 +1689,6 @@ class BluePrint {
                 return parser;
             return unknownParamParser;
         }
-        // function importBuilding(r) {
-        //     function readXYZ() {
-        //         return {
-        //             x: r.getFloat32(),
-        //             y: r.getFloat32(),
-        //             z: r.getFloat32(),
-        //         };
-        //     }
-        //     const b = {
-        //         index: r.getInt32(),
-        //         areaIndex: r.getInt8(),
-        //         localOffset: [readXYZ(), readXYZ()],
-        //         yaw: [r.getFloat32(), r.getFloat32()],
-        //         itemId: r.getInt16(),
-        //         modelIndex: r.getInt16(),
-        //         outputObjIdx: r.getInt32(),
-        //         inputObjIdx: r.getInt32(),
-        //         outputToSlot: r.getInt8(),
-        //         inputFromSlot: r.getInt8(),
-        //         outputFromSlot: r.getInt8(),
-        //         inputToSlot: r.getInt8(),
-        //         outputOffset: r.getInt8(),
-        //         inputOffset: r.getInt8(),
-        //         recipeId: r.getInt16(),
-        //         filterId: r.getInt16(),
-        //         parameters: null,
-        //     };
-        //     const length = r.getInt16();
-        //     if (length > 0) {
-        //         const p = r.getView(length * Int32Array.BYTES_PER_ELEMENT);
-        //         b.parameters = parserFor(b.itemId).decode(p);
-        //     }
-        //     return b;
-        // }
         function exportBuilding(w, b) {
             function writeXYZ(v) {
                 w.setFloat32(v.x);
@@ -1826,81 +1780,5 @@ class BluePrint {
     }
 }
 
-// TODO 建筑物类型排序？
-// TODO 生成传送带前判断下是否需要新一行
-// TODO 生产设施速度不为1时有问题，比如使用1级制造台的蓝图 会出现许多分拣器连接异常
-// TODO 原油精炼塔、化工厂和其他建筑的碰撞问题 以及 高纬度的碰撞问题
-// TODO 一个物品既是中间产物又是原料输入时 蓝图会有问题，比如量子芯片中的氢
-// TODO 调整对撞机和炼油塔的分拣器
-// const tmpRecipe = [
-//     {
-//         output: [{name: itemMap.proliferatorMk2.name, rate: 1}],
-//         input: [{name: itemMap.proliferatorMk1.name, rate: 2}, {name: itemMap.diamond.name, rate: 1}],
-//         building: {name: buildingMap.assemblingMachineMk2.name, num: 1},
-//         recipeID: 107  // 增产剂2
-//     },
-//     {
-//         output: [{name: itemMap.proliferatorMk1.name, rate: 2}],
-//         input: [{name: itemMap.coal.name, rate: 2}],
-//         building: {name: buildingMap.assemblingMachineMk2.name, num: 1},
-//         recipeID: 106  // 增产剂1
-//     },
-//     {
-//         output: [{name: itemMap.diamond.name, rate: 1/2}],
-//         input: [{name: itemMap.energeticGraphite.name, rate: 1/2}],
-//         building: {name: buildingMap.arcSmelter.name, num: 2},
-//         recipeID: 60,  // 金刚石
-//         acceleratorMode: 0,
-//     },
-//     {
-//         output: [{name: itemMap.energeticGraphite.name, rate: 1/2}],
-//         input: [{name: itemMap.coal.name, rate: 1}],
-//         building: {name: buildingMap.arcSmelter.name, num: 2},
-//         recipeID: 17,  // 高能石墨
-//         acceleratorMode: 0,
-//     },
-//     {
-//         output: [{name: itemMap.sulfuricAcid.name, rate: 2/3}],
-//         input: [{name: itemMap.water.name, rate: 2/3}, {name: itemMap.refinedOil.name, rate: 1}, {name: itemMap.stone.name, rate: 4/3}],
-//         building: {name: buildingMap.chemicalPlant.name, num: 3},
-//         acceleratorMode: 0,
-//         recipeID: 24,  // 硫酸
-//     },
-//     {
-//         output: [{name: itemMap.refinedOil.name, rate: 0.5}, {name: itemMap.hydrogen.name, rate: 0.25}],
-//         input: [{name: itemMap.oil.name, rate: 0.5}],
-//         building: {name: buildingMap.oilRefinery.name, num: 6},
-//         recipeID: 16  // 精炼油
-//     },
-//     {
-//         output: [{name: itemMap.ironOre.name, rate: 1}],
-//         input: null,
-//         building: null,
-//     },
-//     {
-//         output: [{name: itemMap.coal.name, rate: 4}],
-//         input: null,
-//         building: null
-//     },
-// ]
-
-//
-//
-// const outputRecipe = {
-//     output: itemMap.titaniumIngot,
-//     rate: 60,
-//     subRecipes: [
-//         {
-//             "building": {"name": buildingMap.miniatureParticleCollider.name, "num": 3},
-//             "output": [],
-//             "input": [{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666}, {"name": itemMap.hydrogen.name, "rate": 0.6666666666666666},{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666},{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666},{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666},{"name": itemMap.hydrogen.name, "rate": 0.6666666666666666}],
-//             "acceleratorMode": 0
-//         }]
-// }
-// //
-// b1 = new BluePrint('test', outputRecipe)
-// b1.init()
-// b1.generateBuildings()
-// b1.generateConveyorBelts()
-// b1.blueprintTemplate.buildings = b1.buildings
-// console.log(JSON.stringify(b1.blueprintTemplate))
+// TODO recipeMap中值为-1的表示对应的配方暂不支持，目前仅支持熔炉、制造台、精炼厂、对撞机为生产设备的配方，【X射线裂解】和【重整精炼】两个配方由于程序设计问题，暂无法支持（因为这俩配方的原料和产出有相同物品）；
+// TODO 一个物品既是中间产物又是原料输入时 生成蓝图时会死循环（目前只有氢会有这个情况）；临时解决措施：存在这种情况时，提示 排除产生氢的配方
