@@ -995,7 +995,27 @@ class BluePrint {
         this.mapRecipeID()
         this.calculateBlueprintArea()
         // this.blueprintTemplate.areas[0].size = this.blueprintSize
-        // console.log(this.config)
+    }
+
+    sortItemSummary(itemSummary) {
+        // 排序，把原料和终产物放到前面
+        let newSummary = {}
+        for (let key in itemSummary) {
+            if (itemSummary[key].fromBuildingNum === 0) {
+                newSummary[key] = itemSummary[key]
+            }
+        }
+        for (let key in itemSummary) {
+            if (itemSummary[key].toBuildingNum === 0) {
+                newSummary[key] = itemSummary[key]
+            }
+        }
+        for (let key in itemSummary) {
+            if (itemSummary[key].toBuildingNum !== 0 && itemSummary[key].fromBuildingNum !== 0) {
+                newSummary[key] = itemSummary[key]
+            }
+        }
+        return newSummary
     }
 
     generateConveyorBelts() {
@@ -1045,7 +1065,7 @@ class BluePrint {
                 itemSummary[key].rate = itemSummary[key].inputRate
             }
         }
-
+        itemSummary = this.sortItemSummary(itemSummary)
         // console.log(itemSummary)
         // 生成传送带并连接到分拣器
         const zero = 0.00000000001  // rate是每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.00000000001为判断标准足够了。
@@ -1784,7 +1804,4 @@ class BluePrint {
 // TODO 一个物品既是中间产物又是原料输入时 生成蓝图时会死循环（目前只有氢会有这个情况）；临时解决措施：存在这种情况时，提示 排除产生氢的配方
 // TODO 支持喷涂增产剂
 // TODO 支持排布矩阵研究站
-
-// TODO 蓝图size设置成1x1
-// TODO 支持配置分拣器全为三级
 
