@@ -163,8 +163,6 @@ const buildingMap = {
     // piler: { remark: '自动集装机', name: 'piler', itemId: 2040, modelIndex: 257 },
     // monitor: { remark: '流速监测器', name: 'monitor', itemId: 2030, modelIndex: 208 },
     // spray_coater: { remark: '喷涂机', name: 'spray_coater', itemId: 2313, modelIndex: 120 },
-
-    // hadron_collider: { remark: '微型粒子对撞机', name: 'hadron_collider', itemId: 2310, modelIndex: 69 },
     // lab: { remark: '矩阵研究站', name: 'lab', itemId: 2901, modelIndex: 70 },
 
     templateBuilding: {name: 'templateBuilding', itemId: 0, modelIndex: 0, size: {x: 1, y: 1}, remark: '模板'},
@@ -312,6 +310,7 @@ class BluePrint {
         //     compactLayout: false,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
         //     upgradeConveyorBelt: false,  // 360/min的运力时使用3级传送带（无带流情况下，原料的需求和供应都是集中处理，1级传送带满运力情况下可能会有运送不及时问题导致产量低于预期
         //     onlyConveyorBeltMk3: false,  // 是否只使用三级传送带
+        //     onlySorterMk3: false,  // 是否只使用三级分拣器
         // }
         this.config = config
         this.buildingArray = []
@@ -870,7 +869,7 @@ class BluePrint {
             for (let outputItem of subRecipe.output){
                 let actual_rate = outputItem.rate * productionSpeed * actual_building_num
                 let sorter = buildingMap.sorterMk1
-                if (actual_rate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
+                if (this.config.onlySorterMk3 || actual_rate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，二级分拣器没太大价值，直接略过
                     sorter = buildingMap.sorterMk3
                 }
                 let newSorter = this.getBuildingTemplate()
@@ -927,7 +926,7 @@ class BluePrint {
             for (let inputItem of subRecipe.input) {
                 let actual_rate = inputItem.rate * productionSpeed * actual_building_num
                 let sorter = buildingMap.sorterMk1
-                if (actual_rate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
+                if (this.config.onlySorterMk3 || actual_rate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器
                     sorter = buildingMap.sorterMk3
                 }
                 let newSorter = this.getBuildingTemplate()
@@ -1785,3 +1784,7 @@ class BluePrint {
 // TODO 一个物品既是中间产物又是原料输入时 生成蓝图时会死循环（目前只有氢会有这个情况）；临时解决措施：存在这种情况时，提示 排除产生氢的配方
 // TODO 支持喷涂增产剂
 // TODO 支持排布矩阵研究站
+
+// TODO 蓝图size设置成1x1
+// TODO 支持配置分拣器全为三级
+
