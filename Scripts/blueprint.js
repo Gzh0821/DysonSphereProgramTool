@@ -994,7 +994,7 @@ class BluePrint {
     init() {
         this.mapRecipeID()
         this.calculateBlueprintArea()
-        this.blueprintTemplate.areas[0].size = this.blueprintSize
+        // this.blueprintTemplate.areas[0].size = this.blueprintSize
         // console.log(this.config)
     }
 
