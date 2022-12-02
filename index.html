@@ -113,8 +113,19 @@
 			<p><span class="label">轨道采集-氢(气态)：</span> <input data-name="氢" id="speed1_1" class="speed1 textbox"
 					type="number" value="1" /> </p>
 			<p><span class="label">临界光子每分钟产量： </span><input id="gzSpeed" class="textbox" type="number" value="5" /> </p>
-			<p><span class="label">小数点后保留： </span><input id="pointLength" class="textbox" type="number" value="1" /> 位
-			</p>
+			<p><span class="label">小数点后保留： </span><input id="pointLength" class="textbox" type="number" value="1" /> 位</p>
+			<p>蓝图配置：</p>
+			<div style="margin-left: 1%">
+				<span class="label">紧凑布局</span><input type="checkbox" id="compactLayout"><br/>
+				<!--						<input type="checkbox" id="upgradeConveyorBelt"><label for="upgradeConveyorBelt">临界运力传送带自升级</label>-->
+				<span class="label">只使用三级传送带</span><input type="checkbox" id="onlyConveyorBeltMk3"><br/>
+<!--				<label for="onlySorterMk3">只使用三级分拣器</label><input type="checkbox" id="onlySorterMk3"><br/>-->
+				<span class="label">只使用三级分拣器</span><input type="checkbox" id="onlySorterMk3"><br/>
+<!--				<label for="conveyorBeltStackLayer">传送带物品堆叠层数</label><input type="number" id="conveyorBeltStackLayer" min="1" max="4" value="4" class="textbox"><br/>-->
+				<span class="label">传送带物品堆叠层数</span><input type="number" id="conveyorBeltStackLayer" min="1" max="4" value="4" class="textbox"><br/>
+<!--				<label for="x_y_ratio">蓝图长宽比</label><input type="number" id="x_y_ratio" min="1" step="0.1" value="2" class="textbox"><br/>-->
+				<span class="label">蓝图长宽比</span><input type="number" id="x_y_ratio" min="1" step="0.1" value="2" class="textbox"><br/>
+			</div>
 		</div>
 		<div id="result">
 			<div class="list">
@@ -140,22 +151,22 @@
 						重置
 					</button>
 					<button onclick="f_save()">保存方案</button>
-					<button
-							onclick="let configSpan = document.getElementById('blueprintConfig'); if(configSpan.style.display === 'none'){configSpan.style.display='block'}else {configSpan.style.display='none'}"
-					>蓝图配置</button>
+<!--					<button-->
+<!--							onclick="let configSpan = document.getElementById('blueprintConfig'); if(configSpan.style.display === 'none'){configSpan.style.display='block'}else {configSpan.style.display='none'}"-->
+<!--					>蓝图配置</button>-->
 					<button onclick="generateBlueprint()">生成蓝图</button>
-					<br/>
-					<span id="blueprintConfig" style="display: none">蓝图配置：
-						<div style="margin-left: 2%">
-						<input type="checkbox" id="compactLayout"><label for="compactLayout">紧凑布局（高纬度可能出现碰撞）</label>
-<!--						<input type="checkbox" id="upgradeConveyorBelt"><label for="upgradeConveyorBelt">临界运力传送带自升级</label>-->
-						<input type="checkbox" id="onlyConveyorBeltMk3"><label for="onlyConveyorBeltMk3">只使用三级传送带</label>
-						<input type="checkbox" id="onlySorterMk3"><label for="onlySorterMk3">只使用三级分拣器</label>
-						<br/>
-						<label for="conveyorBeltStackLayer">传送带物品堆叠层数</label><input type="number" id="conveyorBeltStackLayer" min="1" max="4" value="4">
-						<label for="x_y_ratio">蓝图长宽比</label><input type="number" id="x_y_ratio" min="1" step="0.1" value="2">
-						</div>
-					</span>
+<!--					<br/>-->
+<!--					<span id="blueprintConfig" style="display: none">蓝图配置：-->
+<!--						<div style="margin-left: 2%">-->
+<!--						<input type="checkbox" id="compactLayout"><label for="compactLayout">紧凑布局（高纬度可能出现碰撞）</label>-->
+<!--&lt;!&ndash;						<input type="checkbox" id="upgradeConveyorBelt"><label for="upgradeConveyorBelt">临界运力传送带自升级</label>&ndash;&gt;-->
+<!--						<input type="checkbox" id="onlyConveyorBeltMk3"><label for="onlyConveyorBeltMk3">只使用三级传送带</label>-->
+<!--						<input type="checkbox" id="onlySorterMk3"><label for="onlySorterMk3">只使用三级分拣器</label>-->
+<!--						<br/>-->
+<!--						<label for="conveyorBeltStackLayer">传送带物品堆叠层数</label><input type="number" id="conveyorBeltStackLayer" min="1" max="4" value="4">-->
+<!--						<label for="x_y_ratio">蓝图长宽比</label><input type="number" id="x_y_ratio" min="1" step="0.1" value="2">-->
+<!--						</div>-->
+<!--					</span>-->
 					<br/><small>(右键可取消单项需求；单击数字可编辑数量)</small>
 				</span>
 			</div>

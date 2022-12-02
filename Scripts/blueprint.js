@@ -159,6 +159,7 @@ const buildingMap = {
     conveyorBeltMk1: {name: 'conveyorBeltMk1', itemId: 2001, modelIndex: 35, transportSpeed: 6, size: {x: 1, y: 1}, type: buildingType.conveyor, remark: '传送带MK.I'},
     // conveyorBeltMK2: { remark: '高速传送带', name: 'conveyorBeltMK2', itemId: 2002, modelIndex: 36 },
     conveyorBeltMK3: {name: 'conveyorBeltMK3', itemId: 2003, modelIndex: 37, transportSpeed: 30, size: {x: 1, y: 1}, type: buildingType.conveyor, remark: '传送带MK.Ⅲ'},
+    sprayCoater: {remark: '喷涂机', name: 'sprayCoater', itemId: 2313, modelIndex: 120},
 
     // piler: { remark: '自动集装机', name: 'piler', itemId: 2040, modelIndex: 257 },
     // monitor: { remark: '流速监测器', name: 'monitor', itemId: 2030, modelIndex: 208 },
@@ -315,6 +316,8 @@ class BluePrint {
         this.config = config
         this.buildingArray = []
         this.sorters = {}
+        this.sprayCoaterOffsetList = []
+        this.itemSummary = {}
         this.blueprintTemplate = {
             header: {
                 layout: 10,
@@ -397,23 +400,55 @@ class BluePrint {
         }
     }
 
-    newConveyor(conveyor, direction, inputData, outputData, parameters=null) {
-        // 在y轴方向生成一条长度为length的传送带, direction的正负表示传送带方向
-        // parameters列表指定每个传送带节点的参数
+    newSprayCoater(offset, yaw) {
+        // 在offset位置生成一个喷涂机， direction<0 表示沿y轴负方向，否则为y轴正方向
+        let sc = this.getBuildingTemplate()
+        sc.localOffset = [offset, offset]
+        sc.yaw = yaw
+        sc.itemId = buildingMap.sprayCoater.itemId
+        sc.modelIndex = buildingMap.sprayCoater.modelIndex
+        sc.outputToSlot = 14
+        sc.inputFromSlot = 15
+        sc.outputFromSlot = 15
+        sc.inputToSlot = 14
+        return sc
+    }
+
+    newConveyorNode(offset, yaw, conveyor, outputObjIdx, outputToSlot, parameters) {
+        return {
+            index: ++this.buildingIndex,
+            areaIndex: 0,
+            localOffset: [offset, offset],
+            yaw: yaw,
+            itemId: conveyor.itemId,
+            modelIndex: conveyor.modelIndex,
+            outputObjIdx: outputObjIdx,
+            inputObjIdx: -1,
+            outputToSlot: outputToSlot,
+            inputFromSlot: 0,
+            outputFromSlot: 0,
+            inputToSlot: 1,
+            outputOffset: 0,
+            inputOffset: 0,
+            recipeId: 0,
+            filterId: 0,
+            parameters: parameters
+        }
+    }
+
+    newConveyor(conveyor, direction, inputData, outputData, parameters=null, needSprayCoater=false) {
+        // needSprayCoater = false
+        // 在y轴方向生成一条长度为length的传送带, direction = -1 表示y轴负方向， 1表示y轴正方向
         if (conveyor.type !== buildingType.conveyor) {
             throw `newConveyor error: error conveyor - ${conveyor}`
         }
+        let nodeNum = 0
         let buildingX = 0, buildingY = 0, buildingZ = 0
-        // const direction = length/Math.abs(length)
-        // let length = Math.abs(length)
         for (let i=0; i<inputData.length; i++) {
             if (direction < 0) {
-                // 输入带不需要处理input，再最后加一个即可
+                // 输入带不需要处理input，在最后加一个节点即可
                 break
             }
-            this.buildingIndex ++
-            let outputObjIdx = -1
-            let outputToSlot = 0
             if (i===0) {
                 buildingX = this.occupiedArea[this.occupiedArea.length-1].x2 + 1
                 buildingY = this.occupiedArea[this.occupiedArea.length-2].y2 + 1
@@ -422,50 +457,10 @@ class BluePrint {
             }else {
                 buildingY += 1
             }
-            if (!(direction < 0 && i === 0 )) {
-                outputObjIdx = this.buildingIndex + direction
-                // console.log(`conveyor ${this.buildingIndex} outputObjIdx ${outputObjIdx}`)
-            }
-            let nodeParameters = null
-            if (direction < 0 && i === 0) {
-                nodeParameters = parameters
-            }
-            if (outputObjIdx !== -1) {
-                outputToSlot = 1
-            }
-            this.buildings.push({
-                index: this.buildingIndex,
-                areaIndex: 0,
-                localOffset: [
-                    {
-                        x: buildingX,
-                        y: buildingY,
-                        z: buildingZ
-                    },
-                    {
-                        x: buildingX,
-                        y: buildingY,
-                        z: buildingZ
-                    }
-                ],
-                yaw: [
-                    0,
-                    0
-                ],
-                itemId: conveyor.itemId,
-                modelIndex: conveyor.modelIndex,
-                outputObjIdx: outputObjIdx,
-                inputObjIdx: -1,
-                outputToSlot: outputToSlot,
-                inputFromSlot: 0,
-                outputFromSlot: 0,
-                inputToSlot: 1,
-                outputOffset: 0,
-                inputOffset: 0,
-                recipeId: 0,
-                filterId: 0,
-                parameters: nodeParameters
-            })
+            let outputObjIdx = this.buildingIndex + 2
+            let outputToSlot = 1
+            this.buildings.push(this.newConveyorNode({x: buildingX, y: buildingY, z: buildingZ}, [0, 0], conveyor, outputObjIdx,  outputToSlot, null))
+            nodeNum ++
             // 修改分拣器指向这个传送带节点
             let toChangeNum = inputData[i].length
             for (let b of this.buildings) {
@@ -478,8 +473,19 @@ class BluePrint {
                 }
             }
         }
+        let sprayCoaterOffset = {}
+        if (needSprayCoater && direction > 0) {
+            // 添加节点用于放置喷涂机
+            // 为避免供料口被堵，喷涂机只放在第偶数个节点上
+            if (nodeNum % 2 === 0) {
+                this.buildings.push(this.newConveyorNode({x: buildingX, y: ++buildingY, z: buildingZ}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            }
+            sprayCoaterOffset = {x: buildingX, y: ++buildingY, z: buildingZ}
+            this.sprayCoaterOffsetList.push({x: buildingX, y: buildingY - 1, z:buildingZ})
+            this.buildings.push(this.newConveyorNode(sprayCoaterOffset, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+        }
+
         for (let i=0; i<outputData.length; i++) {
-            this.buildingIndex ++
             let outputObjIdx = -1
             let outputToSlot = 0
             if (direction < 0 && i === 0) {
@@ -492,50 +498,22 @@ class BluePrint {
             }
             if (!(direction>0 && i===outputData.length-1)) {
                 if (!(direction < 0 && i === 0)) {
-                    outputObjIdx = this.buildingIndex + direction
+                    outputObjIdx = this.buildingIndex + 1 + direction
                 }
             }
             let nodeParameters = null
             if (direction > 0 && i === outputData.length-1) {
                 nodeParameters = parameters
             }
-
             if (outputObjIdx !== -1) {
                 outputToSlot = 1
             }
-            this.buildings.push({
-                index: this.buildingIndex,
-                areaIndex: 0,
-                localOffset: [
-                    {
-                        x: buildingX,
-                        y: buildingY,
-                        z: buildingZ
-                    },
-                    {
-                        x: buildingX,
-                        y: buildingY,
-                        z: buildingZ
-                    }
-                ],
-                yaw: [
-                    0,
-                    0
-                ],
-                itemId: conveyor.itemId,
-                modelIndex: conveyor.modelIndex,
-                outputObjIdx: outputObjIdx,
-                inputObjIdx: -1,
-                outputToSlot: outputToSlot,
-                inputFromSlot: 0,
-                outputFromSlot: 0,
-                inputToSlot: 1,
-                outputOffset: 0,
-                inputOffset: 0,
-                recipeId: 0,
-                filterId: 0,
-                parameters: nodeParameters
-            })
+            let nodeYaw = [0, 0]
+            if (direction < 0) {
+                nodeYaw = [180, 180]
+            }
+            this.buildings.push(this.newConveyorNode({x: buildingX, y: buildingY, z:buildingZ}, nodeYaw, conveyor, outputObjIdx,  outputToSlot, nodeParameters))
+            nodeNum ++
             // 修改分拣器指向这个传送带节点
             let toChangeNum = outputData[i].length
             for (let b of this.buildings) {
@@ -550,45 +528,24 @@ class BluePrint {
             }
         }
         if (direction < 0) {
-            this.buildingIndex ++
-            let outputObjIdx = this.buildingIndex + direction
-            let outputToSlot = 1
-            buildingY += 1
-            // outputObjIdx = this.buildingIndex + direction
-            // outputToSlot = 1
-            this.buildings.push({
-                index: this.buildingIndex,
-                areaIndex: 0,
-                localOffset: [
-                    {
-                        x: buildingX,
-                        y: buildingY,
-                        z: buildingZ
-                    },
-                    {
-                        x: buildingX,
-                        y: buildingY,
-                        z: buildingZ
-                    }
-                ],
-                yaw: [
-                    0,
-                    0
-                ],
-                itemId: conveyor.itemId,
-                modelIndex: conveyor.modelIndex,
-                outputObjIdx: outputObjIdx,
-                inputObjIdx: -1,
-                outputToSlot: outputToSlot,
-                inputFromSlot: 0,
-                outputFromSlot: 0,
-                inputToSlot: 1,
-                outputOffset: 0,
-                inputOffset: 0,
-                recipeId: 0,
-                filterId: 0,
-                parameters: parameters
-            })
+            // let outputObjIdx = this.buildingIndex
+            if (needSprayCoater) {
+                if (nodeNum % 2 === 0) {
+                    this.buildings.push(this.newConveyorNode({x: buildingX, y: ++buildingY, z: buildingZ}, [0, 0], conveyor, this.buildingIndex, 1, null))
+                }
+                sprayCoaterOffset = {x: buildingX, y: ++buildingY, z:buildingZ}
+                this.sprayCoaterOffsetList.push({x: buildingX, y: buildingY + 1, z:buildingZ})
+                this.buildings.push(this.newConveyorNode(sprayCoaterOffset, [180, 180], conveyor, this.buildingIndex,  1, null))
+                this.buildings.push(this.newConveyorNode({x: buildingX, y: ++buildingY, z:buildingZ}, [180, 180], conveyor, this.buildingIndex,  1, null))
+            }
+            this.buildings.push(this.newConveyorNode({x: buildingX, y: ++buildingY, z:buildingZ}, [180, 180], conveyor, this.buildingIndex,  1, parameters))
+        }
+        if (needSprayCoater) {
+            let sprayYaw = [0, 0]
+            if (direction < 0) {
+                sprayYaw = [180, 180]
+            }
+            this.buildings.push(this.newSprayCoater(sprayCoaterOffset, sprayYaw))
         }
     }
 
@@ -1066,7 +1023,10 @@ class BluePrint {
             }
         }
         itemSummary = this.sortItemSummary(itemSummary)
+        this.itemSummary = itemSummary
         // console.log(itemSummary)
+        this.occupiedArea[this.occupiedArea.length-1].x2 ++  // x轴方向空一格用于喷涂剂走线
+        this.occupiedArea[this.occupiedArea.length-2].y2 ++  // y轴方向空一格避免喷涂机和建筑碰撞
         // 生成传送带并连接到分拣器
         const zero = 0.00000000001  // rate是每秒生产量，除不尽时会有精度误差，小数点后16位都是准确的，取0.00000000001为判断标准足够了。
         for (let item in itemSummary){
@@ -1091,6 +1051,7 @@ class BluePrint {
             }
 
             for (let totalDoneRate=0; item.rate - totalDoneRate > zero;){
+                let needSprayCoater = true
                 let doneRate = 0
                 let parameters = null
                 let inputRate = Math.min(maxTransportSpeed, item.rate - totalDoneRate)
@@ -1131,71 +1092,6 @@ class BluePrint {
                 doneSorterNum = 0
                 if (item.toBuildingNum !== 0) {
                     for (let j=this.sorters[itemName].input.length-1; j>=0; j--){
-                        // if(
-                        //     !([buildingMap.chemicalPlant, buildingMap.quantumChemicalPlant].includes(this.sorters[itemName].input[i].ownerName))
-                        //     && outputRate < this.sorters[itemName].input[i].rate
-                        // ) {
-                        //     // 化工厂和量子化工厂暂不考虑这种情况，所以可能会出现某个分拣器供给速率跟不上，导致总产量小于预期
-                        //     // 当前带输出运力不能满足分拣器，则传送带新增一个节点单独该分拣器连接上，同时给对应建筑增加一个分拣器连到下一个节点
-                        //     outputData.push([this.sorters[itemName].input[i].index])
-                        //     const newSorterRate = this.sorters[itemName].input[i].rate - outputRate
-                        //     this.sorters[itemName].input.unshift({
-                        //         index: this.sorters[itemName].input[i].index,
-                        //         rate: newSorterRate,
-                        //         ownerObjIdx: this.sorters[itemName].input[i].ownerObjIdx,
-                        //         ownerName: this.sorters[itemName].input[i].ownerName,
-                        //         ownerOffset: this.sorters[itemName].input[i].ownerOffset
-                        //     })
-                        //     let sorter = buildingMap.sorterMk1
-                        //     if (newSorterRate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
-                        //         sorter = buildingMap.sorterMk3
-                        //     }
-                        //     let newSorter = this.getBuildingTemplate()
-                        //     newSorter.itemId = sorter.itemId
-                        //     newSorter.modelIndex = sorter.modelIndex
-                        //     newSorter.outputObjIdx = this.sorters[itemName].input[i].ownerObjIdx
-                        //     newSorter.outputToSlot = buildingMap[this.sorters[itemName].input[i].ownerName].slotMaxIndex - 5
-                        //     newSorter.inputToSlot = 1
-                        //     newSorter.parameters = {length:1}
-                        //     const offsetInfo = this.calculateSorterLocalOffsetAndYaw(this.sorters[itemName].input[i].ownerOffset, buildingMap[this.sorters[itemName].input[i].ownerName].category, newSorter.outputToSlot, 1)
-                        //     newSorter.localOffset = offsetInfo.offset
-                        //     newSorter.yaw = offsetInfo.yaw
-                        //     this.buildings.push(newSorter)
-                        //     let startMove = false
-                        //     // 寻找目标建筑 把新sorter加进去，并位移此行之后的建筑
-                        //     for (let i=0; i<this.buildingArray.length; i++) {
-                        //         for (let j=0; j<this.buildingArray[i].length; j++){
-                        //             if (this.buildingArray[i][j].index === this.sorters[itemName].input[i].ownerObjIdx){
-                        //                 this.buildingArray[i][j].sorterList.push(newSorter.index)
-                        //                 startMove = true
-                        //             }else if (startMove) {
-                        //                 // move building and sorters
-                        //                 let toMoveNum = 1 + this.buildingArray[i][j].sorterList.length
-                        //                 for (let b of this.buildings) {
-                        //                     if (b.index === this.buildingArray[i][j].index) {
-                        //                         b.localOffset[0].x += 1
-                        //                         b.localOffset[1].x += 1
-                        //                         toMoveNum --
-                        //                     }else if (this.buildingArray[i][j].sorterList.includes(b.index)) {
-                        //                         b.localOffset[0].x += 1
-                        //                         b.localOffset[1].x += 1
-                        //                         toMoveNum --
-                        //                     }
-                        //                     if (toMoveNum <= 0) {
-                        //                         break
-                        //                     }
-                        //                 }
-                        //             }
-                        //         }
-                        //         if (startMove) {
-                        //             break
-                        //         }
-                        //     }
-                        //
-                        //     this.sorters[itemName].input.pop()
-                        //     break
-                        // }
-
                         if (doneSorterNum % this.config.maxSorterNumOneBelt === 0) {
                             outputData.push([this.sorters[itemName].input[j].index])
                         }else {
@@ -1214,12 +1110,13 @@ class BluePrint {
                             break
                         }
                     }
-                }else {  // 说明是产物
+                }else {  // 说明是终产物
                     outputData.push([])
                     parameters = {
                         iconId: itemMap[itemName].iconId,
                         count: (outputRate * 60).toFixed(0)
                     }
+                    needSprayCoater = false
                 }
 
                 let direction = 1  // 表示传送带方向沿y轴正方向，用于终产物和中间产物
@@ -1227,7 +1124,7 @@ class BluePrint {
                     direction = -1  // y轴负方向，用于原料
                 }
                 // console.log(itemName, inputData, outputData, direction)
-                this.newConveyor(conveyorBelt, direction, inputData, outputData, parameters)
+                this.newConveyor(conveyorBelt, direction, inputData, outputData, parameters, needSprayCoater)
             }
         }
     }
@@ -1239,6 +1136,120 @@ class BluePrint {
             }
             this.newProductionBuilding(subRecipe)
         }
+    }
+
+    generateConveyorBeltsForSprayCoater() {
+        if (this.sprayCoaterOffsetList.length === 0) {
+            return
+        }
+        let conveyor = buildingMap.conveyorBeltMk1
+        if (this.config.onlyConveyorBeltMk3) {
+            conveyor = buildingMap.conveyorBeltMK3
+        } else{
+            for (let proliferator of [itemMap.proliferatorMk3.name, itemMap.proliferatorMk2.name, itemMap.proliferatorMk1.name]) {
+                if (this.itemSummary[proliferator]) {  // 使用产物中等级最高的增产剂
+                    if (this.itemSummary[proliferator].rate > conveyor.transportSpeed) {
+                        conveyor = buildingMap.conveyorBeltMK3
+                    }
+                    break
+                }
+            }
+        }
+        let firstSprayOffset = this.sprayCoaterOffsetList[0]
+        for (let spray of this.sprayCoaterOffsetList) {
+            if (spray.y > firstSprayOffset.y) {
+                firstSprayOffset = spray
+                continue
+            }
+            if (spray.y === firstSprayOffset.y && spray.x < firstSprayOffset.x) {
+                firstSprayOffset = spray
+            }
+        }
+        console.log(this.sprayCoaterOffsetList)
+        console.log(firstSprayOffset)
+        this.buildings.push(this.newConveyorNode({x: firstSprayOffset.x - 1, y: firstSprayOffset.y, z: 1 }, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+        this.buildings.push(this.newConveyorNode({x: firstSprayOffset.x, y: firstSprayOffset.y, z: 1 }, [0, 0], conveyor, this.buildingIndex + 2, -1, null))
+        let doneNum = 1
+        let nowSpray = firstSprayOffset
+        let direction = 1
+        while (doneNum < this.sprayCoaterOffsetList.length) {
+            for (let spray of this.sprayCoaterOffsetList) {
+                if (spray.y === nowSpray.y) {
+                    if (direction === 1) {  // x 轴正向
+                        if (spray.x > nowSpray.x) {
+                            for (let x=nowSpray.x+1; x <= spray.x; x++) {
+                                console.log({x: x, y: nowSpray.y, z: 1})
+                                this.buildings.push(this.newConveyorNode({x: x, y: nowSpray.y, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                            }
+                            nowSpray = spray
+                            doneNum ++
+                        }
+                    }else { // x 轴负向
+                        if (spray.x < nowSpray.x) {
+                            for (let x=nowSpray.x-1; x>=spray.x; x--) {
+                                console.log({x: x, y: nowSpray.y, z: 1})
+                                this.buildings.push(this.newConveyorNode({x: x, y: nowSpray.y, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                            }
+                            nowSpray = spray
+                            doneNum ++
+                        }
+                    }
+                }
+            }
+            if (doneNum === this.sprayCoaterOffsetList.length) {
+                break
+            }
+
+            let findNext = false
+            this.sprayCoaterOffsetList.reverse()
+            for (let delta=2; !findNext; delta+=2) {
+                for (let spray of this.sprayCoaterOffsetList) {
+                    if (spray.y === nowSpray.y - delta) {
+                        let lastNodeOffset = nowSpray
+                        if (direction === 1 && spray.x > nowSpray.x) {
+                            for (let x=nowSpray.x+1; x <= spray.x; x++) {
+                                lastNodeOffset = {x: x, y: nowSpray.y, z: 1}
+                                console.log(lastNodeOffset)
+                                this.buildings.push(this.newConveyorNode(lastNodeOffset, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                            }
+                        } else if (direction === -1 && spray.x < nowSpray.x) {
+                            for (let x=nowSpray.x-1; x >= spray.x; x--){
+                                lastNodeOffset = {x: x, y: nowSpray.y, z: 1}
+                                console.log(lastNodeOffset)
+                                this.buildings.push(this.newConveyorNode(lastNodeOffset, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                            }
+                        }
+                        lastNodeOffset = {x: lastNodeOffset.x + direction, y: lastNodeOffset.y, z: 1}
+                        this.buildings.push(this.newConveyorNode(lastNodeOffset, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                        for (let i=1; i <= delta; i++) {
+                            lastNodeOffset = {x: lastNodeOffset.x, y: nowSpray.y-i, z: 1}
+                            this.buildings.push(this.newConveyorNode(lastNodeOffset, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                        }
+                        lastNodeOffset = {x: lastNodeOffset.x, y: lastNodeOffset.y, z: 1}
+                        if (direction === -1 && spray.x > lastNodeOffset.x + 1) {
+                            for (let x=lastNodeOffset.x+1; x<spray.x; x++) {
+                                this.buildings.push(this.newConveyorNode({x: x, y: lastNodeOffset.y, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                            }
+                        }else if (direction === 1 && spray.x < lastNodeOffset.x - 1) {
+                            for (let x=lastNodeOffset.x-1; x>spray.x; x--) {
+                                this.buildings.push(this.newConveyorNode({x: x, y: lastNodeOffset.y, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                            }
+                        }
+                        this.buildings.push(this.newConveyorNode({x: spray.x, y: spray.y, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+                        doneNum ++
+                        nowSpray = spray
+                        findNext = true
+                        break
+                    }
+                }
+            }
+            console.log(`next spray ${nowSpray}`)
+
+            // console.log({x: nowSpray.x+direction, y: nowSpray.y, z: 1})
+            direction = -direction
+            // break
+        }
+        this.buildings.push(this.newConveyorNode({x: nowSpray.x+direction, y: nowSpray.y, z: 1}, [0, 0], conveyor, -1, -1, null))
     }
 
     toStr() {
@@ -1804,4 +1815,4 @@ class BluePrint {
 // TODO 一个物品既是中间产物又是原料输入时 生成蓝图时会死循环（目前只有氢会有这个情况）；临时解决措施：存在这种情况时，提示 排除产生氢的配方
 // TODO 支持喷涂增产剂
 // TODO 支持排布矩阵研究站
-
+// TODO 支持二级分拣器和传送带，支持设置传送带和分拣器等级上限

@@ -2791,6 +2791,7 @@
             b1.init()
             b1.generateBuildings()
             b1.generateConveyorBelts()
+            b1.generateConveyorBeltsForSprayCoater()
             b1.blueprintTemplate.buildings = b1.buildings
             navigator.clipboard.writeText(b1.toStr()).then(r => cocoMessage.success("已复制到粘贴板", 1000))
         }
