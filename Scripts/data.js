@@ -2636,9 +2636,10 @@
 
         function getRecipe() {
             let recipeList = []
-            const itemNameList = [['配送运输机', 'logisticsBot'], ['水', 'water'], ['铁矿', 'ironOre'], ['铜矿', 'copperOre'], ['硅石', 'siliconOre'], ['钛石', 'titaniumOre'], ['煤矿', 'coal'], ['铁块', 'ironIngot'], ['钛块', 'titaniumIngot'], ['高级石墨', 'energeticGraphite'], ['金刚石', 'diamond'], ['增产剂Mk.Ⅰ', 'proliferatorMk1'], ['增产剂Mk.Ⅱ', 'proliferatorMk2'], ['增产剂Mk.Ⅲ', 'proliferatorMk3'], ['齿轮', 'gear'], ['石矿', 'stone'], ['原油', 'oil'], ['精炼油', 'refinedOil'], ['硫酸', 'sulfuricAcid'], ['氢', 'hydrogen'], ['可燃冰', 'fireIce'], ['木材', 'wood'], ['植物燃料', 'plant_fuel'], ['金伯利矿石', 'kimberliteOre'], ['分形硅石', 'fractalSilicon'], ['光栅石', 'opticalGratingCrystal'], ['刺笋结晶', 'spiniformStalagmiteCrystal'], ['单极磁石', 'unipolarMagnet'], ['铜块', 'copperIngot'], ['高纯硅块', 'highPuritySilicon'], ['石材', 'stoneBrick'], ['钢材', 'steel'], ['钛合金', 'titaniumAlloy'], ['玻璃', 'glass'], ['钛化玻璃', 'titaniumGlass'], ['棱镜', 'prism'], ['晶格硅', 'crystalSilicon'], ['磁铁', 'magnet'], ['磁线圈', 'magneticCoil'], ['电动机', 'electricMotor'], ['电磁涡轮', 'electromagneticTurbine'], ['超级磁场环', 'superMagneticRing'], ['粒子容器', 'particleContainer'], ['奇异物质', 'strangeMatter'], ['电路板', 'circuitBoard'], ['处理器', 'processor'], ['量子芯片', 'quantumChip'], ['微晶元件', 'microcrystallineComponent'], ['位面过滤器', 'planeFilter'], ['粒子带宽', 'particleBroadband'], ['电浆激发器', 'plasmaExciter'], ['光子合并器', 'photonCombiner'], ['太阳帆', 'solarSail'], ['重氢', 'deuterium'], ['反物质', 'antimatter'], ['临界光子', 'criticalPhoton'], ['液氢燃料棒', 'hydrogenFuelRod'], ['氘核燃料棒', 'deuteriumFuelRod'], ['反物质燃烧棒', 'antimatterFuelRod'], ['塑料', 'plastic'], ['石墨烯', 'graphene'], ['碳纳米管', 'carbonNanotube'], ['有机晶体', 'organicCrystal'], ['钛晶石', 'titaniumCrystal'], ['卡西米尔晶片', 'casimirCrystal'], ['引力透镜', 'gravitonLens'], ['空间翘曲器', 'spaceWarper'], ['湮灭约束球', 'annihilationConstraintSphere'], ['推进器', 'thruster'], ['加力推进器', 'reinforcedThruster'], ['物流运输机', 'logisticDrone'], ['星际物流运输机', 'logisticVessel'], ['框架材料', 'frameMaterial'], ['戴森球组件', 'dysonSphereComponent'], ['小型运载火箭', 'smallCarrierRocket'], ['地基', 'foundation'], ['传送带', 'conveyorBeltMk1'], ['高速传送带', 'conveyorBeltMk2'], ['极速传送带', 'conveyorBeltMk3'], ['分拣器', 'sorterMk1'], ['高速分拣器', 'sorterMk2'], ['极速分拣器', 'sorterMk3'], ['四向分流器', 'splitter'], ['自动集装机', 'autoPiler'], ['流速监测器', 'trafficMonitor'], ['喷涂机', 'sprayCoater'], ['小型储物仓', 'storageMk1'], ['大型储物仓', 'storageMk2'], ['储液灌', 'storageTank'], ['制作台Mk.Ⅰ', 'assemblingMachineMk1'], ['制作台Mk.Ⅱ', 'assemblingMachineMk2'], ['制作台Mk.Ⅲ', 'assemblingMachineMk3'], ['电力感应塔', 'teslaTower'], ['无线输电塔', 'wirelessPowerTower'], ['卫星配电站', 'satelliteSubstation'], ['风力涡轮机', 'windTurbine'], ['火力发电机', 'thermalPowerPlant'], ['微型聚变发电站', 'miniFusionPowerPlant'], ['地热发电站', 'geothermalPowerStation'], ['采矿机', 'miningMachine'], ['大型采矿机', 'advancedMiningMachine'], ['抽水机', 'waterPump'], ['电弧熔炉', 'arcSmelter'], ['位面熔炉', 'planeSmelter'], ['原油萃取站', 'oilExtractor'], ['原油精炼厂', 'oilRefinery'], ['化工厂', 'chemicalPlant'], ['分馏塔', 'fractionator'], ['量子化工厂', 'quantumChemicalPlant'], ['太阳能板', 'solarPanel'], ['蓄电池', 'accumulator'], ['蓄电池满', 'accumulatorFull'], ['电磁轨道弹射器', 'emRailEjector'], ['射线接收站', 'rayReceiver'], ['垂直发射井', 'verticalLaunchingSilo'], ['能量枢纽', 'energyExchanger'], ['微型粒子对撞机', 'miniatureParticleCollider'], ['人造恒星', 'artificialStar'], ['物流配送器', 'logisticsDistributor'], ['行星内物流运输站', 'planetaryLogisticStation'], ['星际物流运输站', 'interstellarLogisticStation'], ['轨道采集器', 'orbitalCollector'], ['矩阵研究站', 'matrixLab'], ['蓝矩阵', 'electromagneticMatrix'], ['红矩阵', 'energyMatrix'], ['黄矩阵', 'structureMatrix'], ['紫矩阵', 'informationMatrix'], ['绿矩阵', 'gravityMatrix'], ['宇宙矩阵', 'universeMatrix'], ['None', 'None']]
+            const itemNameList = [['矩阵研究站', 'lab'], ['配送运输机', 'logisticsBot'], ['水', 'water'], ['铁矿', 'ironOre'], ['铜矿', 'copperOre'], ['硅石', 'siliconOre'], ['钛石', 'titaniumOre'], ['煤矿', 'coal'], ['铁块', 'ironIngot'], ['钛块', 'titaniumIngot'], ['高级石墨', 'energeticGraphite'], ['金刚石', 'diamond'], ['增产剂Mk.Ⅰ', 'proliferatorMk1'], ['增产剂Mk.Ⅱ', 'proliferatorMk2'], ['增产剂Mk.Ⅲ', 'proliferatorMk3'], ['齿轮', 'gear'], ['石矿', 'stone'], ['原油', 'oil'], ['精炼油', 'refinedOil'], ['硫酸', 'sulfuricAcid'], ['氢', 'hydrogen'], ['可燃冰', 'fireIce'], ['木材', 'wood'], ['植物燃料', 'plant_fuel'], ['金伯利矿石', 'kimberliteOre'], ['分形硅石', 'fractalSilicon'], ['光栅石', 'opticalGratingCrystal'], ['刺笋结晶', 'spiniformStalagmiteCrystal'], ['单极磁石', 'unipolarMagnet'], ['铜块', 'copperIngot'], ['高纯硅块', 'highPuritySilicon'], ['石材', 'stoneBrick'], ['钢材', 'steel'], ['钛合金', 'titaniumAlloy'], ['玻璃', 'glass'], ['钛化玻璃', 'titaniumGlass'], ['棱镜', 'prism'], ['晶格硅', 'crystalSilicon'], ['磁铁', 'magnet'], ['磁线圈', 'magneticCoil'], ['电动机', 'electricMotor'], ['电磁涡轮', 'electromagneticTurbine'], ['超级磁场环', 'superMagneticRing'], ['粒子容器', 'particleContainer'], ['奇异物质', 'strangeMatter'], ['电路板', 'circuitBoard'], ['处理器', 'processor'], ['量子芯片', 'quantumChip'], ['微晶元件', 'microcrystallineComponent'], ['位面过滤器', 'planeFilter'], ['粒子带宽', 'particleBroadband'], ['电浆激发器', 'plasmaExciter'], ['光子合并器', 'photonCombiner'], ['太阳帆', 'solarSail'], ['重氢', 'deuterium'], ['反物质', 'antimatter'], ['临界光子', 'criticalPhoton'], ['液氢燃料棒', 'hydrogenFuelRod'], ['氘核燃料棒', 'deuteriumFuelRod'], ['反物质燃烧棒', 'antimatterFuelRod'], ['塑料', 'plastic'], ['石墨烯', 'graphene'], ['碳纳米管', 'carbonNanotube'], ['有机晶体', 'organicCrystal'], ['钛晶石', 'titaniumCrystal'], ['卡西米尔晶片', 'casimirCrystal'], ['引力透镜', 'gravitonLens'], ['空间翘曲器', 'spaceWarper'], ['湮灭约束球', 'annihilationConstraintSphere'], ['推进器', 'thruster'], ['加力推进器', 'reinforcedThruster'], ['物流运输机', 'logisticDrone'], ['星际物流运输机', 'logisticVessel'], ['框架材料', 'frameMaterial'], ['戴森球组件', 'dysonSphereComponent'], ['小型运载火箭', 'smallCarrierRocket'], ['地基', 'foundation'], ['传送带', 'conveyorBeltMk1'], ['高速传送带', 'conveyorBeltMk2'], ['极速传送带', 'conveyorBeltMk3'], ['分拣器', 'sorterMk1'], ['高速分拣器', 'sorterMk2'], ['极速分拣器', 'sorterMk3'], ['四向分流器', 'splitter'], ['自动集装机', 'autoPiler'], ['流速监测器', 'trafficMonitor'], ['喷涂机', 'sprayCoater'], ['小型储物仓', 'storageMk1'], ['大型储物仓', 'storageMk2'], ['储液灌', 'storageTank'], ['制作台Mk.Ⅰ', 'assemblingMachineMk1'], ['制作台Mk.Ⅱ', 'assemblingMachineMk2'], ['制作台Mk.Ⅲ', 'assemblingMachineMk3'], ['电力感应塔', 'teslaTower'], ['无线输电塔', 'wirelessPowerTower'], ['卫星配电站', 'satelliteSubstation'], ['风力涡轮机', 'windTurbine'], ['火力发电机', 'thermalPowerPlant'], ['微型聚变发电站', 'miniFusionPowerPlant'], ['地热发电站', 'geothermalPowerStation'], ['采矿机', 'miningMachine'], ['大型采矿机', 'advancedMiningMachine'], ['抽水机', 'waterPump'], ['电弧熔炉', 'arcSmelter'], ['位面熔炉', 'planeSmelter'], ['原油萃取站', 'oilExtractor'], ['原油精炼厂', 'oilRefinery'], ['化工厂', 'chemicalPlant'], ['分馏塔', 'fractionator'], ['量子化工厂', 'quantumChemicalPlant'], ['太阳能板', 'solarPanel'], ['蓄电池', 'accumulator'], ['蓄电池满', 'accumulatorFull'], ['电磁轨道弹射器', 'emRailEjector'], ['射线接收站', 'rayReceiver'], ['垂直发射井', 'verticalLaunchingSilo'], ['能量枢纽', 'energyExchanger'], ['微型粒子对撞机', 'miniatureParticleCollider'], ['人造恒星', 'artificialStar'], ['物流配送器', 'logisticsDistributor'], ['行星内物流运输站', 'planetaryLogisticStation'], ['星际物流运输站', 'interstellarLogisticStation'], ['轨道采集器', 'orbitalCollector'], ['矩阵研究站', 'matrixLab'], ['蓝矩阵', 'electromagneticMatrix'], ['红矩阵', 'energyMatrix'], ['黄矩阵', 'structureMatrix'], ['紫矩阵', 'informationMatrix'], ['绿矩阵', 'gravityMatrix'], ['宇宙矩阵', 'universeMatrix'], ['None', 'None']]
             let outputHasHydrogen = false
             let inputHasHydrogen = false
+            let proliferator = null
             for (let tr of document.getElementsByTagName('tbody')[0].childNodes) {
                 if (tr.className==='header') {
                     continue
@@ -2731,10 +2732,24 @@
                     }
                 }
                 const acceleratorModeName = nodeList[6].getElementsByClassName('m selected')[0].getAttribute('data-modein')
-                let acceleratorMode = 0
+                let acceleratorMode = -1  // 不使用增产剂
                 if (acceleratorModeName === '加速') {
                     acceleratorMode = 1
+                }else if(acceleratorModeName === '增产') {
+                    acceleratorMode = 0
                 }
+                if (acceleratorMode !== -1) {
+                    let recipeProliferator = nodeList[5].getElementsByTagName('div')[0].getElementsByClassName('m selected')[0].getAttribute('data-modein')
+                    if (proliferator) {
+                        if (proliferator !== recipeProliferator) {
+                            cocoMessage.warning('检测到不同等级的增产剂选择，生成蓝图时所有配方必须采用同类型增产剂，请重新设置', 4000)
+                            throw `unsupported proliferator config`
+                        }
+                    }else {
+                        proliferator = recipeProliferator
+                    }
+                }
+
                 if (isInput) {
                     // 还是input就说明这个是原矿，蓝图不需要考虑原矿的生产建筑，且原矿的rate（每秒需求量）需重新计算
                     output = input
@@ -2745,11 +2760,11 @@
                         inputHasHydrogen = true
                     }
                 }
-                if (inputHasHydrogen && outputHasHydrogen) {
+                // if (inputHasHydrogen && outputHasHydrogen) {
                     // alert(`氢同时作为产物和原料时不支持自动生成蓝图，请排除产生氢的配方物品`)
-                    cocoMessage.warning('氢同时作为产物和原料时不支持自动生成蓝图，请排除产生氢的配方物品', 4000);
-                    throw `unsupported recipe list`
-                }
+                    // cocoMessage.warning('氢同时作为产物和原料时不支持自动生成蓝图，请排除产生氢的配方物品', 4000);
+                    // throw `unsupported recipe list`
+                // }
                 const recipe = {
                     building: building,
                     output: output,
@@ -2759,18 +2774,54 @@
                 }
 
                 recipeList.push(recipe)
-                // console.log(recipe)
             }
-            // navigator.clipboard.writeText(JSON.stringify(recipeList))
-            return recipeList
+            switch (proliferator) {
+                case "增产剂Mk.Ⅲ":
+                    proliferator = 'proliferatorMk3'
+                    break
+                case "增产剂Mk.Ⅱ":
+                    proliferator = 'proliferatorMk2'
+                    break
+                case "增产剂Mk.Ⅰ":
+                    proliferator = 'proliferatorMk1'
+                    break
+                case null:
+                    proliferator = null
+                    break
+                default:
+                    cocoMessage.error('未知的增产剂类型', 4000);
+                    throw `unknown proliferator`
+            }
+
+            if (inputHasHydrogen && outputHasHydrogen) {
+                // 输入和输出同时有氢时，把输出氢映射为新产物单独处理
+                for (let recipe of recipeList) {
+                    if (!recipe.input) {  // 略过原矿
+                        continue
+                    }
+                    for (let item of recipe.output) {
+                        if (item.name === 'hydrogen') {
+                            item.name = 'hydrogenOutput'
+                        }
+                    }
+                }
+            }
+
+            console.log(recipeList)
+            return {
+                recipeList: recipeList,
+                proliferator: proliferator
+            }
             // alert("已复制到粘贴板")
         }
 
         function generateBlueprint(){
+            const recipe = getRecipe()
             const outputRecipe = {
                 // output: 'test',
                 // rate: 0,
-                subRecipes: getRecipe()
+                proliferator: recipe.proliferator,
+                subRecipes: recipe.recipeList
             }
             // console.log(JSON.stringify(outputRecipe))
             //{"subRecipes":[{"building":{"name":"assemblingMachineMk1","num":0.7},"output":[{"name":"magneticCoil","rate":2}],"input":[{"name":"magnet","rate":2},{"name":"copperIngot","rate":1}],"acceleratorMode":0,"recipeID":0},{"building":{"name":"arcSmelter","num":1.5},"output":[{"name":"magnet","rate":0.6666666666666666}],"input":[{"name":"ironOre","rate":0.6666666666666666}],"acceleratorMode":0,"recipeID":0},{"building":null,"output":[{"name":"ironOre","rate":1}],"input":null,"acceleratorMode":0,"recipeID":0},{"building":{"name":"arcSmelter","num":0.5},"output":[{"name":"copperIngot","rate":1}],"input":[{"name":"copperOre","rate":1}],"acceleratorMode":0,"recipeID":0},{"building":null,"output":[{"name":"copperOre","rate":0.5}],"input":null,"acceleratorMode":0,"recipeID":0}]}
@@ -2781,12 +2832,21 @@
                 maxSorterNumOneBelt: 8,  // 一个传送带节点连接的最大分拣器数量
                 conveyorBeltStackLayer: parseInt(document.getElementById('conveyorBeltStackLayer').value),  // 传送带物品最大堆叠层数
                 x_y_ratio: parseFloat(document.getElementById('x_y_ratio').value),  // 长宽比
-                compactLayout: document.getElementById('compactLayout').checked,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
+                // compactLayout: document.getElementById('compactLayout').checked,  // 是否采用紧凑布局（紧凑布局的蓝图中炼油厂、化工厂和对撞机在布局上会更紧凑，适合摆放在赤道带，在高纬度可能会出现碰撞问题）
+                compactLayout: false,
                 upgradeConveyorBelt: false,  // 360/min的运力时使用3级传送带（无带流情况下，原料的需求和供应都是集中处理，1级传送带满运力情况下可能会有运送不及时问题导致产量低于预期
                 onlyConveyorBeltMk3: document.getElementById('onlyConveyorBeltMk3').checked,  // 是否只使用三级传送带
                 onlySorterMk3: document.getElementById('onlySorterMk3').checked,  // 是否只使用三级传送带
+                maxLabLayers: parseInt(document.getElementById('maxLabLayers').value),
+                selfSpray: document.getElementById('selfAcc').checked,  // 是否自喷涂增产剂
+                generateTeslaTower: document.getElementById('generateTeslaTower').checked,  // 是否自动插电线杆
+                teslaTowerInterval: 10,  // 同一排内电线杆距离
+                teslaTowerLineInterval: parseInt(document.getElementById('teslaTowerLineInterval').value),  // 电线杆间隔几排
+                // onlyConveyorBeltMk3Downgrade: document.getElementById('onlyConveyorBeltMk3Downgrade').checked  // 三级传送带运力降级
+                onlyConveyorBeltMk3Downgrade: false  // 三级传送带运力降级
+
             }
-            // console.log(config)
+            console.log(config)
             let b1 = new BluePrint('NewBlueprint', outputRecipe, config)
             b1.init()
             b1.generateBuildings()
@@ -2794,4 +2854,5 @@
             b1.generateConveyorBeltsForSprayCoater()
             b1.blueprintTemplate.buildings = b1.buildings
             navigator.clipboard.writeText(b1.toStr()).then(r => cocoMessage.success("已复制到粘贴板", 1000))
+            // navigator.clipboard.writeText(JSON.stringify(b1.blueprintTemplate.buildings)).then(r => cocoMessage.success("已复制到粘贴板", 1000))
         }
