@@ -1235,7 +1235,7 @@ class BluePrint {
         }else {
             buildingMap.conveyorBeltMK3.transportSpeed = 30
         }
-        console.log(buildingMap)
+        // console.log(buildingMap)
         // this.blueprintTemplate.areas[0].size = this.blueprintSize
     }
 
@@ -1341,7 +1341,7 @@ class BluePrint {
                 itemSummary[key].rate = itemSummary[key].inputRate
             }
         }
-        console.log(itemSummary)
+        // console.log(itemSummary)
         // throw `break`
         itemSummary = this.sortItemSummary(itemSummary)
         this.itemSummary = itemSummary
@@ -1416,7 +1416,7 @@ class BluePrint {
                     for (let j=this.sorters[itemName].input.length-1; j>=0; j--){
                         if((totalDoneRate + zero < item.rate) && (outputRate + zero < this.sorters[itemName].input[j].rate)) {
                             // 当前带输出运力不能满足分拣器且还会生成新的传送带，则传送带新增一个节点单独该分拣器连接上，同时给对应建筑增加一个分拣器连到下一个节点
-                            console.log(`${itemName}: need add sorter`)
+                            // console.log(`${itemName}: need add sorter`)
                             outputData.push([this.sorters[itemName].input[j].index])
                             const newSorterRate = this.sorters[itemName].input[j].rate - outputRate
                             let sorter = buildingMap.sorterMk1
@@ -1424,7 +1424,7 @@ class BluePrint {
                                 sorter = buildingMap.sorterMk3
                             }
                             let newSorter = this.getBuildingTemplate()
-                            console.log(`new sorter: ${newSorter.index}`)
+                            // console.log(`new sorter: ${newSorter.index}`)
                             newSorter.itemId = sorter.itemId
                             newSorter.modelIndex = sorter.modelIndex
                             newSorter.outputObjIdx = this.sorters[itemName].input[j].ownerObjIdx
@@ -1443,9 +1443,9 @@ class BluePrint {
                             const offsetInfo = this.calculateSorterLocalOffsetAndYaw(this.sorters[itemName].input[j].ownerOffset, buildingMap[this.sorters[itemName].input[j].ownerName].category, newSorter.outputToSlot, 1)
                             newSorter.localOffset = offsetInfo.offset
                             newSorter.yaw = offsetInfo.yaw
-                            console.log(newSorter)
+                            // console.log(newSorter)
                             this.buildings.push(newSorter)
-                            console.log(`add sorter for ${this.sorters[itemName].input[j].ownerObjIdx}`)
+                            // console.log(`add sorter for ${this.sorters[itemName].input[j].ownerObjIdx}`)
                             let startMove = false
                             let findTargetBuilding = false
                             for (let i=0; i<this.buildingArray.length; i++) {
@@ -1464,7 +1464,7 @@ class BluePrint {
                                         let toMoveNum = 1 + this.buildingArray[i][k].sorterList.length
                                         for (let b of this.buildings) {
                                             if (b.index === this.buildingArray[i][k].index) {
-                                                console.log(`move ${b.index}`)
+                                                // console.log(`move ${b.index}`)
                                                 b.localOffset[0].x += 1
                                                 b.localOffset[1].x += 1
                                                 toMoveNum --
@@ -1561,8 +1561,8 @@ class BluePrint {
                 firstSprayOffset = spray
             }
         }
-        console.log(this.sprayCoaterOffsetList)
-        console.log(firstSprayOffset)
+        // console.log(this.sprayCoaterOffsetList)
+        // console.log(firstSprayOffset)
 
         let proliferatorParameters = {
             iconId: itemMap[this.recipe.proliferator].iconId
@@ -1606,7 +1606,7 @@ class BluePrint {
                     if (direction === 1) {  // x 轴正向
                         if (spray.x > nowSpray.x) {
                             for (let x=nowSpray.x+1; x <= spray.x; x++) {
-                                console.log({x: x, y: nowSpray.y, z: 1})
+                                // console.log({x: x, y: nowSpray.y, z: 1})
                                 this.buildings.push(this.newConveyorNode({x: x, y: nowSpray.y, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
                             }
                             nowSpray = spray
@@ -1615,7 +1615,7 @@ class BluePrint {
                     }else { // x 轴负向
                         if (spray.x < nowSpray.x) {
                             for (let x=nowSpray.x-1; x>=spray.x; x--) {
-                                console.log({x: x, y: nowSpray.y, z: 1})
+                                // console.log({x: x, y: nowSpray.y, z: 1})
                                 this.buildings.push(this.newConveyorNode({x: x, y: nowSpray.y, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
                             }
                             nowSpray = spray
@@ -1641,13 +1641,13 @@ class BluePrint {
                         if (direction === 1 && spray.x > nowSpray.x) {
                             for (let x=nowSpray.x+1; x <= spray.x; x++) {
                                 lastNodeOffset = {x: x, y: nowSpray.y, z: 1}
-                                console.log(lastNodeOffset)
+                                // console.log(lastNodeOffset)
                                 this.buildings.push(this.newConveyorNode(lastNodeOffset, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
                             }
                         } else if (direction === -1 && spray.x < nowSpray.x) {
                             for (let x=nowSpray.x-1; x >= spray.x; x--){
                                 lastNodeOffset = {x: x, y: nowSpray.y, z: 1}
-                                console.log(lastNodeOffset)
+                                // console.log(lastNodeOffset)
                                 this.buildings.push(this.newConveyorNode(lastNodeOffset, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
                             }
                         }
@@ -1675,7 +1675,7 @@ class BluePrint {
                     }
                 }
             }
-            console.log(`next spray ${nowSpray}`)
+            // console.log(`next spray ${nowSpray}`)
 
             // console.log({x: nowSpray.x+direction, y: nowSpray.y, z: 1})
             direction = -direction

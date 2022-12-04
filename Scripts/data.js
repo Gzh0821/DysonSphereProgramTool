@@ -2807,7 +2807,7 @@
                 }
             }
 
-            console.log(recipeList)
+            // console.log(recipeList)
             return {
                 recipeList: recipeList,
                 proliferator: proliferator
@@ -2846,7 +2846,7 @@
                 onlyConveyorBeltMk3Downgrade: false  // 三级传送带运力降级
 
             }
-            console.log(config)
+            // console.log(config)
             let b1 = new BluePrint('NewBlueprint', outputRecipe, config)
             b1.init()
             b1.generateBuildings()
