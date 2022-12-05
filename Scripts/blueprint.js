@@ -121,7 +121,7 @@ const itemMap = {
     planetaryLogisticStation: { name: 'planetaryLogisticStation', iconId: 2103, remark: '行星内物流运输站' },
     interstellarLogisticStation: {name: 'interstellarLogisticStation', iconId: 2104, remark: '星际物流运输站'},
     orbitalCollector: { name: 'orbitalCollector', iconId: 2105, remark: '轨道采集器' },
-    matrixLab: { name: 'matrixLab', iconId: 2901, remark: '矩阵研究站' },
+    lab: { name: 'lab', iconId: 2901, remark: '矩阵研究站' },
     electromagneticMatrix: { name: 'electromagneticMatrix', iconId: 6001, remark: '蓝矩阵' },
     energyMatrix: { name: 'energyMatrix', iconId: 6002, remark: '红矩阵' },
     structureMatrix: { name: 'structureMatrix', iconId: 6003, remark: '黄矩阵' },
@@ -264,7 +264,7 @@ const recipeMap = {
     'steel+stoneBrick+glass+processor=fractionator': 110,  // 分馏塔
     'steel+stoneBrick+glass+circuitBoard=chemicalPlant': 22,  // 化工厂
     'chemicalPlant+titaniumGlass+strangeMatter+quantumChip=quantumChemicalPlant': 124,  // 量子化工厂
-    'ironIngot+glass+circuitBoard+magneticCoil=matrixLab': 10,  // 矩阵研究站
+    'ironIngot+glass+circuitBoard+magneticCoil=lab': 10,  // 矩阵研究站
     'steel+gear+processor+superMagneticRing=emRailEjector': 71,  // 电磁轨道弹射器
     'steel+titaniumIngot+processor+particleContainer=planetaryLogisticStation': 93,  // 行星内物流运输站
     'ironIngot+plasmaExciter+processor=logisticsDistributor': 122,  // 物流配送器
