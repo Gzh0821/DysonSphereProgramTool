@@ -2660,7 +2660,8 @@
 
                 let buildingName = nodeList[3].getElementsByTagName('img')[0]
                 if (!buildingName) {
-                    buildingName = 'None'
+                    cocoMessage.warning("存在生产设施为空的配方，请检查配方列表", 4000)
+                    throw `unsupported recipe combination`
                 } else {
                     buildingName = buildingName.getAttribute('title')
                 }
