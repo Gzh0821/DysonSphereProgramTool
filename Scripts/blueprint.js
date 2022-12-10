@@ -164,6 +164,7 @@ const buildingMap = {
     conveyorBeltMK3: {name: 'conveyorBeltMK3', itemId: 2003, modelIndex: 37, transportSpeed: 30, size: {x: 1, y: 1}, type: buildingType.conveyor, remark: '传送带MK.Ⅲ'},
     sprayCoater: {remark: '喷涂机', name: 'sprayCoater', itemId: 2313, modelIndex: 120},
     teslaTower: {remark: '电力感应塔', name: 'teslaTower', itemId: 2201, modelIndex: 44},
+    satelliteSubstation: {remark: '卫星配电站', name: 'satelliteSubstation', itemId: 2212, modelIndex: 68, powerDistribution: 30, size: {x: 3, y: 3}},
     // piler: { remark: '自动集装机', name: 'piler', itemId: 2040, modelIndex: 257 },
     // monitor: { remark: '流速监测器', name: 'monitor', itemId: 2030, modelIndex: 208 },
 
@@ -300,9 +301,9 @@ const recipeMap = {
     'hydrogen=deuterium+hydrogen': -1,  // 重氢 氢
 }
 
-class BluePrint {
-    constructor(name, recipe, config) {
-        this.name = name
+class Blueprint {
+    constructor(title, iconId, recipe, config) {
+        // this.name = target.name
         this.recipe = recipe
         this.buildingIndex = -1
         this.blueprintSize = {x: 0, y: 0}
@@ -325,13 +326,14 @@ class BluePrint {
         this.sprayCoaterOffsetList = []
         this.itemSummary = {}
         this.conveyorStartOffsetX = 0
+        this.lastProductionBuildingType = -1
         this.blueprintTemplate = {
             header: {
                 layout: 10,
-                icons: [0, 0, 0, 0, 0],
+                icons: [iconId, 0, 0, 0, 0],
                 time: new Date(),
                 gameVersion: '0.9.26.13026',
-                shortDesc: 'New Blueprint',
+                shortDesc: title,
                 desc: ''
             },
             version: 1,
@@ -855,6 +857,7 @@ class BluePrint {
         let teslaTowerDistance = 0
         for (let i=0; i<subRecipe.building.num; i++){
             this.buildingIndex ++
+            this.lastProductionBuildingType = buildingMap[subRecipe.building.name].category
             let buildingArea, buildingX, buildingY, buildingZ
             buildingArea = this.calculateBuildingArea(subRecipe)
             // }
@@ -1569,29 +1572,43 @@ class BluePrint {
         }
 
         if (this.config.selfSpray) {  // 生成自喷涂结构
-            this.buildings.push(this.newSprayCoater({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+4, z: 0}, [0, 0]))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+6, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, proliferatorParameters))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+5, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+4, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+3, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+2, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: firstSprayOffset.y+2, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: firstSprayOffset.y+3, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: firstSprayOffset.y+4, z: 0.5}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: firstSprayOffset.y+5, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: firstSprayOffset.y+6, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+6, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX, y: firstSprayOffset.y+6, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX, y: firstSprayOffset.y+5, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX, y: firstSprayOffset.y+4, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX, y: firstSprayOffset.y+3, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+3, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: firstSprayOffset.y+3, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: firstSprayOffset.y+2, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: firstSprayOffset.y+1, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: firstSprayOffset.y+1, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
-            for (let i=0; i<firstSprayOffset.x-this.conveyorStartOffsetX; i++){
-                this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX + i, y: firstSprayOffset.y+1, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            let selfSprayConveyorStartOffset = {x: firstSprayOffset.x, y: firstSprayOffset.y, z: firstSprayOffset.z}
+            switch (this.lastProductionBuildingType) {
+                case productionCategory.lab: case productionCategory.collider:
+                    selfSprayConveyorStartOffset.y += 2
+                    break
+                case productionCategory.plant:
+                    selfSprayConveyorStartOffset.y += 1
+                    break
+                default:
+                    break
+            }
+            this.buildings.push(this.newSprayCoater({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+4, z: 0}, [0, 0]))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+6, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, proliferatorParameters))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+5, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+4, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+3, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+2, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: selfSprayConveyorStartOffset.y+2, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: selfSprayConveyorStartOffset.y+3, z: 0}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: selfSprayConveyorStartOffset.y+4, z: 0.5}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: selfSprayConveyorStartOffset.y+5, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: selfSprayConveyorStartOffset.y+6, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+6, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX, y: selfSprayConveyorStartOffset.y+6, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX, y: selfSprayConveyorStartOffset.y+5, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX, y: selfSprayConveyorStartOffset.y+4, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX, y: selfSprayConveyorStartOffset.y+3, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+3, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: selfSprayConveyorStartOffset.y+3, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: selfSprayConveyorStartOffset.y+2, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-2, y: selfSprayConveyorStartOffset.y+1, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX-1, y: selfSprayConveyorStartOffset.y+1, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            for (let i=0; i<selfSprayConveyorStartOffset.x-this.conveyorStartOffsetX; i++){
+                this.buildings.push(this.newConveyorNode({x: this.conveyorStartOffsetX + i, y: selfSprayConveyorStartOffset.y+1, z: 1}, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
+            }
+            for (let i=0; i < selfSprayConveyorStartOffset.y - firstSprayOffset.y; i++) {
+                this.buildings.push(this.newConveyorNode({x: selfSprayConveyorStartOffset.x - 1, y: selfSprayConveyorStartOffset.y - i, z: 1 }, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
             }
             proliferatorParameters = null
         }
@@ -2242,5 +2259,3 @@ class BluePrint {
         return result;
     }
 }
-
-// TODO 优化电线杆的分布
