@@ -1613,7 +1613,7 @@ class Blueprint {
             proliferatorParameters = null
         }
         this.buildings.push(this.newConveyorNode({x: firstSprayOffset.x - 1, y: firstSprayOffset.y, z: 1 }, [0, 0], conveyor, this.buildingIndex + 2, 1, proliferatorParameters))
-        this.buildings.push(this.newConveyorNode({x: firstSprayOffset.x, y: firstSprayOffset.y, z: 1 }, [0, 0], conveyor, this.buildingIndex + 2, -1, null))
+        this.buildings.push(this.newConveyorNode({x: firstSprayOffset.x, y: firstSprayOffset.y, z: 1 }, [0, 0], conveyor, this.buildingIndex + 2, 1, null))
         let doneNum = 1
         let nowSpray = firstSprayOffset
         let direction = 1
