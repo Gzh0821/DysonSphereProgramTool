@@ -2640,6 +2640,8 @@
             let outputHasHydrogen = false
             let inputHasHydrogen = false
             let proliferator = null
+            let blueprintTitle = ''
+            let blueprintIconIdx = 0
             for (let tr of document.getElementsByTagName('tbody')[0].childNodes) {
                 if (tr.className==='header') {
                     continue
@@ -2761,11 +2763,21 @@
                         inputHasHydrogen = true
                     }
                 }
-                // if (inputHasHydrogen && outputHasHydrogen) {
-                    // alert(`氢同时作为产物和原料时不支持自动生成蓝图，请排除产生氢的配方物品`)
-                    // cocoMessage.warning('氢同时作为产物和原料时不支持自动生成蓝图，请排除产生氢的配方物品', 4000);
-                    // throw `unsupported recipe list`
-                // }
+
+                if (!blueprintTitle) {  // blueprint name and icon id
+                    let outputItemName = nodeList[1].getAttribute('data-name')
+                    let outputRate = nodeList[2].getElementsByTagName('span')[0].innerText
+                    blueprintTitle = outputItemName + '-' + outputRate + '/min'
+
+                    for (let item in itemMap) {
+                        if (itemMap[item].remark === outputItemName) {
+                            blueprintIconIdx = itemMap[item].iconId
+                            break
+                        }
+                    }
+                }
+
+
                 const recipe = {
                     building: building,
                     output: output,
@@ -2807,20 +2819,18 @@
                     }
                 }
             }
-
             // console.log(recipeList)
             return {
                 recipeList: recipeList,
-                proliferator: proliferator
+                proliferator: proliferator,
+                blueprintIcon: blueprintIconIdx,
+                blueprintTitle: blueprintTitle,
             }
-            // alert("已复制到粘贴板")
         }
 
         function generateBlueprint(){
             const recipe = getRecipe()
             const outputRecipe = {
-                // output: 'test',
-                // rate: 0,
                 proliferator: recipe.proliferator,
                 subRecipes: recipe.recipeList
             }
@@ -2848,7 +2858,7 @@
 
             }
             // console.log(config)
-            let b1 = new BluePrint('NewBlueprint', outputRecipe, config)
+            let b1 = new Blueprint(recipe.blueprintTitle, recipe.blueprintIcon, outputRecipe, config)
             b1.init()
             b1.generateBuildings()
             b1.generateConveyorBelts()

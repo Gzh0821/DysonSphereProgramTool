@@ -164,6 +164,7 @@ const buildingMap = {
     conveyorBeltMK3: {name: 'conveyorBeltMK3', itemId: 2003, modelIndex: 37, transportSpeed: 30, size: {x: 1, y: 1}, type: buildingType.conveyor, remark: '传送带MK.Ⅲ'},
     sprayCoater: {remark: '喷涂机', name: 'sprayCoater', itemId: 2313, modelIndex: 120},
     teslaTower: {remark: '电力感应塔', name: 'teslaTower', itemId: 2201, modelIndex: 44},
+    satelliteSubstation: {remark: '卫星配电站', name: 'satelliteSubstation', itemId: 2212, modelIndex: 68, powerDistribution: 30, size: {x: 3, y: 3}},
     // piler: { remark: '自动集装机', name: 'piler', itemId: 2040, modelIndex: 257 },
     // monitor: { remark: '流速监测器', name: 'monitor', itemId: 2030, modelIndex: 208 },
 
@@ -300,9 +301,9 @@ const recipeMap = {
     'hydrogen=deuterium+hydrogen': -1,  // 重氢 氢
 }
 
-class BluePrint {
-    constructor(name, recipe, config) {
-        this.name = name
+class Blueprint {
+    constructor(title, iconId, recipe, config) {
+        // this.name = target.name
         this.recipe = recipe
         this.buildingIndex = -1
         this.blueprintSize = {x: 0, y: 0}
@@ -329,10 +330,10 @@ class BluePrint {
         this.blueprintTemplate = {
             header: {
                 layout: 10,
-                icons: [0, 0, 0, 0, 0],
+                icons: [iconId, 0, 0, 0, 0],
                 time: new Date(),
                 gameVersion: '0.9.26.13026',
-                shortDesc: 'New Blueprint',
+                shortDesc: title,
                 desc: ''
             },
             version: 1,
