@@ -1423,7 +1423,7 @@ class Blueprint {
                             outputData.push([this.sorters[itemName].input[j].index])
                             const newSorterRate = this.sorters[itemName].input[j].rate - outputRate
                             let sorter = buildingMap.sorterMk1
-                            if (newSorterRate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
+                            if (this.config.onlyConveyorBeltMk3 || newSorterRate > sorter.sortingSpeed) {  // 一级分拣器不够用时直接使用三级分拣器，先不支持二级分拣器
                                 sorter = buildingMap.sorterMk3
                             }
                             let newSorter = this.getBuildingTemplate()
