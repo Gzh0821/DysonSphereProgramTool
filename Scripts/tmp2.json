@@ -1,0 +1,369 @@
+{
+  "header": {
+    "layout": 10,
+    "icons": [
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "time": "2022-12-04T10:32:16.650Z",
+    "gameVersion": "0.9.27.15033",
+    "shortDesc": "新蓝图",
+    "desc": ""
+  },
+  "version": 1,
+  "cursorOffset": {
+    "x": 0,
+    "y": 0
+  },
+  "cursorTargetArea": 0,
+  "dragBoxSize": {
+    "x": 1,
+    "y": 1
+  },
+  "primaryAreaIdx": 0,
+  "areas": [
+    {
+      "index": 0,
+      "parentIndex": -1,
+      "tropicAnchor": 0,
+      "areaSegments": 200,
+      "anchorLocalOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "size": {
+        "x": 1,
+        "y": 1
+      }
+    }
+  ],
+  "buildings": [
+    {
+      "index": 0,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": -5.92898345530557e-7,
+          "z": 2.9999749660491943
+        },
+        {
+          "x": 0,
+          "y": -5.92898345530557e-7,
+          "z": 2.9999749660491943
+        }
+      ],
+      "yaw": [
+        0,
+        0
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": 8,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    },
+    {
+      "index": 1,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": -5.92898345530557e-7,
+          "z": 8.999975204467773
+        },
+        {
+          "x": 0,
+          "y": -5.92898345530557e-7,
+          "z": 8.999975204467773
+        }
+      ],
+      "yaw": [
+        0,
+        0
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": 4,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    },
+    {
+      "index": 2,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": 14.999964714050293
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": 14.999964714050293
+        }
+      ],
+      "yaw": [
+        0,
+        0
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": 7,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    },
+    {
+      "index": 3,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": 17.999963760375977
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": 17.999963760375977
+        }
+      ],
+      "yaw": [
+        -4.4999499237974305e-8,
+        -4.4999499237974305e-8
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": 2,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    },
+    {
+      "index": 4,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": 5.999963760375977
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": 5.999963760375977
+        }
+      ],
+      "yaw": [
+        -0.0000014508226513498812,
+        -0.0000014508226513498812
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": 0,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    },
+    {
+      "index": 5,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": -5.92898345530557e-7,
+          "z": 20.999963760375977
+        },
+        {
+          "x": 0,
+          "y": -5.92898345530557e-7,
+          "z": 20.999963760375977
+        }
+      ],
+      "yaw": [
+        -6.74992506333183e-8,
+        -6.74992506333183e-8
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": 3,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    },
+    {
+      "index": 6,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": -5.92898345530557e-7,
+          "z": 23.99996566772461
+        },
+        {
+          "x": 0,
+          "y": -5.92898345530557e-7,
+          "z": 23.99996566772461
+        }
+      ],
+      "yaw": [
+        -8.290858204418328e-7,
+        -8.290858204418328e-7
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": 5,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    },
+    {
+      "index": 7,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": 11.999963760375977
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": 11.999963760375977
+        }
+      ],
+      "yaw": [
+        0,
+        0
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": 1,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    },
+    {
+      "index": 8,
+      "areaIndex": 0,
+      "localOffset": [
+        {
+          "x": 0,
+          "y": 0,
+          "z": -0.00002517923894629348
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": -0.00002517923894629348
+        }
+      ],
+      "yaw": [
+        0,
+        0
+      ],
+      "itemId": 2901,
+      "modelIndex": 70,
+      "outputObjIdx": -1,
+      "inputObjIdx": -1,
+      "outputToSlot": 14,
+      "inputFromSlot": 15,
+      "outputFromSlot": 15,
+      "inputToSlot": 14,
+      "outputOffset": 0,
+      "inputOffset": 0,
+      "recipeId": 9,
+      "filterId": 0,
+      "parameters": {
+        "researchMode": 1,
+        "acceleratorMode": 0
+      }
+    }
+  ]
+}
