@@ -1,6 +1,6 @@
 //配方 ，如果数据改变时有可能需要重置配方
 var data = [
-/* 
+/*
 {
     s: [{				s ：产物一(可能多产物)
         name: "重氢",	name ：产物名称
@@ -2246,7 +2246,7 @@ var data = [
     }],
     t: 1,
     noExtra: true,
-}, 
+},
 ];
 
 var energyData = {};
@@ -4095,7 +4095,8 @@ function getRecipe() {
   let inputHasHydrogen = false;
   let proliferator = null;
   let blueprintTitle = "";
-  let blueprintIconIdx = 0;
+  let blueprintDesc = "";
+  let blueprintIconIdx = [];
   for (let tr of document.getElementsByTagName("tbody")[0].childNodes) {
     if (tr.className === "header") {
       continue;
@@ -4233,11 +4234,24 @@ function getRecipe() {
       let outputItemName = nodeList[1].getAttribute("data-name");
       let outputRate = nodeList[2].getElementsByTagName("span")[0].innerText;
       blueprintTitle = outputItemName + "-" + outputRate + "/min";
+      let resultList = document.querySelectorAll("#result > div:nth-child(1) > span");
+      let outputItemNameList = [];
+      for (let i = 0; i < resultList.length -1; i++) {
+        let result = resultList[i];
+        let outputItemName = result.querySelector("img").title;
+        outputItemNameList = [...outputItemNameList, outputItemName];
+        let outputRate = result.querySelector("span > span").textContent;
+        blueprintDesc += outputItemName + "-" + outputRate + "/min\n";
+      }
 
-      for (let item in itemMap) {
-        if (itemMap[item].remark === outputItemName) {
-          blueprintIconIdx = itemMap[item].iconId;
-          break;
+      let mapItemMap = {};
+      Object.keys(itemMap).map((v, _) => {
+        mapItemMap[itemMap[v].remark] = itemMap[v]
+      });
+      for (const name of outputItemNameList) {
+        let item = mapItemMap[name];
+        if (item !== undefined) {
+          blueprintIconIdx = [...blueprintIconIdx, item.iconId];
         }
       }
     }
@@ -4290,6 +4304,7 @@ function getRecipe() {
     proliferator: proliferator,
     blueprintIcon: blueprintIconIdx,
     blueprintTitle: blueprintTitle,
+    blueprintDesc: blueprintDesc,
   };
 }
 
@@ -4328,7 +4343,7 @@ function generateBlueprint() {
   // console.log(config)
   let b1 = new Blueprint(
     recipe.blueprintTitle,
-    recipe.blueprintIcon,
+    recipe.blueprintIcon.concat(Array(5).fill(0)).slice(0, 5),
     outputRecipe,
     config
   );
@@ -4337,6 +4352,24 @@ function generateBlueprint() {
   b1.generateConveyorBelts();
   b1.generateConveyorBeltsForSprayCoater();
   b1.blueprintTemplate.buildings = b1.buildings;
+  b1.blueprintTemplate.header.desc = recipe.blueprintDesc.trimEnd();
+  switch (recipe.blueprintIcon.length) {
+    case 1:
+      b1.blueprintTemplate.header.layout = 10;
+      break;
+    case 2:
+      b1.blueprintTemplate.header.layout = 20;
+      break;
+    case 3:
+      b1.blueprintTemplate.header.layout = 30;
+      break;
+    case 4:
+      b1.blueprintTemplate.header.layout = 40;
+      break;
+    default:
+      b1.blueprintTemplate.header.layout = 51;
+      break;
+  }
   navigator.clipboard
     .writeText(b1.toStr())
     .then((r) => cocoMessage.success("已复制到粘贴板", 1000));
