@@ -4095,6 +4095,7 @@ function getRecipe() {
   let inputHasHydrogen = false;
   let proliferator = null;
   let blueprintTitle = "";
+  let blueprintDesc = "";
   let blueprintIconIdx = 0;
   for (let tr of document.getElementsByTagName("tbody")[0].childNodes) {
     if (tr.className === "header") {
@@ -4233,6 +4234,14 @@ function getRecipe() {
       let outputItemName = nodeList[1].getAttribute("data-name");
       let outputRate = nodeList[2].getElementsByTagName("span")[0].innerText;
       blueprintTitle = outputItemName + "-" + outputRate + "/min";
+      let resultList = document.querySelectorAll("#result > div > span")
+      for (let i = 0; i < resultList.length -1; i++) {
+        let result = resultList[i];
+        let outputItemName = result.querySelector("img").title;
+        let outputRate = result.querySelector("span > span").textContent;
+        blueprintDesc += outputItemName + "-" + outputRate + "/min\n";
+      }
+
 
       for (let item in itemMap) {
         if (itemMap[item].remark === outputItemName) {
@@ -4290,6 +4299,7 @@ function getRecipe() {
     proliferator: proliferator,
     blueprintIcon: blueprintIconIdx,
     blueprintTitle: blueprintTitle,
+    blueprintDesc: blueprintDesc,
   };
 }
 
@@ -4337,6 +4347,7 @@ function generateBlueprint() {
   b1.generateConveyorBelts();
   b1.generateConveyorBeltsForSprayCoater();
   b1.blueprintTemplate.buildings = b1.buildings;
+  b1.blueprintTemplate.header.desc = recipe.blueprintDesc.trimEnd();
   navigator.clipboard
     .writeText(b1.toStr())
     .then((r) => cocoMessage.success("已复制到粘贴板", 1000));
