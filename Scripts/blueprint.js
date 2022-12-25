@@ -671,7 +671,7 @@ class Blueprint {
     this.blueprintTemplate = {
       header: {
         layout: 10,
-        icons: [iconId, 0, 0, 0, 0],
+        icons: iconId,
         time: new Date(),
         gameVersion: "0.9.26.13026",
         shortDesc: title,
