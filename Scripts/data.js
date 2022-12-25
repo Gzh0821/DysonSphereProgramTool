@@ -4234,7 +4234,7 @@ function getRecipe() {
       let outputItemName = nodeList[1].getAttribute("data-name");
       let outputRate = nodeList[2].getElementsByTagName("span")[0].innerText;
       blueprintTitle = outputItemName + "-" + outputRate + "/min";
-      let resultList = document.querySelectorAll("#result > div > span");
+      let resultList = document.querySelectorAll("#result > div:nth-child(1) > span");
       let outputItemNameList = [];
       for (let i = 0; i < resultList.length -1; i++) {
         let result = resultList[i];
