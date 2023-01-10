@@ -1,6 +1,10 @@
 
 # 戴森球量化工具(APP版)
 
+![](https://img.shields.io/badge/author-Gaozih-%2366ccff)
+![](https://img.shields.io/github/license/Gzh0821/DysonSphereProgramTool)
+![](https://img.shields.io/github/stars/Gzh0821/DysonSphereProgramTool)
+
 ## 版权声明
 
 该仓库已指定[GPL-3.0]开源许可证，您基于本仓库二次修改的源代码必须开源且保留本仓库地址署名。
