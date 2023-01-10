@@ -1,0 +1,46 @@
+{
+  "name": "dspt",
+  "version": "1.0.1",
+  "description": "戴森球计划量产量化计算器工具",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/gaozih03/DysonSphereProgramTool.git"
+  },
+  "author": "Gaozih",
+  "license": "ISC",
+  "dependencies": {
+    "@electron/remote": "^2.0.9",
+    "electron-context-menu": "^3.6.1",
+    "electron-squirrel-startup": "^1.0.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.4",
+    "@electron-forge/maker-deb": "^6.0.4",
+    "@electron-forge/maker-rpm": "^6.0.4",
+    "@electron-forge/maker-squirrel": "^6.0.4",
+    "@electron-forge/maker-zip": "^6.0.4",
+    "electron": "22.0.0",
+    "electron-builder": "^23.6.0",
+    "jsonplus": "^1.2.0"
+  },
+  "build": {
+    "appId": "com.gaozih.dspt",
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "logo.ico"
+    }
+  }
+}
