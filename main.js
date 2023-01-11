@@ -64,7 +64,7 @@ const createMainWindow = () => {
         appData = JSON.parse(data);
         app.setAboutPanelOptions({
             applicationName: appData.title,
-            applicationVersion: package.version,
+            applicationVersion: 'v'+ package.version,
             copyright: appData.copyright,
             authors: appData.authors,
         })
