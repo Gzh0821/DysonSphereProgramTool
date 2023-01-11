@@ -1,4 +1,3 @@
-
 # 戴森球量化工具(APP版)
 
 ![](https://img.shields.io/badge/author-Gaozih-%2366ccff)
@@ -11,7 +10,7 @@
 
 原仓库地址：[svlik](https://gitee.com/svlik/DysonSphereProgramTool)
 
-版本:v1.0.1
+版本:v1.0.2
 
 ## 功能
 
@@ -21,7 +20,7 @@
 
 3，支持多需求叠加
 
-4，支持把计算结果进行保存（多方案）
+~~4，支持把计算结果进行保存（多方案）（APP版暂未实现）~~
 
 输入每分钟需求的物品数量，然后点击后面的蓝色按钮选择物品即可
 
