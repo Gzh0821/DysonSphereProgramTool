@@ -10,7 +10,7 @@
 
 原仓库地址：[svlik](https://gitee.com/svlik/DysonSphereProgramTool)
 
-版本:v1.0.2
+版本:v1.0.3
 
 ## 功能
 

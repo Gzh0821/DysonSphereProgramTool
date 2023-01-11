@@ -25,6 +25,25 @@ contextMenu({
     ],
 })
 
+fs.readFile(path.join(__dirname, 'appData.json'), 'utf-8', (err, data) => {
+    if (err) {
+        console.log(err);
+        app.quit();
+    }
+    try {
+        appData = JSON.parse(data);
+    }
+    catch (err) {
+        console.log(err);
+        app.quit();
+    }
+    app.setAboutPanelOptions({
+        applicationName: appData.title,
+        applicationVersion: 'v' + package.version,
+        copyright: appData.copyright,
+        authors: appData.authors,
+    })
+})
 
 const template = [
     {
@@ -49,26 +68,36 @@ const template = [
         ]
     },
     {
-        label: '关于',
-        role: 'about'
+        label: '应用信息',
+        submenu: [
+            {
+                label: '当前版本:v' + package.version
+            },
+            {
+                label: '从gitee更新',
+                click: () => {
+                    shell.openExternal(appData.gitee);
+                }
+            },
+            {
+                label: '从github更新',
+                click: () => {
+                    shell.openExternal(appData.github);
+                }
+            },
+            {
+                type: 'separator'
+            },
+            {
+                label: '关于',
+                role: 'about'
+            }
+        ]
     }
 ];
+
 const createMainWindow = () => {
 
-
-    fs.readFile(path.join(__dirname, 'data.json'), 'utf-8', (err, data) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        appData = JSON.parse(data);
-        app.setAboutPanelOptions({
-            applicationName: appData.title,
-            applicationVersion: 'v'+ package.version,
-            copyright: appData.copyright,
-            authors: appData.authors,
-        })
-    })
 
     const mainWindow = new BrowserWindow({
         show: false,
