@@ -490,19 +490,17 @@
 			<div data-include="footer"></div>
 			<!-- 底部内容结束 -->
 			</p>
-			<div>
-				<script>
-					$(function () {
-						var includes = $('[data-include]');
-						jQuery.each(includes, function () {
-							var file = 'quote/' + $(this).data('include') + '.html';
-							$(this).load(file);
-						});
-					});
-				</script>
-			</div>
 		</div>
 		<div data-include="corner"></div>
+		<script>
+			$(function () {
+				var includes = $('[data-include]');
+				jQuery.each(includes, function () {
+					var file = 'quote/' + $(this).data('include') + '.html';
+					$(this).load(file);
+				});
+			});
+		</script>
 </body>
 
 </html>

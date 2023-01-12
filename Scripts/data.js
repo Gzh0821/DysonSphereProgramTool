@@ -4099,7 +4099,7 @@ function getRecipe() {
   let blueprintDesc = "";
   let blueprintIconIdx = [];
   for (let tr of document.getElementsByTagName("tbody")[0].childNodes) {
-    if (tr.className === "header") {
+    if (tr.className === "header table-active") {
       continue;
     }
     if (tr.className === "total") {
