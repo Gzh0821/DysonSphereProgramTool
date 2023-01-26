@@ -356,7 +356,6 @@ var data = [
         n: 2
     }],
     t: 2,
-    noExtra: true,
 }, {
     s: [{
         name: "重氢"
