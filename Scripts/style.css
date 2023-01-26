@@ -95,6 +95,7 @@
 
         .m,
         .pf {
+            border-radius: 0.25rem;
             display: block;
             margin: 3px;
             padding: 3px 8px;
