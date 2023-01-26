@@ -1,4 +1,4 @@
-﻿/**
+/**
 * jquery tips 提示插件 jquery.tips.js v0.1beta
 *
 * 使用方法
